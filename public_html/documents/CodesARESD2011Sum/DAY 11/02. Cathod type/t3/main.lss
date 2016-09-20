@@ -1,0 +1,418 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000027a  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          0000000d  00800060  00800060  000002ee  2**0
+                  ALLOC
+  2 .stab         00000b10  00000000  00000000  000002f0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000745  00000000  00000000  00000e00  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	14 c0       	rjmp	.+40     	; 0x2a <__ctors_end>
+   2:	2e c0       	rjmp	.+92     	; 0x60 <__bad_interrupt>
+   4:	2d c0       	rjmp	.+90     	; 0x60 <__bad_interrupt>
+   6:	2c c0       	rjmp	.+88     	; 0x60 <__bad_interrupt>
+   8:	2b c0       	rjmp	.+86     	; 0x60 <__bad_interrupt>
+   a:	2a c0       	rjmp	.+84     	; 0x60 <__bad_interrupt>
+   c:	6c c0       	rjmp	.+216    	; 0xe6 <__vector_6>
+   e:	28 c0       	rjmp	.+80     	; 0x60 <__bad_interrupt>
+  10:	27 c0       	rjmp	.+78     	; 0x60 <__bad_interrupt>
+  12:	26 c0       	rjmp	.+76     	; 0x60 <__bad_interrupt>
+  14:	25 c0       	rjmp	.+74     	; 0x60 <__bad_interrupt>
+  16:	24 c0       	rjmp	.+72     	; 0x60 <__bad_interrupt>
+  18:	23 c0       	rjmp	.+70     	; 0x60 <__bad_interrupt>
+  1a:	22 c0       	rjmp	.+68     	; 0x60 <__bad_interrupt>
+  1c:	21 c0       	rjmp	.+66     	; 0x60 <__bad_interrupt>
+  1e:	20 c0       	rjmp	.+64     	; 0x60 <__bad_interrupt>
+  20:	1f c0       	rjmp	.+62     	; 0x60 <__bad_interrupt>
+  22:	1e c0       	rjmp	.+60     	; 0x60 <__bad_interrupt>
+  24:	1d c0       	rjmp	.+58     	; 0x60 <__bad_interrupt>
+  26:	1c c0       	rjmp	.+56     	; 0x60 <__bad_interrupt>
+  28:	1b c0       	rjmp	.+54     	; 0x60 <__bad_interrupt>
+
+0000002a <__ctors_end>:
+  2a:	11 24       	eor	r1, r1
+  2c:	1f be       	out	0x3f, r1	; 63
+  2e:	cf e5       	ldi	r28, 0x5F	; 95
+  30:	d2 e0       	ldi	r29, 0x02	; 2
+  32:	de bf       	out	0x3e, r29	; 62
+  34:	cd bf       	out	0x3d, r28	; 61
+
+00000036 <__do_copy_data>:
+  36:	10 e0       	ldi	r17, 0x00	; 0
+  38:	a0 e6       	ldi	r26, 0x60	; 96
+  3a:	b0 e0       	ldi	r27, 0x00	; 0
+  3c:	ea e7       	ldi	r30, 0x7A	; 122
+  3e:	f2 e0       	ldi	r31, 0x02	; 2
+  40:	02 c0       	rjmp	.+4      	; 0x46 <.do_copy_data_start>
+
+00000042 <.do_copy_data_loop>:
+  42:	05 90       	lpm	r0, Z+
+  44:	0d 92       	st	X+, r0
+
+00000046 <.do_copy_data_start>:
+  46:	a0 36       	cpi	r26, 0x60	; 96
+  48:	b1 07       	cpc	r27, r17
+  4a:	d9 f7       	brne	.-10     	; 0x42 <.do_copy_data_loop>
+
+0000004c <__do_clear_bss>:
+  4c:	10 e0       	ldi	r17, 0x00	; 0
+  4e:	a0 e6       	ldi	r26, 0x60	; 96
+  50:	b0 e0       	ldi	r27, 0x00	; 0
+  52:	01 c0       	rjmp	.+2      	; 0x56 <.do_clear_bss_start>
+
+00000054 <.do_clear_bss_loop>:
+  54:	1d 92       	st	X+, r1
+
+00000056 <.do_clear_bss_start>:
+  56:	ad 36       	cpi	r26, 0x6D	; 109
+  58:	b1 07       	cpc	r27, r17
+  5a:	e1 f7       	brne	.-8      	; 0x54 <.do_clear_bss_loop>
+  5c:	d4 d0       	rcall	.+424    	; 0x206 <main>
+  5e:	0c c1       	rjmp	.+536    	; 0x278 <_exit>
+
+00000060 <__bad_interrupt>:
+  60:	cf cf       	rjmp	.-98     	; 0x0 <__heap_end>
+
+00000062 <delayms>:
+unsigned int delaycounter1,delaycounter2;
+void delayms(unsigned int delaytime)
+{
+
+	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  62:	10 92 6c 00 	sts	0x006C, r1
+  66:	10 92 6b 00 	sts	0x006B, r1
+  6a:	20 e0       	ldi	r18, 0x00	; 0
+  6c:	30 e0       	ldi	r19, 0x00	; 0
+  6e:	40 e0       	ldi	r20, 0x00	; 0
+  70:	50 e0       	ldi	r21, 0x00	; 0
+	...
+	 {
+		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+		  {
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  8a:	4f 5f       	subi	r20, 0xFF	; 255
+  8c:	5f 4f       	sbci	r21, 0xFF	; 255
+  8e:	63 e0       	ldi	r22, 0x03	; 3
+  90:	41 32       	cpi	r20, 0x21	; 33
+  92:	56 07       	cpc	r21, r22
+  94:	71 f7       	brne	.-36     	; 0x72 <delayms+0x10>
+  96:	2f 5f       	subi	r18, 0xFF	; 255
+  98:	3f 4f       	sbci	r19, 0xFF	; 255
+  9a:	82 17       	cp	r24, r18
+  9c:	93 07       	cpc	r25, r19
+  9e:	38 f7       	brcc	.-50     	; 0x6e <delayms+0xc>
+  a0:	30 93 6c 00 	sts	0x006C, r19
+  a4:	20 93 6b 00 	sts	0x006B, r18
+  a8:	50 93 69 00 	sts	0x0069, r21
+  ac:	40 93 68 00 	sts	0x0068, r20
+  b0:	08 95       	ret
+
+000000b2 <delayus>:
+		  }
+		
+	 }
+}
+
+void delayus(unsigned int delaytime)
+{
+
+	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  b2:	10 92 6c 00 	sts	0x006C, r1
+  b6:	10 92 6b 00 	sts	0x006B, r1
+  ba:	20 e0       	ldi	r18, 0x00	; 0
+  bc:	30 e0       	ldi	r19, 0x00	; 0
+	...
+	 {
+		 
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		  asm("nop");asm("nop");asm("nop");asm("nop");
+  d2:	2f 5f       	subi	r18, 0xFF	; 255
+  d4:	3f 4f       	sbci	r19, 0xFF	; 255
+  d6:	82 17       	cp	r24, r18
+  d8:	93 07       	cpc	r25, r19
+  da:	88 f7       	brcc	.-30     	; 0xbe <delayus+0xc>
+  dc:	30 93 6c 00 	sts	0x006C, r19
+  e0:	20 93 6b 00 	sts	0x006B, r18
+  e4:	08 95       	ret
+
+000000e6 <__vector_6>:
+unsigned char d,imat;
+unsigned char dar[7];
+
+ISR (TIMER1_COMPA_vect) // void timer1_compA_isr(void)
+{
+  e6:	1f 92       	push	r1
+  e8:	0f 92       	push	r0
+  ea:	0f b6       	in	r0, 0x3f	; 63
+  ec:	0f 92       	push	r0
+  ee:	11 24       	eor	r1, r1
+  f0:	2f 93       	push	r18
+  f2:	3f 93       	push	r19
+  f4:	4f 93       	push	r20
+  f6:	5f 93       	push	r21
+  f8:	6f 93       	push	r22
+  fa:	7f 93       	push	r23
+  fc:	8f 93       	push	r24
+  fe:	9f 93       	push	r25
+ 100:	af 93       	push	r26
+ 102:	bf 93       	push	r27
+ 104:	ef 93       	push	r30
+ 106:	ff 93       	push	r31
+  PORTA=dar[imat]|imat;
+ 108:	80 91 67 00 	lds	r24, 0x0067
+ 10c:	e8 2f       	mov	r30, r24
+ 10e:	ff 27       	eor	r31, r31
+ 110:	e0 5a       	subi	r30, 0xA0	; 160
+ 112:	ff 4f       	sbci	r31, 0xFF	; 255
+ 114:	90 81       	ld	r25, Z
+ 116:	89 2b       	or	r24, r25
+ 118:	8b bb       	out	0x1b, r24	; 27
+   delayms(1);
+ 11a:	81 e0       	ldi	r24, 0x01	; 1
+ 11c:	90 e0       	ldi	r25, 0x00	; 0
+ 11e:	a1 df       	rcall	.-190    	; 0x62 <delayms>
+   if(imat>=6)
+ 120:	80 91 67 00 	lds	r24, 0x0067
+ 124:	86 30       	cpi	r24, 0x06	; 6
+ 126:	18 f0       	brcs	.+6      	; 0x12e <__vector_6+0x48>
+    imat=0;
+ 128:	10 92 67 00 	sts	0x0067, r1
+ 12c:	03 c0       	rjmp	.+6      	; 0x134 <__vector_6+0x4e>
+   else	
+	imat++;
+ 12e:	8f 5f       	subi	r24, 0xFF	; 255
+ 130:	80 93 67 00 	sts	0x0067, r24
+ 134:	ff 91       	pop	r31
+ 136:	ef 91       	pop	r30
+ 138:	bf 91       	pop	r27
+ 13a:	af 91       	pop	r26
+ 13c:	9f 91       	pop	r25
+ 13e:	8f 91       	pop	r24
+ 140:	7f 91       	pop	r23
+ 142:	6f 91       	pop	r22
+ 144:	5f 91       	pop	r21
+ 146:	4f 91       	pop	r20
+ 148:	3f 91       	pop	r19
+ 14a:	2f 91       	pop	r18
+ 14c:	0f 90       	pop	r0
+ 14e:	0f be       	out	0x3f, r0	; 63
+ 150:	0f 90       	pop	r0
+ 152:	1f 90       	pop	r1
+ 154:	18 95       	reti
+
+00000156 <A>:
+}
+
+void A() 
+ {
+  dar[0]=0x70;
+ 156:	80 e7       	ldi	r24, 0x70	; 112
+ 158:	80 93 60 00 	sts	0x0060, r24
+  dar[1]=0x88;
+ 15c:	98 e8       	ldi	r25, 0x88	; 136
+ 15e:	90 93 61 00 	sts	0x0061, r25
+  dar[2]=0x88;
+ 162:	90 93 62 00 	sts	0x0062, r25
+  dar[3]=0x88;
+ 166:	90 93 63 00 	sts	0x0063, r25
+  dar[4]=0xf8;
+ 16a:	88 ef       	ldi	r24, 0xF8	; 248
+ 16c:	80 93 64 00 	sts	0x0064, r24
+  dar[5]=0x88;
+ 170:	90 93 65 00 	sts	0x0065, r25
+  dar[6]=0x88;
+ 174:	90 93 66 00 	sts	0x0066, r25
+ 178:	08 95       	ret
+
+0000017a <B>:
+ }
+ 
+void B() 
+ {
+  dar[0]=0xf0;
+ 17a:	90 ef       	ldi	r25, 0xF0	; 240
+ 17c:	90 93 60 00 	sts	0x0060, r25
+  dar[1]=0x88;
+ 180:	88 e8       	ldi	r24, 0x88	; 136
+ 182:	80 93 61 00 	sts	0x0061, r24
+  dar[2]=0x88;
+ 186:	80 93 62 00 	sts	0x0062, r24
+  dar[3]=0xf0;
+ 18a:	90 93 63 00 	sts	0x0063, r25
+  dar[4]=0x88;
+ 18e:	80 93 64 00 	sts	0x0064, r24
+  dar[5]=0x88;
+ 192:	80 93 65 00 	sts	0x0065, r24
+  dar[6]=0xf0;
+ 196:	90 93 66 00 	sts	0x0066, r25
+ 19a:	08 95       	ret
+
+0000019c <C>:
+ }
+ 
+void C()
+ {
+  dar[0]=0x70;
+ 19c:	20 e7       	ldi	r18, 0x70	; 112
+ 19e:	20 93 60 00 	sts	0x0060, r18
+  dar[1]=0x88;
+ 1a2:	98 e8       	ldi	r25, 0x88	; 136
+ 1a4:	90 93 61 00 	sts	0x0061, r25
+  dar[2]=0x80;
+ 1a8:	80 e8       	ldi	r24, 0x80	; 128
+ 1aa:	80 93 62 00 	sts	0x0062, r24
+  dar[3]=0x80;
+ 1ae:	80 93 63 00 	sts	0x0063, r24
+  dar[4]=0x80;
+ 1b2:	80 93 64 00 	sts	0x0064, r24
+  dar[5]=0x88;
+ 1b6:	90 93 65 00 	sts	0x0065, r25
+  dar[6]=0x70;
+ 1ba:	20 93 66 00 	sts	0x0066, r18
+ 1be:	08 95       	ret
+
+000001c0 <D>:
+ }
+ 
+void D()
+ {
+  dar[0]=0xE0;
+ 1c0:	20 ee       	ldi	r18, 0xE0	; 224
+ 1c2:	20 93 60 00 	sts	0x0060, r18
+  dar[1]=0x90;
+ 1c6:	90 e9       	ldi	r25, 0x90	; 144
+ 1c8:	90 93 61 00 	sts	0x0061, r25
+  dar[2]=0x88;
+ 1cc:	88 e8       	ldi	r24, 0x88	; 136
+ 1ce:	80 93 62 00 	sts	0x0062, r24
+  dar[3]=0x88;
+ 1d2:	80 93 63 00 	sts	0x0063, r24
+  dar[4]=0x88;
+ 1d6:	80 93 64 00 	sts	0x0064, r24
+  dar[5]=0x90;
+ 1da:	90 93 65 00 	sts	0x0065, r25
+  dar[6]=0xE0;
+ 1de:	20 93 66 00 	sts	0x0066, r18
+ 1e2:	08 95       	ret
+
+000001e4 <E>:
+ } 
+ 
+void E()
+ {
+  dar[0]=0xF8;
+ 1e4:	98 ef       	ldi	r25, 0xF8	; 248
+ 1e6:	90 93 60 00 	sts	0x0060, r25
+  dar[1]=0x80;
+ 1ea:	80 e8       	ldi	r24, 0x80	; 128
+ 1ec:	80 93 61 00 	sts	0x0061, r24
+  dar[2]=0x80;
+ 1f0:	80 93 62 00 	sts	0x0062, r24
+  dar[3]=0xF8;
+ 1f4:	90 93 63 00 	sts	0x0063, r25
+  dar[4]=0x80;
+ 1f8:	80 93 64 00 	sts	0x0064, r24
+  dar[5]=0x80;
+ 1fc:	80 93 65 00 	sts	0x0065, r24
+  dar[6]=0xF8;
+ 200:	90 93 66 00 	sts	0x0066, r25
+ 204:	08 95       	ret
+
+00000206 <main>:
+ }  
+ 
+ 
+int main()
+{
+imat=0;
+ 206:	10 92 67 00 	sts	0x0067, r1
+TCCR1A=0x03;
+ 20a:	83 e0       	ldi	r24, 0x03	; 3
+ 20c:	8f bd       	out	0x2f, r24	; 47
+TCCR1B=0x1A;
+ 20e:	8a e1       	ldi	r24, 0x1A	; 26
+ 210:	8e bd       	out	0x2e, r24	; 46
+TCNT1H=0x00;
+ 212:	1d bc       	out	0x2d, r1	; 45
+TCNT1L=0x00;
+ 214:	1c bc       	out	0x2c, r1	; 44
+OCR1AH=0x07;
+ 216:	87 e0       	ldi	r24, 0x07	; 7
+ 218:	8b bd       	out	0x2b, r24	; 43
+OCR1AL=0xFF;
+ 21a:	8f ef       	ldi	r24, 0xFF	; 255
+ 21c:	8a bd       	out	0x2a, r24	; 42
+TIMSK=0x18;
+ 21e:	88 e1       	ldi	r24, 0x18	; 24
+ 220:	89 bf       	out	0x39, r24	; 57
+sei();
+ 222:	78 94       	sei
+
+ DDRA=0xff;
+ 224:	8f ef       	ldi	r24, 0xFF	; 255
+ 226:	8a bb       	out	0x1a, r24	; 26
+ PORTA=0x00;
+ 228:	1b ba       	out	0x1b, r1	; 27
+ d=100;
+ 22a:	84 e6       	ldi	r24, 0x64	; 100
+ 22c:	80 93 6a 00 	sts	0x006A, r24
+  dar[0]=0xF8;
+ 230:	88 ef       	ldi	r24, 0xF8	; 248
+ 232:	80 93 60 00 	sts	0x0060, r24
+  dar[1]=0xF8;
+ 236:	80 93 61 00 	sts	0x0061, r24
+  dar[2]=0xF8;
+ 23a:	80 93 62 00 	sts	0x0062, r24
+  dar[3]=0xF8;
+ 23e:	80 93 63 00 	sts	0x0063, r24
+  dar[4]=0xF8;
+ 242:	80 93 64 00 	sts	0x0064, r24
+  dar[5]=0xF8;
+ 246:	80 93 65 00 	sts	0x0065, r24
+  dar[6]=0xF8;
+ 24a:	80 93 66 00 	sts	0x0066, r24
+ 
+ while(1)
+  {
+A();
+ 24e:	83 df       	rcall	.-250    	; 0x156 <A>
+delayus(10);
+ 250:	8a e0       	ldi	r24, 0x0A	; 10
+ 252:	90 e0       	ldi	r25, 0x00	; 0
+ 254:	2e df       	rcall	.-420    	; 0xb2 <delayus>
+B();
+ 256:	91 df       	rcall	.-222    	; 0x17a <B>
+delayus(10);
+ 258:	8a e0       	ldi	r24, 0x0A	; 10
+ 25a:	90 e0       	ldi	r25, 0x00	; 0
+ 25c:	2a df       	rcall	.-428    	; 0xb2 <delayus>
+C();
+ 25e:	9e df       	rcall	.-196    	; 0x19c <C>
+delayus(10);
+ 260:	8a e0       	ldi	r24, 0x0A	; 10
+ 262:	90 e0       	ldi	r25, 0x00	; 0
+ 264:	26 df       	rcall	.-436    	; 0xb2 <delayus>
+D();
+ 266:	ac df       	rcall	.-168    	; 0x1c0 <D>
+delayus(10);
+ 268:	8a e0       	ldi	r24, 0x0A	; 10
+ 26a:	90 e0       	ldi	r25, 0x00	; 0
+ 26c:	22 df       	rcall	.-444    	; 0xb2 <delayus>
+E();
+ 26e:	ba df       	rcall	.-140    	; 0x1e4 <E>
+delayus(10);
+ 270:	8a e0       	ldi	r24, 0x0A	; 10
+ 272:	90 e0       	ldi	r25, 0x00	; 0
+ 274:	1e df       	rcall	.-452    	; 0xb2 <delayus>
+ 276:	eb cf       	rjmp	.-42     	; 0x24e <main+0x48>
+
+00000278 <_exit>:
+ 278:	ff cf       	rjmp	.-2      	; 0x278 <_exit>

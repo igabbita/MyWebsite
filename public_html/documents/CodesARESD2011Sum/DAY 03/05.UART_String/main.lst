@@ -1,0 +1,360 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  68               	.global	uart_init
+  70               	uart_init:
+  72               	.Ltext1:
+   1:uart.h        **** /*uart.h
+   2:uart.h        **** *******************************************************************************************
+   3:uart.h        **** COPYRIGHT(C)Technophilia Systems
+   4:uart.h        **** Date:...............31st May 2011
+   5:uart.h        **** Author:.............Prasanta Kumar Nayak
+   6:uart.h        **** Organization:.......Technophilia Syestems
+   7:uart.h        **** compiler:...........WinAVR
+   8:uart.h        **** 
+   9:uart.h        **** Description:
+  10:uart.h        **** 
+  11:uart.h        **** 	This header file enables uart communication feature between two devices.
+  12:uart.h        **** 	Include this header file in your C code. 
+  13:uart.h        **** 	Call the uart_init() function before calling any other functions to initialize the uart.
+  14:uart.h        **** 	
+  15:uart.h        **** Functions:
+  16:uart.h        **** 
+  17:uart.h        **** 	uart_init();	Call this function before calling any other functions to initialize 
+  18:uart.h        **** 					the uart communication.
+  19:uart.h        **** 	uart_char();  	This function will transmit a single character on the UART.
+  20:uart.h        **** 					For e.g. uart_char(0x61); will display A. 
+  21:uart.h        **** 					Again uart_char('b'); will display b.
+  22:uart.h        **** 	uart_string();	This function will display a string. 
+  23:uart.h        **** 					An e.g. of this would be like uart_string("This is AVR");
+  24:uart.h        **** 	uart_num();		This will show a 3-digit decimal value on the display
+  25:uart.h        **** 					For e.g. uart_num(35); will displkay 035
+  26:uart.h        **** 	uart_read();	This will show a 3-digit decimal value on the Display. 
+  27:uart.h        **** 					For e.g. if we give uart_read(x); then x value will be displayed.
+  28:uart.h        **** 
+  29:uart.h        **** *******************************************************************************************/
+  30:uart.h        **** 
+  31:uart.h        **** #ifndef _UART_H_
+  32:uart.h        **** #define _UART_H_
+  33:uart.h        **** 
+  34:uart.h        **** void uart_init()
+  35:uart.h        **** {
+  73               	logue end (size=0) */
+  75               	.LM1:
+  76               		out 43-0x20,__zero_reg__
+  36:uart.h        **** 	UCSRA=0x00;
+  77               	abn	68,0,37,.LM2-uart_init
+  78               	.LM2:
+  79 0000 1BB8      		ldi r24,lo8(24)
+  37:uart.h        **** 	UCSRB=0x18;
+  80               	t 42-0x20,r24
+  82 0002 88E1      	.LM3:
+  83 0004 8AB9      		ldi r24,lo8(-122)
+  38:uart.h        **** 	UCSRC=0x86;
+  84               	 64-0x20,r24
+  86 0006 86E8      	.LM4:
+  87 0008 80BD      		out 64-0x20,__zero_reg__
+  39:uart.h        **** 	UBRRH=0x00;
+  88               	abn	68,0,40,.LM5-uart_init
+  89               	.LM5:
+  90 000a 10BC      		ldi r24,lo8(103)
+  40:uart.h        **** 	UBRRL=0x67;
+  91               	t 41-0x20,r24
+  92               	/* epilogue: frame size=0 */
+  93 000c 87E6      		ret
+  94 000e 89B9      	/* epilogue end (size=1) */
+  95               	/* function uart_init size 9 (8) */
+  97               	.Lscope0:
+  99               	.global	uart_read
+ 101               	uart_read:
+ 103               	.LM6:
+ 104               	/* prologue: frame size=0 */
+  41:uart.h        **** }
+  42:uart.h        **** 
+  43:uart.h        **** void uart_char(unsigned char uchar)
+  44:uart.h        **** {
+  45:uart.h        **** 	UDR=uchar;
+  46:uart.h        **** 	while((UCSRA&0x40)==0x00);
+  47:uart.h        **** 	delayuart(1000);
+  48:uart.h        **** }
+  49:uart.h        ****  
+  50:uart.h        **** void uart_string(const unsigned char *ustring)
+  51:uart.h        **** {
+  52:uart.h        **** 	while ( *ustring )
+  53:uart.h        **** 	{
+  54:uart.h        **** 		UDR=*ustring++;
+  55:uart.h        **** 		while((UCSRA&0x40)==0x00);
+  56:uart.h        **** 		delayuart(1000);
+  57:uart.h        **** 	}
+  58:uart.h        **** }
+  59:uart.h        ****  
+  60:uart.h        **** void uart_num(unsigned char num)
+  61:uart.h        **** {
+  62:uart.h        ****     unsigned char H=0,T=0,O=0;
+  63:uart.h        **** 	H=num/100;
+  64:uart.h        **** 	T=(num - (H*100))/10;
+  65:uart.h        **** 	O=(num - (H*100) - (T*10));
+  66:uart.h        **** 	
+  67:uart.h        **** 	uart_char(H+48);
+  68:uart.h        **** 	uart_char(T+48);
+  69:uart.h        **** 	uart_char(O+48);	
+  70:uart.h        **** }
+  71:uart.h        ****  
+  72:uart.h        **** unsigned char uart_read()
+  73:uart.h        **** {
+ 105               	d (size=0) */
+ 106               	.L5:
+ 108               	.LM7:
+ 109               		sbis 43-0x20,7
+  74:uart.h        **** 	while((UCSRA&0x80)==0x00);
+ 110               	 .L5
+ 112 0012 5F9B      	.LM8:
+ 113 0014 00C0      		in r24,44-0x20
+  75:uart.h        **** 	return UDR;
+ 114               	abn	68,0,76,.LM9-uart_read
+ 115               	.LM9:
+ 116 0016 8CB1      		clr r25
+  76:uart.h        **** }
+ 117               	epilogue: frame size=0 */
+ 118               		ret
+ 119 0018 9927      	/* epilogue end (size=1) */
+ 120               	/* function uart_read size 5 (4) */
+ 122               	.Lscope1:
+ 125               	.global	delayuart
+ 127               	delayuart:
+ 129               	.LM10:
+ 130               	/* prologue: frame size=0 */
+  77:uart.h        ****  
+  78:uart.h        **** void delayuart(unsigned int delaytime)
+  79:uart.h        **** {
+ 131               	d (size=0) */
+ 132               		ldi r18,lo8(0)
+ 133               		ldi r19,hi8(0)
+ 134               	.L11:
+ 136 001e 30E0      	.LM11:
+ 137               	/* #APP */
+  80:uart.h        **** 	unsigned int dc;
+  81:uart.h        **** 	for(dc=0;dc<=delaytime;dc++)
+  82:uart.h        **** 	{
+  83:uart.h        **** 		asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 138               	function
+ 139               	delayuart:
+ 141 0020 0000      	.LM10:
+ 142 0022 0000      	/* prologue: frame size=0 */
+ 143 0024 0000      	/* prologue end (size=0) */
+ 144 0026 0000      		ldi r18,lo8(0)
+ 145 0028 0000      		ldi r19,hi8(0)
+ 146 002a 0000      	.L11:
+  84:uart.h        **** 		asm("nop");asm("nop");asm("nop");asm("nop");
+ 147               	0,4)",64,0,0,24
+ 148               	.global	delayuart
+ 150 002e 0000      	delayuart:
+ 152 0032 0000      	.LM10:
+ 153               	/* prologue: frame size=0 */
+ 154               	/* prologue end (size=0) */
+ 155               		ldi r18,lo8(0)
+ 156 0034 2F5F      		ldi r19,hi8(0)
+ 157 0036 3F4F      	.L11:
+ 159 003a 9307      	.LM11:
+ 160 003c 00F4      	/* #APP */
+ 161               		nop
+ 162 003e 0895      		nop
+ 163               		nop
+ 164               		nop
+ 165               		nop
+ 166               		nop
+ 168               	.LM12:
+ 169               		nop
+ 170               		nop
+ 171               		nop
+ 172               		nop
+ 174               	.LM13:
+ 175               	/* #NOAPP */
+ 176               		subi r18,lo8(-(1))
+ 177               		sbci r19,hi8(-(1))
+ 178 0040 CF93      		cp r24,r18
+ 179 0042 DF93      		cpc r25,r19
+ 180               		brsh .L11
+ 181 0044 EC01      	/* epilogue: frame size=0 */
+ 182 0046 00C0      		ret
+ 183               	/* epilogue end (size=1) */
+ 184               	/* function delayuart size 28 (27) */
+ 189               	.Lscope2:
+ 192               	.global	uart_string
+ 194 004e 2196      	uart_string:
+ 196               	.LM14:
+ 197 0050 88EE      	/* prologue: frame size=0 */
+ 198 0052 93E0      		push r28
+ 199 0054 00D0      		push r29
+ 200               	/* prologue end (size=2) */
+ 201               		movw r28,r24
+ 202               		rjmp .L17
+ 203 0056 8881      	.L18:
+ 205 005a 01F4      	.LM15:
+ 206               		out 44-0x20,r24
+ 207 005c DF91      	.L19:
+ 209 0060 0895      	.LM16:
+ 210               		sbis 43-0x20,6
+ 211               		rjmp .L19
+ 213               	.LM17:
+ 214               		adiw r28,1
+ 216               	.LM18:
+ 217               		ldi r24,lo8(1000)
+ 218               		ldi r25,hi8(1000)
+ 219               		rcall delayuart
+ 220               	.L17:
+ 222               	.LM19:
+ 223               		ld r24,Y
+ 224               		tst r24
+ 225 0062 8CB9      		brne .L18
+ 226               	/* epilogue: frame size=0 */
+ 227               		pop r29
+ 228               		pop r28
+ 229 0064 5E9B      		ret
+ 230 0066 00C0      	/* epilogue end (size=3) */
+ 231               	/* function uart_string size 17 (12) */
+ 233 0068 88EE      	.Lscope3:
+ 236               	.global	uart_char
+ 238               	uart_char:
+ 240               	.LM20:
+ 241               	/* prologue: frame size=0 */
+ 242               	/* prologue end (size=0) */
+ 244               	.LM21:
+ 245               		out 44-0x20,r24
+ 246               	.L26:
+ 248               	.LM22:
+ 249               		sbis 43-0x20,6
+ 250 0070 DF92      		rjmp .L26
+ 252 0074 FF92      	.LM23:
+ 253 0076 0F93      		ldi r24,lo8(1000)
+ 254 0078 1F93      		ldi r25,hi8(1000)
+ 255               		rcall delayuart
+ 256 007a D82E      	/* epilogue: frame size=0 */
+ 257               		ret
+ 258               	/* epilogue end (size=1) */
+ 259 007c 64E6      	/* function uart_char size 7 (6) */
+ 261 0080 282F      	.Lscope4:
+ 264 0082 84E6      	.global	uart_num
+ 266 0086 2E9D      	uart_num:
+ 268 008a 1124      	.LM24:
+ 269 008c 8D2D      	/* prologue: frame size=0 */
+ 270 008e 9927      		push r13
+ 271 0090 8E19      		push r14
+ 272 0092 9F09      		push r15
+ 273 0094 6AE0      		push r16
+ 274 0096 70E0      		push r17
+ 275 0098 00D0      	/* prologue end (size=5) */
+ 276 009a 8B01      		mov r13,r24
+ 278               	.LM25:
+ 279 009c 822F      		ldi r22,lo8(100)
+ 280 009e 805D      		rcall __udivmodqi4
+ 281 00a0 00D0      		mov r18,r24
+ 283               	.LM26:
+ 284 00a2 802F      		ldi r24,lo8(100)
+ 285 00a4 805D      		mov r14,r24
+ 286 00a6 00D0      		mul r18,r14
+ 287               		movw r14,r0
+ 288               		clr r1
+ 289 00a8 DE18      		mov r24,r13
+ 290 00aa 8AE0      		clr r25
+ 291 00ac 089F      		sub r24,r14
+ 292 00ae C001      		sbc r25,r15
+ 293 00b0 1124      		ldi r22,lo8(10)
+ 294 00b2 D81A      		ldi r23,hi8(10)
+ 295 00b4 8D2D      		rcall __divmodhi4
+ 296 00b6 805D      		movw r16,r22
+ 298               	.LM27:
+ 299 00ba 1F91      		mov r24,r18
+ 300 00bc 0F91      		subi r24,lo8(-(48))
+ 301 00be FF90      		rcall uart_char
+ 303 00c2 DF90      	.LM28:
+ 304 00c4 0895      		mov r24,r16
+ 305               		subi r24,lo8(-(48))
+ 306               		rcall uart_char
+ 308               	.LM29:
+ 309               		sub r13,r14
+ 310               		ldi r24,lo8(10)
+ 311               		mul r16,r24
+ 312               		movw r24,r0
+ 313               		clr r1
+ 314 0000 5465 6368 		sub r13,r24
+ 314      6E6F 7068 
+ 314      696C 6961 
+ 314      00
+ 315               		mov r24,r13
+ 316               		subi r24,lo8(-(48))
+ 317               		rcall uart_char
+ 318               	/* epilogue: frame size=0 */
+ 319               		pop r17
+ 320               		pop r16
+ 321               		pop r15
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE3.5: Program tosend a string through UART with header
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............31st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>		//This is the header file for AVR microcontroller
+  18:main.c        **** #include"uart.h"		//This is the header file for UART Communication
+  19:main.c        **** 
+  20:main.c        **** int main(void)
+  21:main.c        **** {
+ 322               	frame size=0 */
+ 323               		pop r17
+ 324               		pop r16
+ 325               		pop r15
+  22:main.c        **** 	uart_init();
+ 326               	frame size=0 */
+ 327               		pop r17
+ 328 00c6 00D0      		pop r16
+  23:main.c        **** 	uart_string("Technophilia"); // function to print a string of characters on the Uart
+ 329               	epilogue: frame size=0 */
+ 330               		pop r17
+ 331 00c8 80E0      		pop r16
+ 332 00ca 90E0      		pop r15
+ 333 00cc 00D0      		pop r14
+ 334               		pop r13
+ 335 00ce 00C0      		ret
+ 336               	/* epilogue end (size=6) */
+ 337               	/* function uart_num size 43 (32) */
+ 342               	.Lscope5:
+ 343               		.data
+ 344               	.LC0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:3      *ABS*:0000003f __SREG__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:4      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:5      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:70     .text:00000000 uart_init
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:104    .text:00000012 uart_read
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:130    .text:0000001c delayuart
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:174    .text:00000040 uart_string
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:218    .text:00000062 uart_char
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:246    .text:00000070 uart_num
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccR11ZW1.s:319    .text:000000c6 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__udivmodqi4
+__divmodhi4

@@ -1,0 +1,114 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  68               	.global	__vector_9
+  70               	__vector_9:
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE8.1: Program for Delay using Timer0
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>					// Header for AVR Microcontroller.
+  18:main.c        **** #include<avr/interrupt.h>
+  19:main.c        **** 
+  20:main.c        **** ISR (TIMER0_OVF_vect)				// Subroutine of Timer0 overflow interrupt
+  21:main.c        **** {
+  71               	sh __zero_reg__
+  72               		push __tmp_reg__
+  73               		in __tmp_reg__,__SREG__
+  74 0000 1F92      		push __tmp_reg__
+  75 0002 0F92      		clr __zero_reg__
+  76 0004 0FB6      		push r24
+  77 0006 0F92      		push r25
+  78 0008 1124      	/* prologue end (size=7) */
+  80 000c 9F93      	.LM1:
+  81               		in r24,53-0x20
+  22:main.c        **** 
+  23:main.c        **** 	PORTC^=0xF0; 
+  83               	.LM1:
+  84 000e 85B3      		in r24,53-0x20
+  85 0010 90EF      		ldi r25,lo8(-16)
+  86 0012 8927      		eor r24,r25
+  87 0014 85BB      		out 53-0x20,r24
+  88               	/* epilogue: frame size=0 */
+  89 0016 9F91      		pop r25
+  90 0018 8F91      		pop r24
+  91 001a 0F90      		pop __tmp_reg__
+  92 001c 0FBE      		out __SREG__,__tmp_reg__
+  93 001e 0F90      		pop __tmp_reg__
+  94 0020 1F90      		pop __zero_reg__
+  95 0022 1895      		reti
+  96               	/* epilogue end (size=7) */
+  97               	/* function __vector_9 size 18 (4) */
+  99               	.Lscope0:
+ 101               	.global	main
+ 103               	main:
+  24:main.c        **** }
+  25:main.c        **** 
+  26:main.c        **** 
+  27:main.c        **** int main(void)         
+  28:main.c        **** {
+ 104               		main
+ 106               	main:
+  29:main.c        **** 	
+  30:main.c        **** 	DDRC=0xF0;						// Port C data direction configuration as output port.
+ 108               	n
+ 109               	main:
+ 111 0026 84BB      	.LM2:
+  31:main.c        ****    
+  32:main.c        **** 	TIMSK=0x01;						//This is for interrupt enable for timer0.
+ 112               	
+ 114 0028 81E0      	.LM2:
+ 115 002a 89BF      	/* prologue: frame size=0 */
+  33:main.c        **** 	TCCR0=0x05;						//This is for timer0 initialization.
+ 116               	2:
+ 117               	/* prologue: frame size=0 */
+ 118 002c 85E0      	/* prologue end (size=0) */
+  34:main.c        **** 	TCNT0=0x00;
+ 120               	 */
+ 122 0030 12BE      	.LM3:
+  35:main.c        **** 	sei();
+ 123               	tabn	68,0,30,.LM3-main
+ 124               	.LM3:
+ 125               		ldi r24,lo8(-16)
+ 126 0032 7894      		out 52-0x20,r24
+ 128               	.LM4:
+ 129 0034 00C0      		ldi r24,lo8(1)
+ 130               		out 89-0x20,r24
+ 132               	.LM5:
+ 133               		ldi r24,lo8(5)
+ 134               		out 83-0x20,r24
+ 136               	.LM6:
+ 137               		out 82-0x20,__zero_reg__
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/ccjWZgSQ.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/ccjWZgSQ.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/ccjWZgSQ.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/ccjWZgSQ.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/ccjWZgSQ.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/ccjWZgSQ.s:70     .text:00000000 __vector_9
+C:\Users\User\AppData\Local\Temp/ccjWZgSQ.s:103    .text:00000024 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

@@ -1,0 +1,72 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  68               	.global	main
+  70               	main:
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE7: Program to turn ON Buzzer
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............31st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>		//This is the header for AVR Microcontroller.
+  18:main.c        **** 
+  19:main.c        **** int main(void)
+  20:main.c        ****  {	
+  71               	pe	main, @function
+  72               	main:
+  74               	.LM0:
+  21:main.c        **** 	PORTC=0X00;			// PortC initiallization as all bits low.
+  75               	8,0,20,.LM0-main
+  76               	.LM0:
+  77 0000 15BA      	/* prologue: frame size=0 */
+  22:main.c        **** 	DDRC=0X08;			// PortC data direction declaration as out put.
+  78               	ogue: frame size=0 */
+  79               	/* prologue end (size=0) */
+  81 0004 84BB      	.LM1:
+  82               		out 53-0x20,__zero_reg__
+  23:main.c        **** 	
+  24:main.c        **** 	while(1)			//This is for the the infinity loop.
+  25:main.c        **** 	{	
+  26:main.c        **** 		PORTC=0x08;     //Turn ON BZ connected on PC3
+  83               	0x20,__zero_reg__
+  85 0006 85BB      	.LM2:
+  86 0008 00C0      		ldi r24,lo8(8)
+  87               		out 52-0x20,r24
+  88               	.L2:
+  90               	.LM3:
+  91               		out 53-0x20,r24
+  92               		rjmp .L2
+  93               	/* epilogue: frame size=0 */
+  94               	/* epilogue: noreturn */
+  95               	/* epilogue end (size=0) */
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccaP0fCw.s:3      *ABS*:0000003f __SREG__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccaP0fCw.s:4      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccaP0fCw.s:5      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccaP0fCw.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccaP0fCw.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccaP0fCw.s:70     .text:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

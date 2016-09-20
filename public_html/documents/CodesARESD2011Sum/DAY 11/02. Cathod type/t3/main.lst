@@ -1,0 +1,605 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  69               	.global	delayms
+  71               	delayms:
+  73               	.Ltext1:
+   1:delay.h       **** /*	LCD.h
+   2:delay.h       **** Technophilia embedded systems
+   3:delay.h       **** 
+   4:delay.h       **** 	this header file provides time delay in the form of mili second and micro second
+   5:delay.h       **** 	without affecting any interrupts.
+   6:delay.h       **** 
+   7:delay.h       **** 	delayms()  this function provides delay in the form of mili second
+   8:delay.h       **** 	delayus()  this function provides delay in the form of micro second
+   9:delay.h       **** 	
+  10:delay.h       **** */
+  11:delay.h       **** #ifndef _DELAY_H_
+  12:delay.h       **** #define _DELAY_H_
+  13:delay.h       **** unsigned int delaycounter1,delaycounter2;
+  14:delay.h       **** void delayms(unsigned int delaytime)
+  15:delay.h       **** {
+  74               	ue end (size=0) */
+  76               	.LM1:
+  77               		sts (delaycounter1)+1,__zero_reg__
+  16:delay.h       **** 
+  17:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  78               	 delaycounter1,__zero_reg__
+  79               		ldi r18,lo8(0)
+  80 0000 1092 0000 		ldi r19,hi8(0)
+  81 0004 1092 0000 	.L2:
+  83 000a 30E0      	.LM2:
+  84               		ldi r20,lo8(0)
+  85               		ldi r21,hi8(0)
+  86               	.L3:
+  88 000e 50E0      	.LM3:
+  89               	/* #APP */
+  18:delay.h       **** 	 {
+  19:delay.h       **** 		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+  20:delay.h       **** 		  {
+  21:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  90               	op
+  91               		nop
+  92               		nop
+  93 0010 0000      		nop
+  95 0014 0000      	.LM4:
+  96 0016 0000      		nop
+  97 0018 0000      		nop
+  98 001a 0000      		nop
+  22:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  99               	
+ 100               		nop
+ 101 001c 0000      	/* #NOAPP */
+ 102 001e 0000      		subi r20,lo8(-(1))
+ 103 0020 0000      		sbci r21,hi8(-(1))
+ 105 0024 0000      	.LM5:
+ 106 0026 0000      		ldi r22,hi8(801)
+ 107               		cpi r20,lo8(801)
+ 108 0028 4F5F      		cpc r21,r22
+ 109 002a 5F4F      		brne .L3
+ 110               		subi r18,lo8(-(1))
+ 111               		sbci r19,hi8(-(1))
+ 113 002e 4132      	.LM6:
+ 114 0030 5607      		cp r24,r18
+ 115 0032 01F4      		cpc r25,r19
+ 116 0034 2F5F      		brsh .L2
+ 117 0036 3F4F      		sts (delaycounter1)+1,r19
+ 118               		sts delaycounter1,r18
+ 119               		sts (delaycounter2)+1,r21
+ 120 0038 8217      		sts delaycounter2,r20
+ 121 003a 9307      	/* epilogue: frame size=0 */
+ 122 003c 00F4      		ret
+ 123 003e 3093 0000 	/* epilogue end (size=1) */
+ 124 0042 2093 0000 	/* function delayms size 52 (51) */
+ 126 004a 4093 0000 	.Lscope0:
+ 129               	.global	delayus
+ 131               	delayus:
+ 133               	.LM7:
+ 134               	/* prologue: frame size=0 */
+ 135               	/* prologue end (size=0) */
+ 137               	.LM8:
+  23:delay.h       **** 		  }
+  24:delay.h       **** 		
+  25:delay.h       **** 	 }
+  26:delay.h       **** }
+  27:delay.h       **** 
+  28:delay.h       **** void delayus(unsigned int delaytime)
+  29:delay.h       **** {
+ 138               	ts delaycounter1,__zero_reg__
+ 139               		ldi r18,lo8(0)
+ 140               		ldi r19,hi8(0)
+ 141               	.L12:
+  30:delay.h       **** 
+  31:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+ 142               	abn	68,0,34,.LM9-delayus
+ 143               	.LM9:
+ 144 0050 1092 0000 	/* #APP */
+ 145 0054 1092 0000 		nop
+ 146 0058 20E0      		nop
+ 147 005a 30E0      		nop
+ 148               		nop
+  32:delay.h       **** 	 {
+  33:delay.h       **** 		 
+  34:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 149               	op
+ 151               	.LM10:
+ 152 005c 0000      		nop
+ 153 005e 0000      		nop
+ 154 0060 0000      		nop
+ 155 0062 0000      		nop
+ 156 0064 0000      	/* #NOAPP */
+ 157 0066 0000      		subi r18,lo8(-(1))
+  35:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 158               	,hi8(-(1))
+ 160 0068 0000      	.LM11:
+ 161 006a 0000      		cp r24,r18
+ 162 006c 0000      		cpc r25,r19
+ 163 006e 0000      		brsh .L12
+ 164               		sts (delaycounter1)+1,r19
+ 165 0070 2F5F      		sts delaycounter1,r18
+ 166 0072 3F4F      	/* epilogue: frame size=0 */
+ 167               		ret
+ 168               	/* epilogue end (size=1) */
+ 169 0074 8217      	/* function delayus size 36 (35) */
+ 171 0078 00F4      	.Lscope1:
+ 173 007e 2093 0000 	.global	__vector_6
+ 175 0082 0895      	__vector_6:
+ 177               	.Ltext2:
+ 179               	.LM12:
+ 180               	/* prologue: frame size=0 */
+ 181               		push __zero_reg__
+ 182               		push __tmp_reg__
+ 183               		in __tmp_reg__,__SREG__
+ 184               		push __tmp_reg__
+ 185               		clr __zero_reg__
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE11: Cathode type: Program for display Alphabets on matrix LED 
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** #include<avr/io.h>
+  17:main.c        **** #include<avr/interrupt.h>
+  18:main.c        **** #include"delay.h"
+  19:main.c        **** 
+  20:main.c        **** unsigned char d,imat;
+  21:main.c        **** unsigned char dar[7];
+  22:main.c        **** 
+  23:main.c        **** ISR (TIMER1_COMPA_vect) // void timer1_compA_isr(void)
+  24:main.c        **** {
+ 186               	0
+ 187               		push r21
+ 188               		push r22
+ 189 0084 1F92      		push r23
+ 190 0086 0F92      		push r24
+ 191 0088 0FB6      		push r25
+ 192 008a 0F92      		push r26
+ 193 008c 1124      		push r27
+ 194 008e 2F93      		push r30
+ 195 0090 3F93      		push r31
+ 196 0092 4F93      	/* prologue end (size=17) */
+ 198 0096 6F93      	.LM13:
+ 199 0098 7F93      		lds r24,imat
+ 200 009a 8F93      		mov r30,r24
+ 201 009c 9F93      		clr r31
+ 202 009e AF93      		subi r30,lo8(-(dar))
+ 203 00a0 BF93      		sbci r31,hi8(-(dar))
+ 204 00a2 EF93      		ld r25,Z
+ 205 00a4 FF93      		or r24,r25
+ 206               		out 59-0x20,r24
+  25:main.c        ****   PORTA=dar[imat]|imat;
+ 207               	-__vector_6
+ 208               	.LM14:
+ 209 00a6 8091 0000 		ldi r24,lo8(1)
+ 210 00aa E82F      		ldi r25,hi8(1)
+ 211 00ac FF27      		rcall delayms
+ 213 00b0 F040      	.LM15:
+ 214 00b2 9081      		lds r24,imat
+ 215 00b4 892B      		cpi r24,lo8(6)
+ 216 00b6 8BBB      		brlo .L18
+  26:main.c        ****    delayms(1);
+ 217               	,0,28,.LM16-__vector_6
+ 218               	.LM16:
+ 219 00b8 81E0      		sts imat,__zero_reg__
+ 220 00ba 90E0      		rjmp .L21
+ 221 00bc 00D0      	.L18:
+  27:main.c        ****    if(imat>=6)
+ 222               	bn	68,0,30,.LM17-__vector_6
+ 223               	.LM17:
+ 224 00be 8091 0000 		subi r24,lo8(-(1))
+ 225 00c2 8630      		sts imat,r24
+ 226 00c4 00F0      	.L21:
+  28:main.c        ****     imat=0;
+ 227               	ilogue: frame size=0 */
+ 228               		pop r31
+ 229 00c6 1092 0000 		pop r30
+ 230 00ca 00C0      		pop r27
+ 231               		pop r26
+  29:main.c        ****    else	
+  30:main.c        **** 	imat++;
+ 232               	r25
+ 233               		pop r24
+ 234 00cc 8F5F      		pop r23
+ 235 00ce 8093 0000 		pop r22
+ 236               		pop r21
+ 237               		pop r20
+ 238 00d2 FF91      		pop r19
+ 239 00d4 EF91      		pop r18
+ 240 00d6 BF91      		pop __tmp_reg__
+ 241 00d8 AF91      		out __SREG__,__tmp_reg__
+ 242 00da 9F91      		pop __tmp_reg__
+ 243 00dc 8F91      		pop __zero_reg__
+ 244 00de 7F91      		reti
+ 245 00e0 6F91      	/* epilogue end (size=17) */
+ 246 00e2 5F91      	/* function __vector_6 size 56 (22) */
+ 248 00e6 3F91      	.Lscope2:
+ 250 00ea 0F90      	.global	A
+ 252 00ee 0F90      	A:
+ 254 00f2 1895      	.LM18:
+ 255               	/* prologue: frame size=0 */
+ 256               	/* prologue end (size=0) */
+ 258               	.LM19:
+ 259               		ldi r24,lo8(112)
+ 260               		sts dar,r24
+ 262               	.LM20:
+  31:main.c        **** }
+  32:main.c        **** 
+  33:main.c        **** void A() 
+  34:main.c        ****  {
+ 263               	25
+ 265               	.LM21:
+ 266               		sts dar+2,r25
+  35:main.c        ****   dar[0]=0x70;
+ 267               	abn	68,0,38,.LM22-A
+ 268               	.LM22:
+ 269 00f4 80E7      		sts dar+3,r25
+  36:main.c        ****   dar[1]=0x88;
+ 271               	3:
+ 272               		ldi r24,lo8(-8)
+ 273 00fa 98E8      		sts dar+4,r24
+  37:main.c        ****   dar[2]=0x88;
+ 275               	4:
+ 276               		sts dar+5,r25
+  38:main.c        ****   dar[3]=0x88;
+ 278               	25:
+ 279               		sts dar+6,r25
+ 280 0104 9093 0000 	/* epilogue: frame size=0 */
+  39:main.c        ****   dar[4]=0xf8;
+ 281               	t
+ 282               	/* epilogue end (size=1) */
+ 283 0108 88EF      	/* function A size 18 (17) */
+  40:main.c        ****   dar[5]=0x88;
+ 285               	ope3:
+ 287 010e 9093 0000 	.global	B
+  41:main.c        ****   dar[6]=0x88;
+ 288               	ype	B, @function
+ 289               	B:
+ 291               	.LM26:
+ 292 0116 0895      	/* prologue: frame size=0 */
+ 293               	/* prologue end (size=0) */
+ 295               	.LM27:
+ 296               		ldi r25,lo8(-16)
+ 297               		sts dar,r25
+ 299               	.LM28:
+ 300               		ldi r24,lo8(-120)
+  42:main.c        ****  }
+  43:main.c        ****  
+  44:main.c        **** void B() 
+  45:main.c        ****  {
+ 301               	4
+ 303               	.LM29:
+ 304               		sts dar+2,r24
+  46:main.c        ****   dar[0]=0xf0;
+ 305               	abn	68,0,49,.LM30-B
+ 306               	.LM30:
+ 307 0118 90EF      		sts dar+3,r25
+  47:main.c        ****   dar[1]=0x88;
+ 309               	1:
+ 310               		sts dar+4,r24
+ 312 0120 8093 0000 	.LM32:
+  48:main.c        ****   dar[2]=0x88;
+ 313               	 dar+5,r24
+ 315 0124 8093 0000 	.LM33:
+  49:main.c        ****   dar[3]=0xf0;
+ 316               	s dar+6,r25
+ 317               	/* epilogue: frame size=0 */
+ 318 0128 9093 0000 		ret
+  50:main.c        ****   dar[4]=0x88;
+ 319               	epilogue end (size=1) */
+ 320               	/* function B size 17 (16) */
+  51:main.c        ****   dar[5]=0x88;
+ 322               	cope4:
+ 324 0130 8093 0000 	.global	C
+  52:main.c        ****   dar[6]=0xf0;
+ 325               	ype	C, @function
+ 326               	C:
+ 328               	.LM34:
+ 329 0138 0895      	/* prologue: frame size=0 */
+ 330               	/* prologue end (size=0) */
+ 332               	.LM35:
+ 333               		ldi r18,lo8(112)
+ 334               		sts dar,r18
+ 336               	.LM36:
+ 337               		ldi r25,lo8(-120)
+  53:main.c        ****  }
+  54:main.c        ****  
+  55:main.c        **** void C()
+  56:main.c        ****  {
+ 338               	5
+ 340               	.LM37:
+ 341               		ldi r24,lo8(-128)
+  57:main.c        ****   dar[0]=0x70;
+ 342               	 dar+2,r24
+ 344 013a 20E7      	.LM38:
+ 345 013c 2093 0000 		sts dar+3,r24
+  58:main.c        ****   dar[1]=0x88;
+ 346               	abn	68,0,61,.LM39-C
+ 347               	.LM39:
+ 348 0140 98E8      		sts dar+4,r24
+  59:main.c        ****   dar[2]=0x80;
+ 350               	.LM36:
+ 351               		ldi r25,lo8(-120)
+ 352 0146 80E8      		sts dar+1,r25
+  60:main.c        ****   dar[3]=0x80;
+ 354               	7:
+ 355               		ldi r24,lo8(-128)
+ 356 014c 8093 0000 		sts dar+2,r24
+  61:main.c        ****   dar[4]=0x80;
+ 357               	tabn	68,0,60,.LM38-C
+ 358               	.LM38:
+ 359 0150 8093 0000 		sts dar+3,r24
+  62:main.c        ****   dar[5]=0x88;
+ 360               	,57,.LM35-C
+ 361               	.LM35:
+ 362 0154 9093 0000 		ldi r18,lo8(112)
+  63:main.c        ****   dar[6]=0x70;
+ 363               	s dar,r18
+ 365 0158 2093 0000 	.LM36:
+ 366               		ldi r25,lo8(-120)
+ 367 015c 0895      		sts dar+1,r25
+ 369               	.LM37:
+ 370               		ldi r24,lo8(-128)
+ 371               		sts dar+2,r24
+ 373               	.LM38:
+ 374               		sts dar+3,r24
+  64:main.c        ****  }
+  65:main.c        ****  
+  66:main.c        **** void D()
+  67:main.c        ****  {
+ 376               	ar+4,r24
+ 378               	.LM40:
+ 379               		sts dar+5,r25
+  68:main.c        ****   dar[0]=0xE0;
+ 380               	)
+ 381               		sts dar+1,r25
+ 383 0160 2093 0000 	.LM37:
+  69:main.c        ****   dar[1]=0x90;
+ 384               	 r24,lo8(-128)
+ 385               		sts dar+2,r24
+ 387 0166 9093 0000 	.LM38:
+  70:main.c        ****   dar[2]=0x88;
+ 388               	 dar+3,r24
+ 390 016a 88E8      	.LM39:
+ 391 016c 8093 0000 		sts dar+4,r24
+  71:main.c        ****   dar[3]=0x88;
+ 392               	
+ 394 0170 8093 0000 	.LM36:
+  72:main.c        ****   dar[4]=0x88;
+ 395               	di r25,lo8(-120)
+ 396               		sts dar+1,r25
+  73:main.c        ****   dar[5]=0x90;
+ 398               	37:
+ 399               		ldi r24,lo8(-128)
+ 400 0178 9093 0000 		sts dar+2,r24
+  74:main.c        ****   dar[6]=0xE0;
+ 401               	tabn	68,0,60,.LM38-C
+ 402               	.LM38:
+ 403 017c 2093 0000 		sts dar+3,r24
+ 405 0180 0895      	.LM39:
+ 406               		sts dar+4,r24
+ 408               	.LM40:
+ 409               		sts dar+5,r25
+ 411               	.LM41:
+ 412               		sts dar+6,r18
+ 413               	/* epilogue: frame size=0 */
+  75:main.c        ****  } 
+  76:main.c        ****  
+  77:main.c        **** void E()
+  78:main.c        ****  {
+ 414               	24
+ 416               	.LM38:
+ 417               		sts dar+3,r24
+  79:main.c        ****   dar[0]=0xF8;
+ 418               	,57,.LM35-C
+ 419               	.LM35:
+ 420 0182 98EF      		ldi r18,lo8(112)
+ 421 0184 9093 0000 		sts dar,r18
+  80:main.c        ****   dar[1]=0x80;
+ 422               	abn	68,0,58,.LM36-C
+ 423               	.LM36:
+ 424 0188 80E8      		ldi r25,lo8(-120)
+ 425 018a 8093 0000 		sts dar+1,r25
+  81:main.c        ****   dar[2]=0x80;
+ 426               	abn	68,0,59,.LM37-C
+ 427               	.LM37:
+ 428 018e 8093 0000 		ldi r24,lo8(-128)
+  82:main.c        ****   dar[3]=0xF8;
+ 429               	s dar+2,r24
+ 431 0192 9093 0000 	.LM38:
+  83:main.c        ****   dar[4]=0x80;
+ 432               	s dar+3,r24
+ 434 0196 8093 0000 	.LM39:
+  84:main.c        ****   dar[5]=0x80;
+ 435               	12)
+ 436               		sts dar,r18
+  85:main.c        ****   dar[6]=0xF8;
+ 438               	36:
+ 439               		ldi r25,lo8(-120)
+ 440 019e 9093 0000 		sts dar+1,r25
+ 442 01a2 0895      	.LM37:
+ 443               		ldi r24,lo8(-128)
+ 444               		sts dar+2,r24
+ 446               	.LM38:
+ 447               		sts dar+3,r24
+ 449               	.LM39:
+ 450               		sts dar+4,r24
+  86:main.c        ****  }  
+  87:main.c        ****  
+  88:main.c        ****  
+  89:main.c        **** int main()
+  90:main.c        **** {
+ 451               	62,.LM40-C
+ 452               	.LM40:
+ 453               		sts dar+5,r25
+  91:main.c        **** imat=0;
+ 455               	68,0,59,.LM37-C
+ 456               	.LM37:
+ 457 01a4 1092 0000 		ldi r24,lo8(-128)
+  92:main.c        **** TCCR1A=0x03;
+ 458               	s dar+2,r24
+ 460 01a8 83E0      	.LM38:
+ 461 01aa 8FBD      		sts dar+3,r24
+  93:main.c        **** TCCR1B=0x1A;
+ 462               	abn	68,0,61,.LM39-C
+ 463               	.LM39:
+ 464 01ac 8AE1      		sts dar+4,r24
+  94:main.c        **** TCNT1H=0x00;
+ 466               	.LM36:
+ 467               		ldi r25,lo8(-120)
+ 468 01b0 1DBC      		sts dar+1,r25
+  95:main.c        **** TCNT1L=0x00;
+ 469               	tabn	68,0,59,.LM37-C
+ 470               	.LM37:
+ 471 01b2 1CBC      		ldi r24,lo8(-128)
+  96:main.c        **** OCR1AH=0x07;
+ 472               	s dar+2,r24
+ 474 01b4 87E0      	.LM38:
+ 475 01b6 8BBD      		sts dar+3,r24
+  97:main.c        **** OCR1AL=0xFF;
+ 476               	abn	68,0,61,.LM39-C
+ 477               	.LM39:
+ 478 01b8 8FEF      		sts dar+4,r24
+  98:main.c        **** TIMSK=0x18;
+ 480               	.LM36:
+ 481               		ldi r25,lo8(-120)
+ 482 01bc 88E1      		sts dar+1,r25
+  99:main.c        **** sei();
+ 484               	7:
+ 485               		ldi r24,lo8(-128)
+ 486               		sts dar+2,r24
+ 100:main.c        **** 
+ 101:main.c        ****  DDRA=0xff;
+ 488               	8:
+ 489               		sts dar+3,r24
+ 491 01c2 8FEF      	.LM39:
+ 492 01c4 8ABB      		sts dar+4,r24
+ 102:main.c        ****  PORTA=0x00;
+ 493               	
+ 495 01c6 1BBA      	.LM36:
+ 103:main.c        ****  d=100;
+ 496               	di r25,lo8(-120)
+ 497               		sts dar+1,r25
+ 499 01ca 8093 0000 	.LM37:
+ 104:main.c        ****   dar[0]=0xF8;
+ 500               	 r24,lo8(-128)
+ 501               		sts dar+2,r24
+ 503 01d0 8093 0000 	.LM38:
+ 105:main.c        ****   dar[1]=0xF8;
+ 504               	 dar+3,r24
+ 506 01d4 8093 0000 	.LM39:
+ 106:main.c        ****   dar[2]=0xF8;
+ 507               	12)
+ 508               		sts dar,r18
+ 107:main.c        ****   dar[3]=0xF8;
+ 510               	36:
+ 511               		ldi r25,lo8(-120)
+ 512 01dc 8093 0000 		sts dar+1,r25
+ 108:main.c        ****   dar[4]=0xF8;
+ 513               	tabn	68,0,59,.LM37-C
+ 514               	.LM37:
+ 515 01e0 8093 0000 		ldi r24,lo8(-128)
+ 109:main.c        ****   dar[5]=0xF8;
+ 516               	s dar+2,r24
+ 518 01e4 8093 0000 	.LM38:
+ 110:main.c        ****   dar[6]=0xF8;
+ 519               	s dar+3,r24
+ 521 01e8 8093 0000 	.LM39:
+ 522               		sts dar+4,r24
+ 111:main.c        ****  
+ 112:main.c        ****  while(1)
+ 113:main.c        ****   {
+ 114:main.c        **** A();
+ 523               	
+ 525 01ec 00D0      	.LM36:
+ 115:main.c        **** delayus(10);
+ 526               	di r25,lo8(-120)
+ 527               		sts dar+1,r25
+ 529 01f0 90E0      	.LM37:
+ 530 01f2 00D0      		ldi r24,lo8(-128)
+ 116:main.c        **** B();
+ 531               	dar+2,r24
+ 533 01f4 00D0      	.LM38:
+ 117:main.c        **** delayus(10);
+ 534               	s dar+3,r24
+ 536 01f6 8AE0      	.LM39:
+ 537 01f8 90E0      		sts dar+4,r24
+ 118:main.c        **** C();
+ 539               	.LM36:
+ 540               		ldi r25,lo8(-120)
+ 541 01fc 00D0      		sts dar+1,r25
+ 119:main.c        **** delayus(10);
+ 542               	tabn	68,0,59,.LM37-C
+ 543               	.LM37:
+ 544 01fe 8AE0      		ldi r24,lo8(-128)
+ 545 0200 90E0      		sts dar+2,r24
+ 120:main.c        **** D();
+ 547               	:
+ 548               		sts dar+3,r24
+ 121:main.c        **** delayus(10);
+ 550               	18,lo8(112)
+ 551               		sts dar,r18
+ 553 0208 90E0      	.LM36:
+ 554 020a 00D0      		ldi r25,lo8(-120)
+ 122:main.c        **** E();
+ 555               	dar+1,r25
+ 557 020c 00D0      	.LM37:
+ 123:main.c        **** delayus(10);
+ 558               	i r24,lo8(-128)
+ 559               		sts dar+2,r24
+ 561 0210 90E0      	.LM38:
+ 562 0212 00D0      		sts dar+3,r24
+ 564               	.LM39:
+ 565               		sts dar+4,r24
+ 567               	.LM40:
+ 568               		sts dar+5,r25
+ 570               	.LM41:
+ 571               		sts dar+6,r18
+ 572               	/* epilogue: frame size=0 */
+ 573               		ret
+ 574               	/* epilogue end (size=1) */
+ 575               	/* function C size 18 (17) */
+ 577               	.Lscope5:
+ 579               	.global	D
+ 581               	D:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:71     .text:00000000 delayms
+                            *COM*:00000002 delaycounter1
+                            *COM*:00000002 delaycounter2
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:137    .text:00000050 delayus
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:183    .text:00000084 __vector_6
+                            *COM*:00000001 imat
+                            *COM*:00000007 dar
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:262    .text:000000f4 A
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:300    .text:00000118 B
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:337    .text:0000013a C
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:375    .text:0000015e D
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:413    .text:00000182 E
+C:\Users\User\AppData\Local\Temp/ccyUeTo2.s:450    .text:000001a4 main
+                            *COM*:00000001 d
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

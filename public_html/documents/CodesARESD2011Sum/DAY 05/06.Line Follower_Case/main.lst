@@ -1,0 +1,114 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  68               	.global	main
+  70               	main:
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE5.6: Program for Line Follower using Switch case
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>
+  18:main.c        **** 
+  19:main.c        **** int main(void)
+  20:main.c        **** {
+  71               	(0,1)",36,0,0,main
+  72               	.global	main
+  74               	main:
+  21:main.c        ****   DDRA=0X00;					// Initialization of PORTA as input
+  75               	(0,1)",36,0,0,main
+  76               	.global	main
+  22:main.c        ****   PORTA=0XFF;
+  78               	"main:F(0,1)",36,0,0,main
+  79               	.global	main
+  81 0004 8BBB      	main:
+  23:main.c        ****   
+  24:main.c        ****   DDRD=0XF0;					// Initailization of PORTD as output
+  82               	(0,1)",36,0,0,main
+  83               	.global	main
+  85 0008 81BB      	main:
+  25:main.c        ****   PORTD=0X00;
+  86               	(0,1)",36,0,0,main
+  87               	.global	main
+  89 000c 40E4      	main:
+  91 0010 20E5      	.LM0:
+  92               	/* prologue: frame size=0 */
+  26:main.c        ****   
+  27:main.c        ****   while(1)
+  28:main.c        ****   {
+  29:main.c        **** 	switch(PINA&0x03)			// Checking the status of PA0 and PA1 
+  93               	tabn	68,0,20,.LM0-main
+  94               	.LM0:
+  95 0012 89B3      	/* prologue: frame size=0 */
+  96 0014 9927      	/* prologue end (size=0) */
+  98 0018 9070      	.LM1:
+  99 001a 8130      		out 58-0x20,__zero_reg__
+ 101 001e 01F0      	.LM2:
+ 102 0020 8230      		ldi r24,lo8(-1)
+ 103 0022 9105      		out 59-0x20,r24
+ 105 0026 892B      	.LM3:
+ 106 0028 01F0      		ldi r24,lo8(-16)
+ 107 002a 00C0      		out 49-0x20,r24
+  30:main.c        **** 	{
+  31:main.c        **** 	 case 0x01:					// Right Sensor sensing the Black line
+  32:main.c        **** 	 PORTD=0X40;				// Turn right
+ 109               	)
+ 110               		out 49-0x20,r24
+ 112 002e 00C0      	.LM4:
+ 113               		out 50-0x20,__zero_reg__
+  33:main.c        **** 	 break;
+  34:main.c        **** 	 
+  35:main.c        **** 	 case 0x02:					// Left Sensor sensing the Black line
+  36:main.c        **** 	 PORTD=0X10;				// Turn left
+ 114               	,.LM4-main
+ 115               	.LM4:
+ 116 0030 32BB      		out 50-0x20,__zero_reg__
+ 117 0032 00C0      		ldi r20,lo8(64)
+ 118               		ldi r19,lo8(16)
+  37:main.c        **** 	 break;
+  38:main.c        **** 	 
+  39:main.c        **** 	 case 0x00:					// Both sensors are sensing white surface
+  40:main.c        **** 	 PORTD=0X50;				// Move forward
+ 119               	_reg__
+ 120               		ldi r20,lo8(64)
+ 121 0034 22BB      		ldi r19,lo8(16)
+ 122 0036 00C0      		ldi r18,lo8(80)
+ 123               	.L12:
+ 125               	.LM5:
+ 126               		in r24,57-0x20
+ 127               		clr r25
+ 128               		andi r24,lo8(3)
+ 129               		andi r25,hi8(3)
+ 130               		cpi r24,1
+ 131               		cpc r25,__zero_reg__
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/cczJXeKR.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/cczJXeKR.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/cczJXeKR.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/cczJXeKR.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/cczJXeKR.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/cczJXeKR.s:70     .text:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

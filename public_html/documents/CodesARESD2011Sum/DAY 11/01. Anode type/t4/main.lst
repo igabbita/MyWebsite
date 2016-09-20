@@ -1,0 +1,1163 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  69               	.global	delayms
+  71               	delayms:
+  73               	.Ltext1:
+   1:delay.h       **** /*	LCD.h
+   2:delay.h       **** Technophilia embedded systems
+   3:delay.h       **** 
+   4:delay.h       **** 	this header file provides time delay in the form of mili second and micro second
+   5:delay.h       **** 	without affecting any interrupts.
+   6:delay.h       **** 
+   7:delay.h       **** 	delayms()  this function provides delay in the form of mili second
+   8:delay.h       **** 	delayus()  this function provides delay in the form of micro second
+   9:delay.h       **** 	
+  10:delay.h       **** */
+  11:delay.h       **** #ifndef _DELAY_H_
+  12:delay.h       **** #define _DELAY_H_
+  13:delay.h       **** unsigned int delaycounter1,delaycounter2;
+  14:delay.h       **** void delayms(unsigned int delaytime)
+  15:delay.h       **** {
+  74               	ue end (size=0) */
+  76               	.LM1:
+  77               		sts (delaycounter1)+1,__zero_reg__
+  16:delay.h       **** 
+  17:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  78               	 delaycounter1,__zero_reg__
+  79               		ldi r18,lo8(0)
+  80 0000 1092 0000 		ldi r19,hi8(0)
+  81 0004 1092 0000 	.L2:
+  83 000a 30E0      	.LM2:
+  84               		ldi r20,lo8(0)
+  85               		ldi r21,hi8(0)
+  86               	.L3:
+  88 000e 50E0      	.LM3:
+  89               	/* #APP */
+  18:delay.h       **** 	 {
+  19:delay.h       **** 		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+  20:delay.h       **** 		  {
+  21:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  90               	op
+  91               		nop
+  92               		nop
+  93 0010 0000      		nop
+  95 0014 0000      	.LM4:
+  96 0016 0000      		nop
+  97 0018 0000      		nop
+  98 001a 0000      		nop
+  22:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  99               	
+ 100               		nop
+ 101 001c 0000      	/* #NOAPP */
+ 102 001e 0000      		subi r20,lo8(-(1))
+ 103 0020 0000      		sbci r21,hi8(-(1))
+ 105 0024 0000      	.LM5:
+ 106 0026 0000      		ldi r22,hi8(801)
+ 107               		cpi r20,lo8(801)
+ 108 0028 4F5F      		cpc r21,r22
+ 109 002a 5F4F      		brne .L3
+ 110               		subi r18,lo8(-(1))
+ 111               		sbci r19,hi8(-(1))
+ 113 002e 4132      	.LM6:
+ 114 0030 5607      		cp r24,r18
+ 115 0032 01F4      		cpc r25,r19
+ 116 0034 2F5F      		brsh .L2
+ 117 0036 3F4F      		sts (delaycounter1)+1,r19
+ 118               		sts delaycounter1,r18
+ 119               		sts (delaycounter2)+1,r21
+ 120 0038 8217      		sts delaycounter2,r20
+ 121 003a 9307      	/* epilogue: frame size=0 */
+ 122 003c 00F4      		ret
+ 123 003e 3093 0000 	/* epilogue end (size=1) */
+ 124 0042 2093 0000 	/* function delayms size 52 (51) */
+ 126 004a 4093 0000 	.Lscope0:
+ 129               	.global	delayus
+ 131               	delayus:
+ 133               	.LM7:
+ 134               	/* prologue: frame size=0 */
+ 135               	/* prologue end (size=0) */
+ 137               	.LM8:
+  23:delay.h       **** 		  }
+  24:delay.h       **** 		
+  25:delay.h       **** 	 }
+  26:delay.h       **** }
+  27:delay.h       **** 
+  28:delay.h       **** void delayus(unsigned int delaytime)
+  29:delay.h       **** {
+ 138               	ts delaycounter1,__zero_reg__
+ 139               		ldi r18,lo8(0)
+ 140               		ldi r19,hi8(0)
+ 141               	.L12:
+  30:delay.h       **** 
+  31:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+ 142               	abn	68,0,34,.LM9-delayus
+ 143               	.LM9:
+ 144 0050 1092 0000 	/* #APP */
+ 145 0054 1092 0000 		nop
+ 146 0058 20E0      		nop
+ 147 005a 30E0      		nop
+ 148               		nop
+  32:delay.h       **** 	 {
+  33:delay.h       **** 		 
+  34:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 149               	op
+ 151               	.LM10:
+ 152 005c 0000      		nop
+ 153 005e 0000      		nop
+ 154 0060 0000      		nop
+ 155 0062 0000      		nop
+ 156 0064 0000      	/* #NOAPP */
+ 157 0066 0000      		subi r18,lo8(-(1))
+  35:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 158               	,hi8(-(1))
+ 160 0068 0000      	.LM11:
+ 161 006a 0000      		cp r24,r18
+ 162 006c 0000      		cpc r25,r19
+ 163 006e 0000      		brsh .L12
+ 164               		sts (delaycounter1)+1,r19
+ 165 0070 2F5F      		sts delaycounter1,r18
+ 166 0072 3F4F      	/* epilogue: frame size=0 */
+ 167               		ret
+ 168               	/* epilogue end (size=1) */
+ 169 0074 8217      	/* function delayus size 36 (35) */
+ 171 0078 00F4      	.Lscope1:
+ 173 007e 2093 0000 	.global	__vector_6
+ 175 0082 0895      	__vector_6:
+ 177               	.Ltext2:
+ 179               	.LM12:
+ 180               	/* prologue: frame size=0 */
+ 181               		push __zero_reg__
+ 182               		push __tmp_reg__
+ 183               		in __tmp_reg__,__SREG__
+ 184               		push __tmp_reg__
+ 185               		clr __zero_reg__
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE11: Anode type: Program for display scrolling Alphabets on matrix LED 
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** #include<avr/io.h>
+  17:main.c        **** #include<avr/interrupt.h>
+  18:main.c        **** #include"delay.h"
+  19:main.c        **** 
+  20:main.c        **** unsigned char d,imat;
+  21:main.c        **** unsigned char dar[7];
+  22:main.c        **** 
+  23:main.c        **** ISR (TIMER1_COMPA_vect) // void timer1_compA_isr(void)
+  24:main.c        **** {
+ 186               	0
+ 187               		push r21
+ 188               		push r22
+ 189 0084 1F92      		push r23
+ 190 0086 0F92      		push r24
+ 191 0088 0FB6      		push r25
+ 192 008a 0F92      		push r26
+ 193 008c 1124      		push r27
+ 194 008e 2F93      		push r30
+ 195 0090 3F93      		push r31
+ 196 0092 4F93      	/* prologue end (size=17) */
+ 198 0096 6F93      	.LM13:
+ 199 0098 7F93      		lds r24,imat
+ 200 009a 8F93      		mov r30,r24
+ 201 009c 9F93      		clr r31
+ 202 009e AF93      		subi r30,lo8(-(dar))
+ 203 00a0 BF93      		sbci r31,hi8(-(dar))
+ 204 00a2 EF93      		ld r25,Z
+ 205 00a4 FF93      		or r24,r25
+ 206               		out 59-0x20,r24
+  25:main.c        **** 
+ 207               	-__vector_6
+ 208               	.LM14:
+ 209 00a6 8091 0000 		ldi r24,lo8(1)
+ 210 00aa E82F      		ldi r25,hi8(1)
+ 211 00ac FF27      		rcall delayms
+ 213 00b0 F040      	.LM15:
+ 214 00b2 9081      		lds r24,imat
+ 215 00b4 892B      		cpi r24,lo8(6)
+ 216 00b6 8BBB      		brlo .L18
+  26:main.c        **** 
+ 217               	,0,28,.LM16-__vector_6
+ 218               	.LM16:
+ 219 00b8 81E0      		sts imat,__zero_reg__
+ 220 00ba 90E0      		rjmp .L21
+ 221 00bc 00D0      	.L18:
+  27:main.c        **** 
+ 222               	bn	68,0,30,.LM17-__vector_6
+ 223               	.LM17:
+ 224 00be 8091 0000 		subi r24,lo8(-(1))
+ 225 00c2 8630      		sts imat,r24
+ 226 00c4 00F0      	.L21:
+  28:main.c        **** 
+ 227               	ilogue: frame size=0 */
+ 228               		pop r31
+ 229 00c6 1092 0000 		pop r30
+ 230 00ca 00C0      		pop r27
+ 231               		pop r26
+  29:main.c        **** 
+  30:main.c        ****   PORTA=dar[imat]|imat;
+ 232               	r25
+ 233               		pop r24
+ 234 00cc 8F5F      		pop r23
+ 235 00ce 8093 0000 		pop r22
+ 236               		pop r21
+ 237               		pop r20
+ 238 00d2 FF91      		pop r19
+ 239 00d4 EF91      		pop r18
+ 240 00d6 BF91      		pop __tmp_reg__
+ 241 00d8 AF91      		out __SREG__,__tmp_reg__
+ 242 00da 9F91      		pop __tmp_reg__
+ 243 00dc 8F91      		pop __zero_reg__
+ 244 00de 7F91      		reti
+ 245 00e0 6F91      	/* epilogue end (size=17) */
+ 246 00e2 5F91      	/* function __vector_6 size 56 (22) */
+ 248 00e6 3F91      	.Lscope2:
+ 250 00ea 0F90      	.global	shift
+ 252 00ee 0F90      	shift:
+ 254 00f2 1895      	.LM18:
+ 255               	/* prologue: frame size=0 */
+ 256               		push r17
+ 257               	/* prologue end (size=1) */
+ 258               		ldi r17,lo8(0)
+ 259               	.L23:
+ 261               	.LM19:
+ 262               		lds r24,dar
+  31:main.c        **** 
+  32:main.c        ****    delayms(1);
+  33:main.c        ****    if(imat>=6)
+  34:main.c        ****     imat=0;
+  35:main.c        ****    else	
+ 263               	8,0,40,.LM20-shift
+ 264               	.LM20:
+ 265               		lds r24,dar+1
+ 266 00f4 1F93      		lsl r24
+ 267               		sts dar+1,r24
+ 269               	.LM21:
+  36:main.c        **** 
+  37:main.c        **** 	imat++;
+  38:main.c        **** }
+  39:main.c        **** 
+ 270               	4,dar+2
+ 271               		lsl r24
+ 272 00f8 8091 0000 		sts dar+2,r24
+ 274 00fe 8093 0000 	.LM22:
+  40:main.c        **** 
+ 275               	r24,dar+3
+ 276               		lsl r24
+ 277 0102 8091 0000 		sts dar+3,r24
+ 279 0108 8093 0000 	.LM23:
+  41:main.c        **** 
+ 280               	r24,dar+4
+ 281               		lsl r24
+ 282 010c 8091 0000 		sts dar+4,r24
+ 284 0112 8093 0000 	.LM24:
+  42:main.c        **** 
+ 285               	r24,dar+5
+ 286               		lsl r24
+ 287 0116 8091 0000 		sts dar+5,r24
+ 289 011c 8093 0000 	.LM25:
+  43:main.c        **** 
+ 290               	r24,dar+6
+ 291               		lsl r24
+ 292 0120 8091 0000 		sts dar+6,r24
+ 294 0126 8093 0000 	.LM26:
+  44:main.c        **** 
+ 295               	r24,lo8(1)
+ 296               		ldi r25,hi8(1)
+ 297 012a 8091 0000 		rcall delayus
+ 299 0130 8093 0000 	.LM27:
+  45:main.c        **** 
+ 300               	 r17,lo8(-(1))
+ 301               		cpi r17,lo8(5)
+ 302 0134 8091 0000 		brne .L23
+ 303 0138 880F      	/* epilogue: frame size=0 */
+ 304 013a 8093 0000 		pop r17
+  46:main.c        **** 
+ 305               	/* epilogue end (size=2) */
+ 306               	/* function shift size 45 (42) */
+ 311               	.Lscope3:
+ 313 0146 1530      	.global	A
+ 315               	A:
+ 317 014c 0895      	.LM28:
+ 318               	/* prologue: frame size=0 */
+ 319               	/* prologue end (size=0) */
+ 321               	.LM29:
+ 322               		ldi r24,lo8(-120)
+ 323               		sts dar,r24
+ 325               	.LM30:
+ 326               		ldi r24,lo8(112)
+ 327               		sts dar+1,r24
+  47:main.c        **** 
+  48:main.c        ****  
+  49:main.c        **** void shift()
+  50:main.c        ****   {
+ 329               	stabn	68,0,54,.LM32-A
+ 330               	.LM32:
+ 331               		sts dar+3,r24
+  51:main.c        **** 
+ 333               	3:
+ 334               		sts dar+4,__zero_reg__
+ 336 0150 8093 0000 	.LM34:
+  52:main.c        **** 
+ 337               	 dar+5,r24
+ 339 0154 80E7      	.LM35:
+ 340 0156 8093 0000 		sts dar+6,r24
+  53:main.c        **** 
+ 341               	pilogue: frame size=0 */
+ 342               		ret
+ 343 015a 8093 0000 	/* epilogue end (size=1) */
+  54:main.c        **** 
+ 344               	function A size 17 (16) */
+ 346 015e 8093 0000 	.Lscope4:
+  55:main.c        **** 
+ 347               	tabs	"B:F(0,15)",36,0,0,B
+ 348               	.global	B
+  56:main.c        **** 
+ 351               	.LM36:
+ 352 0166 8093 0000 	/* prologue: frame size=0 */
+  57:main.c        **** 
+ 353               	prologue end (size=0) */
+ 355 016a 8093 0000 	.LM37:
+ 356               		ldi r25,lo8(8)
+ 357 016e 0895      		sts dar,r25
+ 359               	.LM38:
+ 360               		ldi r24,lo8(112)
+ 361               		sts dar+1,r24
+ 363               	.LM39:
+ 364               		sts dar+2,r24
+  58:main.c        **** 
+  59:main.c        ****   unsigned char i;
+  60:main.c        ****   for(i=0;i<5;i++)
+  61:main.c        ****    {
+ 366               	ar+3,r25
+ 368               	.LM41:
+ 369               		sts dar+4,r24
+  62:main.c        **** 
+ 370               	abn	68,0,67,.LM42-B
+ 371               	.LM42:
+ 372 0170 98E0      		sts dar+5,r24
+  63:main.c        **** 
+ 374               	3:
+ 375               		sts dar+6,r25
+ 376 0176 80E7      	/* epilogue: frame size=0 */
+ 377 0178 8093 0000 		ret
+  64:main.c        **** 
+ 378               	pilogue end (size=1) */
+ 379               	/* function B size 17 (16) */
+  65:main.c        **** 
+ 381               	cope5:
+ 383 0180 9093 0000 	.global	C
+  66:main.c        **** 
+ 384               	ype	C, @function
+ 385               	C:
+  67:main.c        **** 
+ 387               	44:
+ 388               	/* prologue: frame size=0 */
+ 389 0188 8093 0000 	/* prologue end (size=0) */
+  68:main.c        **** 
+ 390               	tabn	68,0,73,.LM45-C
+ 391               	.LM45:
+ 392 018c 9093 0000 		ldi r18,lo8(-120)
+ 393               		sts dar,r18
+ 395               	.LM46:
+ 396               		ldi r25,lo8(112)
+ 397               		sts dar+1,r25
+ 399               	.LM47:
+ 400               		ldi r24,lo8(120)
+ 401               		sts dar+2,r24
+  69:main.c        **** 
+  70:main.c        ****     dar[0]<<=1;
+  71:main.c        **** 	dar[1]<<=1;
+  72:main.c        **** 	dar[2]<<=1;
+ 403               	ar+3,r24
+ 405               	.LM49:
+ 406               		sts dar+4,r24
+  73:main.c        **** 
+ 407               	abn	68,0,78,.LM50-C
+ 408               	.LM50:
+ 409 0192 28E8      		sts dar+5,r25
+  74:main.c        **** 
+ 411               	1:
+ 412               		sts dar+6,r18
+ 413 0198 90E7      	/* epilogue: frame size=0 */
+ 414 019a 9093 0000 		ret
+  75:main.c        **** 
+ 415               	pilogue end (size=1) */
+ 416               	/* function C size 18 (17) */
+ 418 01a0 8093 0000 	.Lscope6:
+  76:main.c        **** 
+ 419               	abs	"D:F(0,15)",36,0,0,D
+ 420               	.global	D
+  77:main.c        **** 
+ 423               	.LM52:
+ 424 01a8 8093 0000 	/* prologue: frame size=0 */
+  78:main.c        **** 
+ 425               	prologue end (size=0) */
+ 427 01ac 9093 0000 	.LM53:
+  79:main.c        **** 
+ 428               	i r18,lo8(24)
+ 429               		sts dar,r18
+ 431               	.LM54:
+ 432 01b4 0895      		ldi r25,lo8(104)
+ 433               		sts dar+1,r25
+ 435               	.LM55:
+ 436               		ldi r24,lo8(112)
+ 437               		sts dar+2,r24
+ 439               	.LM56:
+ 440               		sts dar+3,r24
+  80:main.c        **** 
+  81:main.c        **** 	dar[3]<<=1;
+  82:main.c        **** 	dar[4]<<=1;
+  83:main.c        **** 	dar[5]<<=1;
+ 441               	88,.LM57-D
+ 442               	.LM57:
+ 443               		sts dar+4,r24
+  84:main.c        **** 
+ 445               	8:
+ 446               		sts dar+5,r25
+ 448 01b8 2093 0000 	.LM59:
+  85:main.c        **** 
+ 449               	 dar+6,r18
+ 450               	/* epilogue: frame size=0 */
+ 451 01bc 98E6      		ret
+ 452 01be 9093 0000 	/* epilogue end (size=1) */
+  86:main.c        **** 
+ 453               	unction D size 18 (17) */
+ 455 01c2 80E7      	.Lscope7:
+  87:main.c        **** 
+ 457               	bal	E
+ 459 01c8 8093 0000 	E:
+  88:main.c        **** 
+ 460               	tabn	68,0,94,.LM60-E
+ 461               	.LM60:
+ 462 01cc 8093 0000 	/* prologue: frame size=0 */
+  89:main.c        **** 
+ 463               	prologue end (size=0) */
+ 465 01d0 9093 0000 	.LM61:
+  90:main.c        **** 
+ 466               	s dar,__zero_reg__
+ 468 01d4 2093 0000 	.LM62:
+ 469               		ldi r24,lo8(120)
+ 470 01d8 0895      		sts dar+1,r24
+ 472               	.LM63:
+ 473               		sts dar+2,r24
+ 475               	.LM64:
+ 476               		sts dar+3,__zero_reg__
+ 478               	.LM65:
+  91:main.c        **** 
+  92:main.c        **** 	dar[6]<<=1;
+  93:main.c        **** 	delayus(1);
+  94:main.c        ****    }
+ 479               	4
+ 481               	.LM66:
+ 482               		sts dar+5,r24
+  95:main.c        **** 
+ 483               	abn	68,0,101,.LM67-E
+ 484               	.LM67:
+ 485 01da 1092 0000 		sts dar+6,__zero_reg__
+  96:main.c        **** 
+ 486               	epilogue: frame size=0 */
+ 487               		ret
+ 488 01de 88E7      	/* epilogue end (size=1) */
+ 489 01e0 8093 0000 	/* function E size 16 (15) */
+  97:main.c        **** 
+ 490               	ze	E, .-E
+ 491               	.Lscope8:
+  98:main.c        **** 
+ 493               	obal	F
+ 495 01e8 1092 0000 	F:
+  99:main.c        **** 
+ 496               	tabn	68,0,105,.LM68-F
+ 497               	.LM68:
+ 498 01ec 8093 0000 	/* prologue: frame size=0 */
+ 100:main.c        **** 
+ 499               	prologue end (size=0) */
+ 501 01f0 8093 0000 	.LM69:
+ 101:main.c        **** 
+ 502               	s dar,__zero_reg__
+ 504 01f4 1092 0000 	.LM70:
+ 505               		ldi r25,lo8(120)
+ 506 01f8 0895      		sts dar+1,r25
+ 508               	.LM71:
+ 509               		sts dar+2,r25
+ 511               	.LM72:
+ 512               		ldi r24,lo8(8)
+ 513               		sts dar+3,r24
+ 102:main.c        **** 
+ 103:main.c        ****   }
+ 104:main.c        **** void A() 
+ 105:main.c        ****  {
+ 515               	ar+4,r25
+ 517               	.LM74:
+ 518               		sts dar+5,r25
+ 106:main.c        **** 
+ 519               	abn	68,0,112,.LM75-F
+ 520               	.LM75:
+ 521 01fa 1092 0000 		sts dar+6,r25
+ 107:main.c        **** 
+ 522               	epilogue: frame size=0 */
+ 523               		ret
+ 524 01fe 98E7      	/* epilogue end (size=1) */
+ 525 0200 9093 0000 	/* function F size 17 (16) */
+ 108:main.c        **** 
+ 526               	ze	F, .-F
+ 527               	.Lscope9:
+ 109:main.c        **** 
+ 529               	obal	G
+ 531 0208 88E0      	G:
+ 110:main.c        **** 
+ 533               	6:
+ 534               	/* prologue: frame size=0 */
+ 535 020e 9093 0000 	/* prologue end (size=0) */
+ 111:main.c        **** 
+ 536               	tabn	68,0,117,.LM77-G
+ 537               	.LM77:
+ 538 0212 9093 0000 		ldi r24,lo8(-120)
+ 112:main.c        **** 
+ 539               	s dar,r24
+ 541 0216 9093 0000 	.LM78:
+ 542               		ldi r25,lo8(112)
+ 543 021a 0895      		sts dar+1,r25
+ 545               	.LM79:
+ 546               		ldi r24,lo8(120)
+ 547               		sts dar+2,r24
+ 549               	.LM80:
+ 550               		ldi r24,lo8(96)
+ 551               		sts dar+3,r24
+ 113:main.c        **** 
+ 114:main.c        ****   dar[0]=0x88;
+ 115:main.c        ****   dar[1]=0x70;
+ 116:main.c        ****   dar[2]=0x70;
+ 552               	121,.LM81-G
+ 553               	.LM81:
+ 554               		sts dar+4,r25
+ 117:main.c        **** 
+ 556               	2:
+ 557               		sts dar+5,r25
+ 559 021e 8093 0000 	.LM83:
+ 118:main.c        **** 
+ 560               	 r24,lo8(-128)
+ 561               		sts dar+6,r24
+ 562 0222 90E7      	/* epilogue: frame size=0 */
+ 563 0224 9093 0000 		ret
+ 119:main.c        **** 
+ 564               	pilogue end (size=1) */
+ 565               	/* function G size 20 (19) */
+ 567 022a 8093 0000 	.Lscope10:
+ 120:main.c        **** 
+ 568               	abs	"H:F(0,15)",36,0,0,H
+ 569               	.global	H
+ 571 0230 8093 0000 	H:
+ 121:main.c        **** 
+ 572               	abn	68,0,127,.LM84-H
+ 573               	.LM84:
+ 574 0234 9093 0000 	/* prologue: frame size=0 */
+ 122:main.c        **** 
+ 575               	prologue end (size=0) */
+ 577 0238 9093 0000 	.LM85:
+ 123:main.c        **** 
+ 578               	i r24,lo8(112)
+ 579               		sts dar,r24
+ 581 023e 8093 0000 	.LM86:
+ 582               		sts dar+1,r24
+ 584               	.LM87:
+ 585               		sts dar+2,r24
+ 587               	.LM88:
+ 588               		sts dar+3,__zero_reg__
+ 590               	.LM89:
+ 591               		sts dar+4,r24
+ 124:main.c        **** 
+ 125:main.c        ****   dar[3]=0x70;
+ 126:main.c        ****   dar[4]=0x00;
+ 127:main.c        ****   dar[5]=0x70;
+ 592               	33,.LM90-H
+ 593               	.LM90:
+ 594               		sts dar+5,r24
+ 128:main.c        **** 
+ 596               	1:
+ 597               		sts dar+6,r24
+ 598 0244 80E7      	/* epilogue: frame size=0 */
+ 599 0246 8093 0000 		ret
+ 129:main.c        **** 
+ 600               	pilogue end (size=1) */
+ 601               	/* function H size 16 (15) */
+ 130:main.c        **** 
+ 603               	cope11:
+ 605 024e 8093 0000 	.global	I
+ 131:main.c        **** 
+ 606               	ype	I, @function
+ 607               	I:
+ 132:main.c        **** 
+ 609               	92:
+ 610               	/* prologue: frame size=0 */
+ 611 0256 8093 0000 	/* prologue end (size=0) */
+ 133:main.c        **** 
+ 612               	tabn	68,0,139,.LM93-I
+ 613               	.LM93:
+ 614 025a 8093 0000 		ldi r25,lo8(-120)
+ 134:main.c        **** 
+ 615               	s dar,r25
+ 617 025e 8093 0000 	.LM94:
+ 618               		ldi r24,lo8(-40)
+ 619 0262 0895      		sts dar+1,r24
+ 621               	.LM95:
+ 622               		sts dar+2,r24
+ 624               	.LM96:
+ 625               		sts dar+3,r24
+ 627               	.LM97:
+ 135:main.c        **** 
+ 136:main.c        ****   dar[6]=0x70;
+ 137:main.c        ****  }
+ 138:main.c        ****  
+ 628               	4
+ 630               	.LM98:
+ 631               		sts dar+5,r24
+ 139:main.c        **** 
+ 632               	abn	68,0,145,.LM99-I
+ 633               	.LM99:
+ 634 0264 98E8      		sts dar+6,r25
+ 635 0266 9093 0000 	/* epilogue: frame size=0 */
+ 140:main.c        **** 
+ 636               	
+ 637               	/* epilogue end (size=1) */
+ 638 026a 88ED      	/* function I size 17 (16) */
+ 141:main.c        **** 
+ 640               	cope12:
+ 642 0270 8093 0000 	.global	J
+ 142:main.c        **** 
+ 643               	ype	J, @function
+ 644               	J:
+ 143:main.c        **** 
+ 646               	100:
+ 647               	/* prologue: frame size=0 */
+ 648 0278 8093 0000 	/* prologue end (size=0) */
+ 144:main.c        **** 
+ 649               	tabn	68,0,150,.LM101-J
+ 650               	.LM101:
+ 651 027c 8093 0000 		ldi r24,lo8(-64)
+ 145:main.c        **** 
+ 652               	s dar,r24
+ 654 0280 9093 0000 	.LM102:
+ 655               		ldi r24,lo8(-24)
+ 656 0284 0895      		sts dar+1,r24
+ 658               	.LM103:
+ 659               		sts dar+2,r24
+ 661               	.LM104:
+ 662               		sts dar+3,r24
+ 664               	.LM105:
+ 146:main.c        **** 
+ 147:main.c        **** void B() 
+ 148:main.c        ****  {
+ 149:main.c        ****   dar[0]=0x08;
+ 665               	4
+ 667               	.LM106:
+ 668               		ldi r24,lo8(104)
+ 150:main.c        **** 
+ 669               	 dar+5,r24
+ 671 0286 80EC      	.LM107:
+ 672 0288 8093 0000 		ldi r24,lo8(-104)
+ 151:main.c        **** 
+ 673               	 dar+6,r24
+ 674               	/* epilogue: frame size=0 */
+ 675 028c 88EE      		ret
+ 676 028e 8093 0000 	/* epilogue end (size=1) */
+ 152:main.c        **** 
+ 677               	unction J size 19 (18) */
+ 679 0292 8093 0000 	.Lscope13:
+ 153:main.c        **** 
+ 680               	tabs	"K:F(0,15)",36,0,0,K
+ 681               	.global	K
+ 154:main.c        **** 
+ 684               	.LM108:
+ 685 029a 8093 0000 	/* prologue: frame size=0 */
+ 155:main.c        **** 
+ 686               	prologue end (size=0) */
+ 688 029e 88E6      	.LM109:
+ 689 02a0 8093 0000 		ldi r19,lo8(112)
+ 156:main.c        **** 
+ 690               	 dar,r19
+ 692 02a4 88E9      	.LM110:
+ 693 02a6 8093 0000 		ldi r18,lo8(104)
+ 694               		sts dar+1,r18
+ 696               	.LM111:
+ 697               		ldi r25,lo8(88)
+ 698               		sts dar+2,r25
+ 700               	.LM112:
+ 701               		ldi r24,lo8(56)
+ 702               		sts dar+3,r24
+ 157:main.c        **** 
+ 158:main.c        ****   dar[1]=0x70;
+ 159:main.c        ****   dar[2]=0x70;
+ 160:main.c        ****   dar[3]=0x08;
+ 704               	ar+4,r25
+ 706               	.LM114:
+ 707               		sts dar+5,r18
+ 161:main.c        **** 
+ 708               	abn	68,0,167,.LM115-K
+ 709               	.LM115:
+ 710 02ac 30E7      		sts dar+6,r19
+ 711 02ae 3093 0000 	/* epilogue: frame size=0 */
+ 162:main.c        **** 
+ 712               	
+ 713               	/* epilogue end (size=1) */
+ 714 02b2 28E6      	/* function K size 19 (18) */
+ 163:main.c        **** 
+ 716               	cope14:
+ 718 02b8 98E5      	.global	L
+ 164:main.c        **** 
+ 721               	.LM116:
+ 722 02be 88E3      	/* prologue: frame size=0 */
+ 723 02c0 8093 0000 	/* prologue end (size=0) */
+ 165:main.c        **** 
+ 724               	abn	68,0,172,.LM117-L
+ 725               	.LM117:
+ 726 02c4 9093 0000 		ldi r24,lo8(120)
+ 166:main.c        **** 
+ 727               	s dar,r24
+ 729 02c8 2093 0000 	.LM118:
+ 167:main.c        **** 
+ 730               	s dar+1,r24
+ 732 02cc 3093 0000 	.LM119:
+ 733               		sts dar+2,r24
+ 735               	.LM120:
+ 736               		sts dar+3,r24
+ 738               	.LM121:
+ 739               		sts dar+4,r24
+ 741               	.LM122:
+ 742               		sts dar+5,r24
+ 168:main.c        **** 
+ 169:main.c        ****   dar[4]=0x70;
+ 170:main.c        ****   dar[5]=0x70;
+ 171:main.c        ****   dar[6]=0x08;
+ 743               	178,.LM123-L
+ 744               	.LM123:
+ 745               		sts dar+6,__zero_reg__
+ 746               	/* epilogue: frame size=0 */
+ 172:main.c        **** 
+ 747               	
+ 748               	/* epilogue end (size=1) */
+ 749 02d2 88E7      	/* function L size 16 (15) */
+ 173:main.c        **** 
+ 751               	cope15:
+ 753 02d8 8093 0000 	.global	M
+ 174:main.c        **** 
+ 754               	ype	M, @function
+ 755               	M:
+ 175:main.c        **** 
+ 757               	124:
+ 758               	/* prologue: frame size=0 */
+ 759 02e0 8093 0000 	/* prologue end (size=0) */
+ 176:main.c        **** 
+ 760               	tabn	68,0,182,.LM125-M
+ 761               	.LM125:
+ 762 02e4 8093 0000 		ldi r24,lo8(112)
+ 177:main.c        **** 
+ 763               	s dar,r24
+ 765 02e8 8093 0000 	.LM126:
+ 178:main.c        **** 
+ 766               	i r25,lo8(32)
+ 767               		sts dar+1,r25
+ 769               	.LM127:
+ 770 02f0 0895      		ldi r25,lo8(80)
+ 771               		sts dar+2,r25
+ 773               	.LM128:
+ 774               		sts dar+3,r25
+ 776               	.LM129:
+ 777               		sts dar+4,r24
+ 179:main.c        **** 
+ 180:main.c        ****  }
+ 181:main.c        ****  
+ 779               	dar+5,r24
+ 781               	.LM131:
+ 782               		sts dar+6,r24
+ 182:main.c        **** 
+ 783               	pilogue: frame size=0 */
+ 784               		ret
+ 785 02f2 80E7      	/* epilogue end (size=1) */
+ 786 02f4 8093 0000 	/* function M size 18 (17) */
+ 183:main.c        **** 
+ 787               	ze	M, .-M
+ 788               	.Lscope16:
+ 790 02fa 9093 0000 	.global	N
+ 184:main.c        **** 
+ 791               	pe	N, @function
+ 792               	N:
+ 794 0300 9093 0000 	.LM132:
+ 185:main.c        **** 
+ 795               	rologue: frame size=0 */
+ 796               	/* prologue end (size=0) */
+ 186:main.c        **** 
+ 798               	133:
+ 799               		ldi r25,lo8(112)
+ 800 0308 8093 0000 		sts dar,r25
+ 187:main.c        **** 
+ 801               	tabn	68,0,194,.LM134-N
+ 802               	.LM134:
+ 803 030c 8093 0000 		sts dar+1,r25
+ 188:main.c        **** 
+ 804               	tabn	68,0,195,.LM135-N
+ 805               	.LM135:
+ 806 0310 8093 0000 		ldi r24,lo8(48)
+ 807               		sts dar+2,r24
+ 809               	.LM136:
+ 810               		ldi r24,lo8(80)
+ 811               		sts dar+3,r24
+ 813               	.LM137:
+ 814               		ldi r24,lo8(96)
+ 815               		sts dar+4,r24
+ 189:main.c        **** 
+ 190:main.c        **** void C()
+ 191:main.c        ****  {
+ 192:main.c        ****   dar[0]=0x88;
+ 817               	dar+5,r25
+ 819               	.LM139:
+ 820               		sts dar+6,r25
+ 193:main.c        **** 
+ 821               	pilogue: frame size=0 */
+ 822               		ret
+ 823 0316 90E7      	/* epilogue end (size=1) */
+ 824 0318 9093 0000 	/* function N size 19 (18) */
+ 194:main.c        **** 
+ 825               	ze	N, .-N
+ 826               	.Lscope17:
+ 195:main.c        **** 
+ 828               	obal	main
+ 830 0320 80E3      	main:
+ 196:main.c        **** 
+ 832               	40:
+ 833               	/* prologue: frame size=0 */
+ 834 0326 80E5      	/* prologue end (size=0) */
+ 197:main.c        **** 
+ 836               	41:
+ 837               		sts imat,__zero_reg__
+ 839 032e 8093 0000 	.LM142:
+ 198:main.c        **** 
+ 840               	 r24,lo8(3)
+ 841               		out 79-0x20,r24
+ 199:main.c        **** 
+ 843               	143:
+ 844               		ldi r24,lo8(26)
+ 845 0336 9093 0000 		out 78-0x20,r24
+ 847 033a 0895      	.LM144:
+ 848               		out 77-0x20,__zero_reg__
+ 850               	.LM145:
+ 851               		out 76-0x20,__zero_reg__
+ 853               	.LM146:
+ 854               		ldi r24,lo8(7)
+ 855               		out 75-0x20,r24
+ 200:main.c        **** 
+ 201:main.c        ****   dar[1]=0x70;
+ 202:main.c        ****   dar[2]=0x78;
+ 203:main.c        ****   dar[3]=0x78;
+ 204:main.c        ****   dar[4]=0x78;
+ 856               	211,.LM147-main
+ 857               	.LM147:
+ 858               		ldi r24,lo8(-1)
+ 859               		out 74-0x20,r24
+ 205:main.c        **** 
+ 860               	__zero_reg__
+ 862 033c 1092 0000 	.LM145:
+ 206:main.c        **** 
+ 863               	6,.LM142-main
+ 864               	.LM142:
+ 865 0340 83E0      		ldi r24,lo8(3)
+ 866 0342 8FBD      		out 79-0x20,r24
+ 207:main.c        **** 
+ 867               	abn	68,0,207,.LM143-main
+ 868               	.LM143:
+ 869 0344 8AE1      		ldi r24,lo8(26)
+ 870 0346 8EBD      		out 78-0x20,r24
+ 208:main.c        **** 
+ 871               	abn	68,0,208,.LM144-main
+ 872               	.LM144:
+ 873 0348 1DBC      		out 77-0x20,__zero_reg__
+ 209:main.c        **** 
+ 874               	tabn	68,0,209,.LM145-main
+ 875               	.LM145:
+ 876 034a 1CBC      		out 76-0x20,__zero_reg__
+ 210:main.c        **** 
+ 877               	r24,lo8(3)
+ 878               		out 79-0x20,r24
+ 880 034e 8BBD      	.LM143:
+ 211:main.c        **** 
+ 881               	 r24,lo8(26)
+ 882               		out 78-0x20,r24
+ 884 0352 8ABD      	.LM144:
+ 212:main.c        **** 
+ 885               	 77-0x20,__zero_reg__
+ 887 0354 88E1      	.LM145:
+ 888 0356 89BF      		out 76-0x20,__zero_reg__
+ 213:main.c        **** 
+ 889               	r24,lo8(3)
+ 890               		out 79-0x20,r24
+ 892 0358 7894      	.LM143:
+ 214:main.c        **** 
+ 215:main.c        ****   dar[5]=0x70;
+ 893               	 r24,lo8(26)
+ 894               		out 78-0x20,r24
+ 896 035a 8FEF      	.LM144:
+ 897 035c 8ABB      		out 77-0x20,__zero_reg__
+ 216:main.c        **** 
+ 898               	bn	68,0,209,.LM145-main
+ 899               	.LM145:
+ 900 035e 1BBA      		out 76-0x20,__zero_reg__
+ 217:main.c        **** 
+ 901               	r24,lo8(3)
+ 902               		out 79-0x20,r24
+ 904 0362 8093 0000 	.LM143:
+ 218:main.c        **** 
+ 905               	 r24,lo8(26)
+ 906               		out 78-0x20,r24
+ 908 0368 8093 0000 	.LM144:
+ 219:main.c        **** 
+ 909               	 77-0x20,__zero_reg__
+ 911 036c 8093 0000 	.LM145:
+ 220:main.c        **** 
+ 912               	6,.LM142-main
+ 913               	.LM142:
+ 914 0370 8093 0000 		ldi r24,lo8(3)
+ 221:main.c        **** 
+ 915               	t 79-0x20,r24
+ 917 0374 8093 0000 	.LM143:
+ 222:main.c        **** 
+ 918               	i r24,lo8(26)
+ 919               		out 78-0x20,r24
+ 223:main.c        **** 
+ 921               	144:
+ 922               		out 77-0x20,__zero_reg__
+ 224:main.c        **** 
+ 924               	n	68,0,206,.LM142-main
+ 925               	.LM142:
+ 926 0380 8093 0000 		ldi r24,lo8(3)
+ 225:main.c        **** 
+ 226:main.c        ****   dar[6]=0x88;
+ 227:main.c        ****  }
+ 228:main.c        ****  
+ 927               	t 79-0x20,r24
+ 929 0384 00D0      	.LM143:
+ 229:main.c        **** 
+ 930               	i r24,lo8(26)
+ 931               		out 78-0x20,r24
+ 933 0388 90E0      	.LM144:
+ 934 038a 00D0      		out 77-0x20,__zero_reg__
+ 230:main.c        **** 
+ 935               	bn	68,0,209,.LM145-main
+ 936               	.LM145:
+ 937 038c 00D0      		out 76-0x20,__zero_reg__
+ 231:main.c        **** 
+ 938               	r24,lo8(3)
+ 939               		out 79-0x20,r24
+ 232:main.c        **** 
+ 941               	143:
+ 942               		ldi r24,lo8(26)
+ 943 0390 8AE0      		out 78-0x20,r24
+ 945 0394 00D0      	.LM144:
+ 233:main.c        **** 
+ 946               	77-0x20,__zero_reg__
+ 948 0396 00D0      	.LM145:
+ 234:main.c        **** 
+ 949               	6,.LM142-main
+ 950               	.LM142:
+ 951 0398 00D0      		ldi r24,lo8(3)
+ 235:main.c        **** 
+ 952               	t 79-0x20,r24
+ 954 039a 8AE0      	.LM143:
+ 955 039c 90E0      		ldi r24,lo8(26)
+ 956 039e 00D0      		out 78-0x20,r24
+ 236:main.c        **** 
+ 957               	bn	68,0,208,.LM144-main
+ 958               	.LM144:
+ 959 03a0 00D0      		out 77-0x20,__zero_reg__
+ 237:main.c        **** 
+ 960               	tabn	68,0,209,.LM145-main
+ 961               	.LM145:
+ 962 03a2 00D0      		out 76-0x20,__zero_reg__
+ 238:main.c        **** 
+ 963               	r24,lo8(3)
+ 964               		out 79-0x20,r24
+ 966 03a6 90E0      	.LM143:
+ 967 03a8 00D0      		ldi r24,lo8(26)
+ 239:main.c        **** 
+ 968               	78-0x20,r24
+ 970 03aa 00D0      	.LM144:
+ 240:main.c        **** 
+ 971               	t 77-0x20,__zero_reg__
+ 973 03ac 00D0      	.LM145:
+ 241:main.c        **** 
+ 974               	6,.LM142-main
+ 975               	.LM142:
+ 976 03ae 8AE0      		ldi r24,lo8(3)
+ 977 03b0 90E0      		out 79-0x20,r24
+ 242:main.c        **** 
+ 979               	3:
+ 980               		ldi r24,lo8(26)
+ 981 03b4 00D0      		out 78-0x20,r24
+ 243:main.c        **** 
+ 982               	tabn	68,0,208,.LM144-main
+ 983               	.LM144:
+ 984 03b6 00D0      		out 77-0x20,__zero_reg__
+ 244:main.c        **** 
+ 985               	tabn	68,0,209,.LM145-main
+ 986               	.LM145:
+ 987 03b8 8AE0      		out 76-0x20,__zero_reg__
+ 989 03bc 00D0      	.LM146:
+ 245:main.c        **** 
+ 990               	0,207,.LM143-main
+ 991               	.LM143:
+ 992 03be 00D0      		ldi r24,lo8(26)
+ 246:main.c        **** 
+ 993               	t 78-0x20,r24
+ 995 03c0 00D0      	.LM144:
+ 247:main.c        **** 
+ 996               	t 77-0x20,__zero_reg__
+ 998 03c2 8AE0      	.LM145:
+ 999 03c4 90E0      		out 76-0x20,__zero_reg__
+ 248:main.c        **** 
+ 1001               	stabn	68,0,207,.LM143-main
+ 1002               	.LM143:
+ 1003 03c8 00D0      		ldi r24,lo8(26)
+ 249:main.c        **** 
+ 1004               	t 78-0x20,r24
+ 1006 03ca 00D0      	.LM144:
+ 250:main.c        **** 
+ 1007               	t 77-0x20,__zero_reg__
+ 1009 03cc 8AE0      	.LM145:
+ 1010 03ce 90E0      		out 76-0x20,__zero_reg__
+ 251:main.c        **** 
+ 1012               	stabn	68,0,207,.LM143-main
+ 1013               	.LM143:
+ 1014 03d2 00D0      		ldi r24,lo8(26)
+ 252:main.c        **** 
+ 1015               	t 78-0x20,r24
+ 1017 03d4 00D0      	.LM144:
+ 253:main.c        **** 
+ 1018               	t 77-0x20,__zero_reg__
+ 1020 03d6 8AE0      	.LM145:
+ 1021 03d8 90E0      		out 76-0x20,__zero_reg__
+ 254:main.c        **** 
+ 1023               	stabn	68,0,207,.LM143-main
+ 1024               	.LM143:
+ 1025 03dc 00D0      		ldi r24,lo8(26)
+ 255:main.c        **** 
+ 1026               	t 78-0x20,r24
+ 1028 03de 00D0      	.LM144:
+ 256:main.c        **** 
+ 1029               	t 77-0x20,__zero_reg__
+ 1031 03e0 8AE0      	.LM145:
+ 1032 03e2 90E0      		out 76-0x20,__zero_reg__
+ 257:main.c        **** 
+ 1034               	stabn	68,0,207,.LM143-main
+ 1035               	.LM143:
+ 1036 03e6 00D0      		ldi r24,lo8(26)
+ 258:main.c        **** 
+ 1037               	t 78-0x20,r24
+ 1039 03e8 00D0      	.LM144:
+ 259:main.c        **** 
+ 1040               	t 77-0x20,__zero_reg__
+ 1042 03ea 8AE0      	.LM145:
+ 1043 03ec 90E0      		out 76-0x20,__zero_reg__
+ 260:main.c        **** 
+ 1045               	stabn	68,0,207,.LM143-main
+ 1046               	.LM143:
+ 1047 03f0 00D0      		ldi r24,lo8(26)
+ 261:main.c        **** 
+ 1048               	t 78-0x20,r24
+ 1050 03f2 00D0      	.LM144:
+ 262:main.c        **** 
+ 1051               	t 77-0x20,__zero_reg__
+ 1053 03f4 8AE0      	.LM145:
+ 1054 03f6 90E0      		out 76-0x20,__zero_reg__
+ 263:main.c        **** 
+ 1056               	stabn	68,0,207,.LM143-main
+ 1057               	.LM143:
+ 1058 03fa 00D0      		ldi r24,lo8(26)
+ 264:main.c        **** 
+ 1059               	t 78-0x20,r24
+ 1061 03fc 00D0      	.LM144:
+ 265:main.c        **** 
+ 1062               	t 77-0x20,__zero_reg__
+ 1064 03fe 8AE0      	.LM145:
+ 1065 0400 90E0      		out 76-0x20,__zero_reg__
+ 266:main.c        **** 
+ 1067               	stabn	68,0,207,.LM143-main
+ 1068               	.LM143:
+ 1069 0404 00D0      		ldi r24,lo8(26)
+ 267:main.c        **** 
+ 1070               	t 78-0x20,r24
+ 1072 0406 00D0      	.LM144:
+ 268:main.c        **** 
+ 1073               	t 77-0x20,__zero_reg__
+ 1075 0408 8AE0      	.LM145:
+ 1076 040a 90E0      		out 76-0x20,__zero_reg__
+ 269:main.c        **** 
+ 1078               	stabn	68,0,207,.LM143-main
+ 1079               	.LM143:
+ 1080 040e 00D0      		ldi r24,lo8(26)
+ 1081               		out 78-0x20,r24
+ 1083               	.LM144:
+ 1084               		out 77-0x20,__zero_reg__
+ 1086               	.LM145:
+ 1087               		out 76-0x20,__zero_reg__
+ 1089               	.LM146:
+ 1090               		ldi r24,lo8(7)
+ 1091               		out 75-0x20,r24
+ 1093               	.LM147:
+ 1094               		ldi r24,lo8(-1)
+ 1095               		out 74-0x20,r24
+ 1097               	.LM148:
+ 1098               		ldi r24,lo8(24)
+ 1099               		out 89-0x20,r24
+ 1101               	.LM149:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:71     .text:00000000 delayms
+                            *COM*:00000002 delaycounter1
+                            *COM*:00000002 delaycounter2
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:137    .text:00000050 delayus
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:183    .text:00000084 __vector_6
+                            *COM*:00000001 imat
+                            *COM*:00000007 dar
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:262    .text:000000f4 shift
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:328    .text:0000014e A
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:365    .text:00000170 B
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:402    .text:00000192 C
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:440    .text:000001b6 D
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:478    .text:000001da E
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:514    .text:000001fa F
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:551    .text:0000021c G
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:591    .text:00000244 H
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:627    .text:00000264 I
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:664    .text:00000286 J
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:703    .text:000002ac K
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:742    .text:000002d2 L
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:778    .text:000002f2 M
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:816    .text:00000316 N
+C:\Users\User\AppData\Local\Temp/ccJLZHOv.s:855    .text:0000033c main
+                            *COM*:00000001 d
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

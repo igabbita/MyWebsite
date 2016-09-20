@@ -1,0 +1,233 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  69               	.global	delayms
+  71               	delayms:
+  73               	.Ltext1:
+   1:delay.h       **** /*	LCD.h
+   2:delay.h       **** Technophilia embedded systems
+   3:delay.h       **** 
+   4:delay.h       **** 	this header file provides time delay in the form of mili second and micro second
+   5:delay.h       **** 	without affecting any interrupts.
+   6:delay.h       **** 
+   7:delay.h       **** 	delayms()  this function provides delay in the form of mili second
+   8:delay.h       **** 	delayus()  this function provides delay in the form of micro second
+   9:delay.h       **** 	
+  10:delay.h       **** */
+  11:delay.h       **** #ifndef _DELAY_H_
+  12:delay.h       **** #define _DELAY_H_
+  13:delay.h       **** unsigned int delaycounter1,delaycounter2;
+  14:delay.h       **** void delayms(unsigned int delaytime)
+  15:delay.h       **** {
+  74               	ue end (size=0) */
+  76               	.LM1:
+  77               		sts (delaycounter1)+1,__zero_reg__
+  16:delay.h       **** 
+  17:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  78               	ay.h",132,0,0,.Ltext1
+  79               	.Ltext1:
+  81 0004 1092 0000 	.LM0:
+  82 0008 20E0      	/* prologue: frame size=0 */
+  83 000a 30E0      	/* prologue end (size=0) */
+  85               	.LM1:
+  86               		sts (delaycounter1)+1,__zero_reg__
+  87 000c 40E0      		sts delaycounter1,__zero_reg__
+  88 000e 50E0      		ldi r18,lo8(0)
+  89               		ldi r19,hi8(0)
+  18:delay.h       **** 	 {
+  19:delay.h       **** 		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+  20:delay.h       **** 		  {
+  21:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  90               	* prologue: frame size=0 */
+  91               	/* prologue end (size=0) */
+  93 0010 0000      	.LM1:
+  94 0012 0000      		sts (delaycounter1)+1,__zero_reg__
+  95 0014 0000      		sts delaycounter1,__zero_reg__
+  96 0016 0000      		ldi r18,lo8(0)
+  97 0018 0000      		ldi r19,hi8(0)
+  98 001a 0000      	.L2:
+  22:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  99               	ogue: frame size=0 */
+ 100               	/* prologue end (size=0) */
+ 102 001e 0000      	.LM1:
+ 103 0020 0000      		sts (delaycounter1)+1,__zero_reg__
+ 104 0022 0000      		sts delaycounter1,__zero_reg__
+ 105 0024 0000      		ldi r18,lo8(0)
+ 106 0026 0000      		ldi r19,hi8(0)
+ 107               	.L2:
+ 109 002a 5F4F      	.LM2:
+ 110               		ldi r20,lo8(0)
+ 111               		ldi r21,hi8(0)
+ 112 002c 63E0      	.L3:
+ 114 0030 5607      	.LM3:
+ 115 0032 01F4      	/* #APP */
+ 116 0034 2F5F      		nop
+ 117 0036 3F4F      		nop
+ 118               		nop
+ 119               		nop
+ 120 0038 8217      		nop
+ 121 003a 9307      		nop
+ 123 003e 3093 0000 	.LM4:
+ 124 0042 2093 0000 		nop
+ 125 0046 5093 0000 		nop
+ 126 004a 4093 0000 		nop
+ 127               		nop
+ 128 004e 0895      		nop
+ 129               		nop
+ 130               	/* #NOAPP */
+ 131               		subi r20,lo8(-(1))
+ 132               		sbci r21,hi8(-(1))
+ 134               	.LM5:
+ 135               		ldi r22,hi8(801)
+ 136               		cpi r20,lo8(801)
+ 137               		cpc r21,r22
+  23:delay.h       **** 		  }
+  24:delay.h       **** 		
+  25:delay.h       **** 	 }
+  26:delay.h       **** }
+  27:delay.h       **** 
+  28:delay.h       **** void delayus(unsigned int delaytime)
+  29:delay.h       **** {
+ 138               	op
+ 139               		nop
+ 140               		nop
+ 141               		nop
+  30:delay.h       **** 
+  31:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+ 142               	 r20,lo8(0)
+ 143               		ldi r21,hi8(0)
+ 144 0050 1092 0000 	.L3:
+ 146 0058 20E0      	.LM3:
+ 147 005a 30E0      	/* #APP */
+ 148               		nop
+  32:delay.h       **** 	 {
+  33:delay.h       **** 		 
+  34:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 149               	ounter1,__zero_reg__
+ 150               		ldi r18,lo8(0)
+ 151               		ldi r19,hi8(0)
+ 152 005c 0000      	.L2:
+ 154 0060 0000      	.LM2:
+ 155 0062 0000      		ldi r20,lo8(0)
+ 156 0064 0000      		ldi r21,hi8(0)
+ 157 0066 0000      	.L3:
+  35:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 158               	s
+ 159               	.LM1:
+ 160 0068 0000      		sts (delaycounter1)+1,__zero_reg__
+ 161 006a 0000      		sts delaycounter1,__zero_reg__
+ 162 006c 0000      		ldi r18,lo8(0)
+ 163 006e 0000      		ldi r19,hi8(0)
+ 164               	.L2:
+ 166 0072 3F4F      	.LM2:
+ 167               		ldi r20,lo8(0)
+ 168               		ldi r21,hi8(0)
+ 169 0074 8217      	.L3:
+ 171 0078 00F4      	.LM3:
+ 172 007a 3093 0000 	/* #APP */
+ 173 007e 2093 0000 		nop
+ 174               		nop
+ 175 0082 0895      		nop
+ 176               		nop
+ 177               		nop
+ 178               		nop
+ 180               	.LM4:
+ 181               		nop
+ 182               		nop
+ 183               		nop
+ 184               		nop
+ 185               		nop
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE11: cathode type: Program for Display T on matrix LED
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** #include<avr/io.h>
+  17:main.c        **** #include"delay.h"
+  18:main.c        **** int main()
+  19:main.c        **** {
+ 186               	 r20,lo8(0)
+ 187               		ldi r21,hi8(0)
+ 188               	.L3:
+  20:main.c        ****  unsigned char d;
+  21:main.c        ****  DDRA=0xFF;
+ 190               	,__zero_reg__
+ 191               		sts delaycounter1,__zero_reg__
+ 192 0084 8FEF      		ldi r18,lo8(0)
+ 193 0086 8ABB      		ldi r19,hi8(0)
+  22:main.c        ****  PORTA=0x00;
+ 194               	* prologue: frame size=0 */
+ 195               	/* prologue end (size=0) */
+ 197               	.LM1:
+  23:main.c        ****  
+  24:main.c        ****  d=1;
+  25:main.c        ****  while(1)
+  26:main.c        ****   {
+  27:main.c        ****    PORTA=0xF8|0x00;
+ 198               	ayms, @function
+ 199               	delayms:
+ 201 008c 8BBB      	.Ltext1:
+  28:main.c        ****    delayms(d);
+ 202               		162,0,0,0
+ 206 0092 00D0      	.global	delayms
+  29:main.c        ****    PORTA=0xF8|0x01;
+ 207               	128,0,0,0
+  30:main.c        ****    delayms(d);
+ 211               	=(4,7)",128,0,0,0
+  31:main.c        ****    PORTA=0x20|0x02;
+ 216               	)",128,0,0,0
+  32:main.c        ****    delayms(d);
+ 220               	)",128,0,0,0
+  33:main.c        ****    PORTA=0x20|0x03;
+ 225               	st32_t:t(4,24)=(4,6)",128,0,0,0
+  34:main.c        ****    delayms(d);
+ 229               	2_t:t(4,23)=(4,5)",128,0,0,0
+  35:main.c        ****    PORTA=0x20|0x04;
+ 234               	bs	"uintmax_t:t(4,28)=(4,8)",128,0,0,0
+  36:main.c        ****    delayms(d);
+ 238               	)",128,0,0,0
+  37:main.c        ****    PORTA=0x20|0x05;
+ 243               	)",128,0,0,0
+  38:main.c        ****    delayms(d);
+ 247               	st32_t:t(4,24)=(4,6)",128,0,0,0
+  39:main.c        ****    PORTA=0x20|0x06;
+ 252               	st32_t:t(4,24)=(4,6)",128,0,0,0
+  40:main.c        ****    delayms(d);
+ 256               	2_t:t(4,23)=(4,5)",128,0,0,0
+ 270               	.global	delayms
+ 272               	delayms:
+ 274               	.Ltext1:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:71     .text:00000000 delayms
+                            *COM*:00000002 delaycounter1
+                            *COM*:00000002 delaycounter2
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:137    .text:00000050 delayus
+C:\Users\User\AppData\Local\Temp/ccz4NUQf.s:183    .text:00000084 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

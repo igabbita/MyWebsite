@@ -1,0 +1,520 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  69               	.global	delayms
+  71               	delayms:
+  73               	.Ltext1:
+   1:delay.h       **** /*	LCD.h
+   2:delay.h       **** Technophilia embedded systems
+   3:delay.h       **** 
+   4:delay.h       **** 	this header file provides time delay in the form of mili second and micro second
+   5:delay.h       **** 	without affecting any interrupts.
+   6:delay.h       **** 
+   7:delay.h       **** 	delayms()  this function provides delay in the form of mili second
+   8:delay.h       **** 	delayus()  this function provides delay in the form of micro second
+   9:delay.h       **** 	
+  10:delay.h       **** */
+  11:delay.h       **** #ifndef _DELAY_H_
+  12:delay.h       **** #define _DELAY_H_
+  13:delay.h       **** unsigned int delaycounter1,delaycounter2;
+  14:delay.h       **** void delayms(unsigned int delaytime)
+  15:delay.h       **** {
+  74               	ue end (size=0) */
+  76               	.LM1:
+  77               		sts (delaycounter1)+1,__zero_reg__
+  16:delay.h       **** 
+  17:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  78               	 delaycounter1,__zero_reg__
+  79               		ldi r18,lo8(0)
+  80 0000 1092 0000 		ldi r19,hi8(0)
+  81 0004 1092 0000 	.L2:
+  83 000a 30E0      	.LM2:
+  84               		ldi r20,lo8(0)
+  85               		ldi r21,hi8(0)
+  86               	.L3:
+  88 000e 50E0      	.LM3:
+  89               	/* #APP */
+  18:delay.h       **** 	 {
+  19:delay.h       **** 		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+  20:delay.h       **** 		  {
+  21:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  90               	op
+  91               		nop
+  92               		nop
+  93 0010 0000      		nop
+  95 0014 0000      	.LM4:
+  96 0016 0000      		nop
+  97 0018 0000      		nop
+  98 001a 0000      		nop
+  22:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  99               	
+ 100               		nop
+ 101 001c 0000      	/* #NOAPP */
+ 102 001e 0000      		subi r20,lo8(-(1))
+ 103 0020 0000      		sbci r21,hi8(-(1))
+ 105 0024 0000      	.LM5:
+ 106 0026 0000      		ldi r22,hi8(801)
+ 107               		cpi r20,lo8(801)
+ 108 0028 4F5F      		cpc r21,r22
+ 109 002a 5F4F      		brne .L3
+ 110               		subi r18,lo8(-(1))
+ 111               		sbci r19,hi8(-(1))
+ 113 002e 4132      	.LM6:
+ 114 0030 5607      		cp r24,r18
+ 115 0032 01F4      		cpc r25,r19
+ 116 0034 2F5F      		brsh .L2
+ 117 0036 3F4F      		sts (delaycounter1)+1,r19
+ 118               		sts delaycounter1,r18
+ 119               		sts (delaycounter2)+1,r21
+ 120 0038 8217      		sts delaycounter2,r20
+ 121 003a 9307      	/* epilogue: frame size=0 */
+ 122 003c 00F4      		ret
+ 123 003e 3093 0000 	/* epilogue end (size=1) */
+ 124 0042 2093 0000 	/* function delayms size 52 (51) */
+ 126 004a 4093 0000 	.Lscope0:
+ 129               	.global	delayus
+ 131               	delayus:
+ 133               	.LM7:
+ 134               	/* prologue: frame size=0 */
+ 135               	/* prologue end (size=0) */
+ 137               	.LM8:
+  23:delay.h       **** 		  }
+  24:delay.h       **** 		
+  25:delay.h       **** 	 }
+  26:delay.h       **** }
+  27:delay.h       **** 
+  28:delay.h       **** void delayus(unsigned int delaytime)
+  29:delay.h       **** {
+ 138               	ts delaycounter1,__zero_reg__
+ 139               		ldi r18,lo8(0)
+ 140               		ldi r19,hi8(0)
+ 141               	.L12:
+  30:delay.h       **** 
+  31:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+ 142               	abn	68,0,34,.LM9-delayus
+ 143               	.LM9:
+ 144 0050 1092 0000 	/* #APP */
+ 145 0054 1092 0000 		nop
+ 146 0058 20E0      		nop
+ 147 005a 30E0      		nop
+ 148               		nop
+  32:delay.h       **** 	 {
+  33:delay.h       **** 		 
+  34:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 149               	op
+ 151               	.LM10:
+ 152 005c 0000      		nop
+ 153 005e 0000      		nop
+ 154 0060 0000      		nop
+ 155 0062 0000      		nop
+ 156 0064 0000      	/* #NOAPP */
+ 157 0066 0000      		subi r18,lo8(-(1))
+  35:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 158               	,hi8(-(1))
+ 160 0068 0000      	.LM11:
+ 161 006a 0000      		cp r24,r18
+ 162 006c 0000      		cpc r25,r19
+ 163 006e 0000      		brsh .L12
+ 164               		sts (delaycounter1)+1,r19
+ 165 0070 2F5F      		sts delaycounter1,r18
+ 166 0072 3F4F      	/* epilogue: frame size=0 */
+ 167               		ret
+ 168               	/* epilogue end (size=1) */
+ 169 0074 8217      	/* function delayus size 36 (35) */
+ 171 0078 00F4      	.Lscope1:
+ 174               	.global	delay_us
+ 176               	delay_us:
+ 178               	.Ltext2:
+ 180               	.LM12:
+ 181               	/* prologue: frame size=0 */
+ 182               	/* prologue end (size=0) */
+ 184               	.LM13:
+ 185               		sts (delaycounter1)+1,__zero_reg__
+ 186               		sts delaycounter1,__zero_reg__
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE10: Program for RC5 transmitter
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** IR TX PortB0		used for transmitter
+  15:main.c        **** IR Rx PortB1  
+  16:main.c        **** 
+  17:main.c        **** *********************************************************************************/
+  18:main.c        **** #include<avr/io.h>
+  19:main.c        **** #include<avr/interrupt.h>
+  20:main.c        **** #include"delay.h"
+  21:main.c        **** 
+  22:main.c        **** 
+  23:main.c        **** void delay_us(unsigned int delaytime)	//funtion for generating time delay in micro seconds
+  24:main.c        **** {
+ 187               	0)
+ 188               	.L18:
+ 190               	.LM14:
+  25:main.c        **** 
+  26:main.c        **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+ 191               	APP */
+ 192               		nop
+ 193 0084 1092 0000 		nop
+ 194 0088 1092 0000 		nop
+ 195 008c 20E0      		nop
+ 196 008e 30E0      		nop
+ 197               		nop
+  27:main.c        **** 	 {
+  28:main.c        **** 		 
+  29:main.c        **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 198               		68,0,30,.LM15-delay_us
+ 199               	.LM15:
+ 200               		nop
+ 201 0090 0000      		nop
+ 202 0092 0000      		nop
+ 203 0094 0000      		nop
+ 204 0096 0000      	/* #NOAPP */
+ 205 0098 0000      		subi r18,lo8(-(1))
+ 206 009a 0000      		sbci r19,hi8(-(1))
+  30:main.c        **** 		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 207               	8,0,26,.LM16-delay_us
+ 208               	.LM16:
+ 209 009c 0000      		cp r24,r18
+ 210 009e 0000      		cpc r25,r19
+ 211 00a0 0000      		brsh .L18
+ 212 00a2 0000      		sts (delaycounter1)+1,r19
+ 213               		sts delaycounter1,r18
+ 214 00a4 2F5F      	/* epilogue: frame size=0 */
+ 215 00a6 3F4F      		ret
+ 216               	/* epilogue end (size=1) */
+ 217               	/* function delay_us size 36 (35) */
+ 219 00aa 9307      	.Lscope2:
+ 221 00ae 3093 0000 	.global	__vector_9
+ 223               	__vector_9:
+ 225               	.LM17:
+ 226               	/* prologue: frame size=0 */
+ 227               		push __zero_reg__
+ 228               		push __tmp_reg__
+ 229               		in __tmp_reg__,__SREG__
+ 230               		push __tmp_reg__
+ 231               		clr __zero_reg__
+ 232               		push r24
+  31:main.c        **** 	 }
+  32:main.c        **** }
+  33:main.c        **** 
+  34:main.c        **** 
+  35:main.c        **** ISR (TIMER0_OVF_vect) 				//interrupt subroutine for timer 0 overflow vector
+  36:main.c        ****  {
+ 233               	(size=7) */
+ 235               	.LM18:
+ 236 00b8 1F92      		ldi r24,lo8(46)
+ 237 00ba 0F92      		out 82-0x20,r24
+ 239 00be 0F92      	.LM19:
+ 240 00c0 1124      		in r24,56-0x20
+ 241 00c2 8F93      		ldi r25,lo8(1)
+ 242 00c4 9F93      		eor r24,r25
+ 243               		out 56-0x20,r24
+  37:main.c        ****   TCNT0=46;							//initializing the timer registor for generating frequency of 38Khz
+ 244               	: frame size=0 */
+ 245               		pop r25
+ 246 00c6 8EE2      		pop r24
+ 247 00c8 82BF      		pop __tmp_reg__
+  38:main.c        ****   PORTB^=0x01;						//Toggle the port pin for generating frequency
+ 248               	0,37,.LM18-__vector_9
+ 249               	.LM18:
+ 250 00ca 88B3      		ldi r24,lo8(46)
+ 251 00cc 91E0      		out 82-0x20,r24
+ 253 00d0 88BB      	.LM19:
+ 254               		in r24,56-0x20
+ 255 00d2 9F91      		ldi r25,lo8(1)
+ 256 00d4 8F91      		eor r24,r25
+ 257 00d6 0F90      		out 56-0x20,r24
+ 258 00d8 0FBE      	/* epilogue: frame size=0 */
+ 259 00da 0F90      		pop r25
+ 260 00dc 1F90      		pop r24
+ 261 00de 1895      		pop __tmp_reg__
+ 262               		out __SREG__,__tmp_reg__
+ 263               		pop __tmp_reg__
+ 264               		pop __zero_reg__
+ 265               		reti
+ 266               	/* epilogue end (size=7) */
+ 267               	/* function __vector_9 size 20 (6) */
+ 269               	.Lscope3:
+  39:main.c        ****  }
+  40:main.c        ****  
+  41:main.c        ****  
+  42:main.c        ****  void tx(unsigned char data)			//function for transmitting a data frame
+  43:main.c        ****  {
+ 271               	64,0,0,16
+ 272               	.global	tx
+ 274 00e0 FF92      	tx:
+ 276 00e4 1F93      	.LM20:
+ 277               	/* prologue: frame size=0 */
+ 278 00e6 082F      		push r15
+ 279 00e8 FF24      		push r16
+ 280 00ea 19EE      		push r17
+ 281               	/* prologue end (size=3) */
+  44:main.c        ****   unsigned char i;
+  45:main.c        ****   unsigned char rchad=0B11101001;	//bit 8,7 (2 runin bit=11), 6 (1 chekbit=1), 5,4,3,2,1 (5 system 
+  46:main.c        **** 
+  47:main.c        ****   for(i=0;i<=7;i++)			    //for transmission of 2 runin bits, 1 chekbit, 5 system address bits	
+  48:main.c        ****    {
+  49:main.c        ****     
+  50:main.c        **** 	if((rchad&0x80)==0x80)
+ 282               	x:F(0,15)",36,0,0,tx
+ 284 00ec 17FF      	.global	tx
+  51:main.c        **** 	  {TCCR0=0x00;delay_us(889);TCCR0=0x01;delay_us(720);}
+ 286               	_reg__
+ 287               		reti
+ 288 00f0 13BE      	/* epilogue end (size=7) */
+ 289 00f2 89E7      	/* function __vector_9 size 20 (6) */
+ 291 00f6 00D0      	.Lscope3:
+ 294 00fc 80ED      	.global	tx
+ 296 0100 00C0      	tx:
+  52:main.c        **** 	else
+  53:main.c        **** 	  {TCCR0=0x01;delay_us(720);TCCR0=0x00;delay_us(889);}
+ 298               	ize=7) */
+ 299               	/* function __vector_9 size 20 (6) */
+ 301 0104 83BF      	.Lscope3:
+ 304 010a 00D0      	.global	tx
+ 306 010e 89E7      	tx:
+ 308               	.LM20:
+ 309 0112 00D0      	/* prologue: frame size=0 */
+ 310               		push r15
+ 311               		push r16
+ 312 0114 F394      		push r17
+ 313 0116 88E0      	/* prologue end (size=3) */
+ 314 0118 F816      		mov r16,r24
+ 315 011a 01F0      		clr r15
+  54:main.c        **** 	  
+  55:main.c        ****     
+  56:main.c        ****     rchad<<=1;	
+ 316               	tabs	"data:P(0,11)",64,0,0,16
+ 317               	.global	tx
+ 319 011e 00C0      	tx:
+ 321 0120 10E0      	.LM20:
+ 322               	/* prologue: frame size=0 */
+  57:main.c        ****    }
+  58:main.c        ****    
+  59:main.c        ****   for(i=0;i<=5;i++)				//for transmission of 6 command bits or data bits
+  60:main.c        ****    {
+  61:main.c        ****     
+  62:main.c        **** 	if((data&0x20)==0x20)
+ 323               	20 (6) */
+ 325 0122 05FF      	.Lscope3:
+  63:main.c        **** 	  {TCCR0=0x00;delay_us(889);TCCR0=0x01;delay_us(720);}
+ 327               	p __tmp_reg__
+ 328               		out __SREG__,__tmp_reg__
+ 329 0126 13BE      		pop __tmp_reg__
+ 330 0128 89E7      		pop __zero_reg__
+ 331 012a 93E0      		reti
+ 332 012c 00D0      	/* epilogue end (size=7) */
+ 333 012e 81E0      	/* function __vector_9 size 20 (6) */
+ 335 0132 80ED      	.Lscope3:
+ 338               	.global	tx
+  64:main.c        **** 	else
+  65:main.c        **** 	  {TCCR0=0x01;delay_us(720);TCCR0=0x00;delay_us(889);}
+ 339               	_tmp_reg__
+ 340               		pop __zero_reg__
+ 341 0138 81E0      		reti
+ 342 013a 83BF      	/* epilogue end (size=7) */
+ 343 013c 80ED      	/* function __vector_9 size 20 (6) */
+ 345 0140 00D0      	.Lscope3:
+ 348 0146 93E0      	.global	tx
+ 350 0148 00D0      	tx:
+ 352               	.LM20:
+ 353 014a 1F5F      	/* prologue: frame size=0 */
+ 354 014c 1630      		push r15
+ 355 014e 01F0      		push r16
+  66:main.c        **** 	  
+  67:main.c        ****     
+  68:main.c        ****     data<<=1;	
+ 356               	tor_9, .-__vector_9
+ 357               	.Lscope3:
+ 360               	.global	tx
+  69:main.c        ****    }
+  70:main.c        ****    TCCR0=0x00;
+ 361               	_tmp_reg__
+ 362               		pop __zero_reg__
+ 363 0154 13BE      		reti
+  71:main.c        ****    PORTB=0x00;
+ 364               	68,0,38,.LM19-__vector_9
+ 365               	.LM19:
+ 366 0156 18BA      		in r24,56-0x20
+ 367               		ldi r25,lo8(1)
+ 368 0158 1F91      		eor r24,r25
+ 369 015a 0F91      		out 56-0x20,r24
+ 370 015c FF90      	/* epilogue: frame size=0 */
+ 371 015e 0895      		pop r25
+ 372               		pop r24
+ 373               		pop __tmp_reg__
+ 374               		out __SREG__,__tmp_reg__
+ 375               		pop __tmp_reg__
+ 376               		pop __zero_reg__
+ 377               		reti
+ 378               	/* epilogue end (size=7) */
+ 379               	/* function __vector_9 size 20 (6) */
+ 381               	.Lscope3:
+  72:main.c        ****   
+  73:main.c        ****  }	
+  74:main.c        ****  
+  75:main.c        **** 
+  76:main.c        **** int main()
+  77:main.c        ****  {
+ 384               	, @function
+ 385               	tx:
+ 387               	.LM20:
+  78:main.c        ****  unsigned char tx1;
+  79:main.c        ****  TCNT0=46;      //timer counter register
+ 388               	/
+ 389               	/* function __vector_9 size 20 (6) */
+ 391 0162 82BF      	.Lscope3:
+  80:main.c        ****  TCCR0=0X00;	//timer counter control register
+ 392               	 size=0 */
+ 393               		pop r25
+ 394 0164 13BE      		pop r24
+  81:main.c        ****  
+  82:main.c        ****  TIMSK=0X01;	//timer interrupt mask register
+ 395               	=7) */
+ 397 0166 81E0      	.LM18:
+ 398 0168 89BF      		ldi r24,lo8(46)
+  83:main.c        ****  
+  84:main.c        ****  DDRB=0x01;		//data direction register
+ 399               	 82-0x20,r24
+ 401 016a 87BB      	.LM19:
+  85:main.c        ****  PORTB=0x00;	//port B  initialization
+ 402               	 r24,56-0x20
+ 403               		ldi r25,lo8(1)
+ 404 016c 18BA      		eor r24,r25
+  86:main.c        ****  PORTA=0xf0;
+ 405               	mp_reg__
+ 406               		clr __zero_reg__
+ 407 016e 80EF      		push r24
+ 408 0170 8BBB      		push r25
+  87:main.c        ****  DDRA=0x00;
+ 409               	rologue end (size=7) */
+ 411 0172 1ABA      	.LM18:
+  88:main.c        ****  
+  89:main.c        ****  sei();			//set global interrupt enable
+ 412               	i r24,lo8(46)
+ 413               		out 82-0x20,r24
+ 415 0174 7894      	.LM19:
+ 416               		in r24,56-0x20
+ 417               		ldi r25,lo8(1)
+  90:main.c        ****  
+  91:main.c        ****  while(1)
+  92:main.c        **** 	{
+  93:main.c        **** 	
+  94:main.c        **** 
+  95:main.c        **** 	 if((PINA&0x10)==0x00)
+ 418               	24,r25
+ 419               		out 56-0x20,r24
+ 420 0176 CC99      	/* epilogue: frame size=0 */
+ 421 0178 00C0      		pop r25
+  96:main.c        **** 	  {
+  97:main.c        **** 	   tx(0x01);
+ 422               	 end (size=7) */
+ 424 017a 81E0      	.LM18:
+ 425 017c 00D0      		ldi r24,lo8(46)
+  98:main.c        **** 	   delayms(113);
+ 426               	 82-0x20,r24
+ 428 017e 81E7      	.LM19:
+ 429 0180 90E0      		in r24,56-0x20
+ 430 0182 00D0      		ldi r25,lo8(1)
+ 431               		eor r24,r25
+  99:main.c        **** 	  }
+ 100:main.c        **** 	  
+ 101:main.c        **** 	 if((PINA&0x20)==0x00)
+ 432               	6-0x20,r24
+ 433               	/* epilogue: frame size=0 */
+ 434 0184 CD99      		pop r25
+ 435 0186 00C0      		pop r24
+ 102:main.c        **** 	  {
+ 103:main.c        **** 	   tx(0x02);
+ 436               	=7) */
+ 438 0188 82E0      	.LM18:
+ 439 018a 00D0      		ldi r24,lo8(46)
+ 104:main.c        **** 	   delayms(113);
+ 440               	 82-0x20,r24
+ 442 018c 81E7      	.LM19:
+ 443 018e 90E0      		in r24,56-0x20
+ 444 0190 00D0      		ldi r25,lo8(1)
+ 445               		eor r24,r25
+ 105:main.c        **** 	  }
+ 106:main.c        **** 
+ 107:main.c        **** 	if((PINA&0x40)==0x00)
+ 446               	6-0x20,r24
+ 447               	/* epilogue: frame size=0 */
+ 448 0192 CE99      		pop r25
+ 449 0194 00C0      		pop r24
+ 108:main.c        **** 	  {
+ 109:main.c        **** 	   tx(0x03);
+ 450               	=7) */
+ 452 0196 83E0      	.LM18:
+ 453 0198 00D0      		ldi r24,lo8(46)
+ 110:main.c        **** 	   delayms(113);
+ 454               	 82-0x20,r24
+ 456 019a 81E7      	.LM19:
+ 457 019c 90E0      		in r24,56-0x20
+ 458 019e 00D0      		ldi r25,lo8(1)
+ 459               		eor r24,r25
+ 111:main.c        **** 	  }
+ 112:main.c        **** 	  
+ 113:main.c        **** 	 if((PINA&0x80)==0x00)
+ 460               	6-0x20,r24
+ 461               	/* epilogue: frame size=0 */
+ 462 01a0 CF99      		pop r25
+ 463 01a2 00C0      		pop r24
+ 114:main.c        **** 	  {
+ 115:main.c        **** 	   tx(0x04);
+ 464               	=7) */
+ 466 01a4 84E0      	.LM18:
+ 467 01a6 00D0      		ldi r24,lo8(46)
+ 116:main.c        **** 	   delayms(113);
+ 468               	 82-0x20,r24
+ 470 01a8 81E7      	.LM19:
+ 471 01aa 90E0      		in r24,56-0x20
+ 472 01ac 00D0      		ldi r25,lo8(1)
+ 473 01ae 00C0      		eor r24,r25
+ 474               		out 56-0x20,r24
+ 475               	/* epilogue: frame size=0 */
+ 476               		pop r25
+ 477               		pop r24
+ 478               		pop __tmp_reg__
+ 479               		out __SREG__,__tmp_reg__
+ 480               		pop __tmp_reg__
+ 481               		pop __zero_reg__
+ 482               		reti
+ 483               	/* epilogue end (size=7) */
+ 484               	/* function __vector_9 size 20 (6) */
+ 486               	.Lscope3:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:71     .text:00000000 delayms
+                            *COM*:00000002 delaycounter1
+                            *COM*:00000002 delaycounter2
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:137    .text:00000050 delayus
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:184    .text:00000084 delay_us
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:232    .text:000000b8 __vector_9
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:270    .text:000000e0 tx
+C:\Users\User\AppData\Local\Temp/ccBud5qg.s:383    .text:00000160 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

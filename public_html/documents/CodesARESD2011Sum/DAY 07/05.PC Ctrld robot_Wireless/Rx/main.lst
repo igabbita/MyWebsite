@@ -1,0 +1,1532 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   9               		.text
+  10               	.Ltext0:
+  69               	.global	spi_master_init
+  71               	spi_master_init:
+  73               	.Ltext1:
+   1:cc2500b.h     **** /**************************************************************************************************
+   2:cc2500b.h     **** HEADER:cc2500b.h (SPI master to interface CC2500 with atmega 8535 )
+   3:cc2500b.h     **** ***************************************************************************************************
+   4:cc2500b.h     **** 
+   5:cc2500b.h     **** *COPYRIGHT(c): Technophilia.
+   6:cc2500b.h     **** *AUTHOR: Technophilia
+   7:cc2500b.h     **** *Target system: AVR devlopment board s/n-107010
+   8:cc2500b.h     **** *Manufacturer: Technophilia 
+   9:cc2500b.h     **** *Microcontroller: ATmega-8535
+  10:cc2500b.h     **** *Clock: 16MHz
+  11:cc2500b.h     **** *COMPILER: WinAVR
+  12:cc2500b.h     **** 
+  13:cc2500b.h     **** *H fuse=0xC8																	
+  14:cc2500b.h     **** *L fuse=0xFF	
+  15:cc2500b.h     **** 	
+  16:cc2500b.h     **** DESCRIPTION: 
+  17:cc2500b.h     **** 
+  18:cc2500b.h     ****     This header files gives an interface between cc2500 RF communication 
+  19:cc2500b.h     **** 	module and motherboard for	serial rf bidirectional communicating
+  20:cc2500b.h     **** 	purpose. Include this header file in your C code. Call the rf_init() 
+  21:cc2500b.h     **** 	function before calling any other functions of cc2500.
+  22:cc2500b.h     **** 	
+  23:cc2500b.h     **** ***************************************************************************************************
+  24:cc2500b.h     **** 
+  25:cc2500b.h     **** MOTHER BOARD CONFIGURATION / PORTS USED
+  26:cc2500b.h     **** 
+  27:cc2500b.h     **** LCD (on PORTC)----------------------------------------------
+  28:cc2500b.h     **** 
+  29:cc2500b.h     **** RS PORTC.0
+  30:cc2500b.h     **** RW PORTC.1 
+  31:cc2500b.h     **** E  PORTC.2
+  32:cc2500b.h     **** D4 PORTC.4
+  33:cc2500b.h     **** D5 PORTC.5
+  34:cc2500b.h     **** D6 PORTC.6
+  35:cc2500b.h     **** D7 PORTC.7
+  36:cc2500b.h     **** 
+  37:cc2500b.h     **** Switches----------------------------------------------------
+  38:cc2500b.h     **** 
+  39:cc2500b.h     **** S1  PortA4
+  40:cc2500b.h     **** S2  PortA5
+  41:cc2500b.h     **** S3  PortA6
+  42:cc2500b.h     **** S4  PortA7
+  43:cc2500b.h     **** 
+  44:cc2500b.h     **** RST Reset
+  45:cc2500b.h     **** 
+  46:cc2500b.h     **** LED (Active high)-------------------------------------------
+  47:cc2500b.h     **** 
+  48:cc2500b.h     **** LED1-PortC4
+  49:cc2500b.h     **** LED2-PortC5
+  50:cc2500b.h     **** LED3-PortC6
+  51:cc2500b.h     **** LED4-PortC7
+  52:cc2500b.h     **** power-Power on indicator main power
+  53:cc2500b.h     **** DS-power on indicator driving supply
+  54:cc2500b.h     **** 
+  55:cc2500b.h     **** BUZZER (Active high mode)-----------------------------------
+  56:cc2500b.h     **** 	
+  57:cc2500b.h     **** PortB4
+  58:cc2500b.h     **** 1-Buzzer enables
+  59:cc2500b.h     **** 
+  60:cc2500b.h     **** MOTOR DRIVERS-----------------------------------------------
+  61:cc2500b.h     **** 
+  62:cc2500b.h     **** 0-PortB0
+  63:cc2500b.h     **** 1-PortB1
+  64:cc2500b.h     **** 2-PortB2
+  65:cc2500b.h     **** 3-PortB3
+  66:cc2500b.h     **** 4-PortD4
+  67:cc2500b.h     **** 5-PortD5
+  68:cc2500b.h     **** 6-PortD6
+  69:cc2500b.h     **** 7-PortD7
+  70:cc2500b.h     **** 
+  71:cc2500b.h     **** 
+  72:cc2500b.h     **** CC2500……………….(RF trans receiver module)----------------------		
+  73:cc2500b.h     **** 							
+  74:cc2500b.h     **** PB5-MOSI																
+  75:cc2500b.h     **** PB6-MISO																
+  76:cc2500b.h     **** PB7-SCK																	
+  77:cc2500b.h     **** PB4-SS'																	
+  78:cc2500b.h     **** PB2-GD0																	
+  79:cc2500b.h     **** PB3-GD2	
+  80:cc2500b.h     **** 
+  81:cc2500b.h     **** ***************************************************************************************************
+  82:cc2500b.h     **** 
+  83:cc2500b.h     **** #include<avr/interrupt.h>
+  84:cc2500b.h     **** 
+  85:cc2500b.h     **** #ifndef _CC2500b_H_
+  86:cc2500b.h     **** #define _CC2500b_H_
+  87:cc2500b.h     **** 
+  88:cc2500b.h     **** #define csn1 (PORTB|=0x10)
+  89:cc2500b.h     **** #define csn0 (PORTB&=0xEF)
+  90:cc2500b.h     **** #define miso (PINB & 0x40)
+  91:cc2500b.h     **** #define gd0 (PINB & 0x04)
+  92:cc2500b.h     **** 
+  93:cc2500b.h     **** //******************************************************************************************//0
+  94:cc2500b.h     **** void rf_init();				      		//for initialization of rf device                  	//1
+  95:cc2500b.h     **** void spi_master_init(void);																   	//2
+  96:cc2500b.h     **** void cc_reset(void);																		//3
+  97:cc2500b.h     **** void cc_config(void);																		//4
+  98:cc2500b.h     **** void cc_strobe(char data);																	//5
+  99:cc2500b.h     **** void Wait(char timeout);																	//6
+ 100:cc2500b.h     **** 
+ 101:cc2500b.h     **** /****normal mode communication****/
+ 102:cc2500b.h     **** void cc_writereg(char add,char data);														//7
+ 103:cc2500b.h     **** void rf_transmit(unsigned char CCdata);														//8
+ 104:cc2500b.h     **** void cc_readreg(char add);																	//9
+ 105:cc2500b.h     **** void rf_receive();																			//10
+ 106:cc2500b.h     **** 
+ 107:cc2500b.h     **** /****burst mode communication****/
+ 108:cc2500b.h     **** void cc_writereg_B(char add,char data1,char data2,char data3);								//11
+ 109:cc2500b.h     **** void rf_transmit_B(unsigned char CCdata1, unsigned char CCdata2, unsigned char CCdata3);	//12
+ 110:cc2500b.h     **** void cc_readreg_B(char add);																//13
+ 111:cc2500b.h     **** void rf_receive_B();																		//14
+ 112:cc2500b.h     **** 
+ 113:cc2500b.h     **** /**************************************************************************************************
+ 114:cc2500b.h     **** unsigned char retval,retval1,retval2,retval3,flag,cc_data,cc_data1,cc_data2,cc_data3;
+ 115:cc2500b.h     **** 
+ 116:cc2500b.h     **** ISR (INT2_vect) //****************************************************************************0
+ 117:cc2500b.h     **** { 
+ 118:cc2500b.h     **** 	if(flag==0)
+ 119:cc2500b.h     **** 	{
+ 120:cc2500b.h     **** 		//rf_receive();  	//Comment or Uncomment for normal mode communication
+ 121:cc2500b.h     **** 		rf_receive_B();   	//Comment or Uncomment for burst mode communication
+ 122:cc2500b.h     ****     }
+ 123:cc2500b.h     **** 	else
+ 124:cc2500b.h     **** 	{
+ 125:cc2500b.h     **** 		flag=0;
+ 126:cc2500b.h     **** 	}
+ 127:cc2500b.h     **** }
+ 128:cc2500b.h     **** 
+ 129:cc2500b.h     **** void rf_init() //*****************************************************************************1
+ 130:cc2500b.h     **** {
+ 131:cc2500b.h     **** 	spi_master_init();
+ 132:cc2500b.h     **** 	cc_reset();
+ 133:cc2500b.h     **** 	cc_config();
+ 134:cc2500b.h     **** 	Wait(100);   
+ 135:cc2500b.h     **** 	cc_strobe(0x34); 		//receive mode
+ 136:cc2500b.h     **** 	//MCUCR=0x02;			//for interrupt 0
+ 137:cc2500b.h     **** 	//GICR=0x40;	
+ 138:cc2500b.h     ****  
+ 139:cc2500b.h     **** 	MCUCSR=0x00;			//Falling Edge
+ 140:cc2500b.h     **** 	GICR=0x20;				//interrupt 2 enabled
+ 141:cc2500b.h     ****  
+ 142:cc2500b.h     **** 	sei();	 
+ 143:cc2500b.h     **** 	Wait(100);
+ 144:cc2500b.h     **** 	Wait(100);
+ 145:cc2500b.h     **** 	Wait(100);
+ 146:cc2500b.h     **** 	Wait(100);
+ 147:cc2500b.h     **** 	retval=retval1=retval2=retval3=flag=cc_data=cc_data1=cc_data2=cc_data3=0;
+ 148:cc2500b.h     **** }
+ 149:cc2500b.h     **** 
+ 150:cc2500b.h     **** void spi_master_init(void) //*****************************************************************2
+ 151:cc2500b.h     **** {
+  74               	ame size = 0 */
+  76               	.LM1:
+  77               		sbi 55-32,1
+ 152:cc2500b.h     **** 	DDRB|=0x02;			//spi slave select pin configure as output
+  79               	
+  80               		in r24,55-32
+  81 0000 B99A      		ori r24,lo8(-80)
+ 153:cc2500b.h     **** 	DDRB|=0xB0;			//spi pins (mosi, sck, ss) configure as output important ss must shod be configured 
+  82               	ut 55-32,r24
+  84 0002 87B3      	.LM3:
+  85 0004 806B      		ldi r24,lo8(80)
+  86 0006 87BB      		out 45-32,r24
+ 154:cc2500b.h     **** 	SPCR =0x50;			//spe=1(spi enable),DDRD=1(MSB first),mstr=1(master)
+  87               	ilogue start */
+  89 0008 80E5      	.LM4:
+  90 000a 8DB9      		ret
+ 155:cc2500b.h     **** }
+  92               	pe1:
+  95               	.global	cc_strobe
+  97               	cc_strobe:
+  99               	.LM5:
+ 100               	.LFBB2:
+ 101               	/* prologue: function */
+ 156:cc2500b.h     **** 
+ 157:cc2500b.h     **** void cc_reset(void) //************************************************************************3
+ 158:cc2500b.h     **** {
+ 159:cc2500b.h     **** 	csn1; 
+ 160:cc2500b.h     ****     Wait(1); 
+ 161:cc2500b.h     ****     csn0; 
+ 162:cc2500b.h     ****     Wait(1); 
+ 163:cc2500b.h     ****     csn1; 
+ 164:cc2500b.h     ****     Wait(41);
+ 165:cc2500b.h     **** 	csn0;
+ 166:cc2500b.h     ****     while (miso);//((PINB&0x08)); 
+ 167:cc2500b.h     ****     SPDR = 0x30; 
+ 168:cc2500b.h     ****     while((SPSR&0x80)==0);			 //SPI_WAIT(); 
+ 169:cc2500b.h     **** 	while (miso);//((PINB&0x08)); 
+ 170:cc2500b.h     ****     csn1; 
+ 171:cc2500b.h     **** }
+ 172:cc2500b.h     **** 
+ 173:cc2500b.h     **** void cc_config(void) //***********************************************************************4
+ 174:cc2500b.h     **** {
+ 175:cc2500b.h     **** 	cc_writereg(0X0B,0x07);
+ 176:cc2500b.h     **** 	cc_writereg(0x0c,0x00);
+ 177:cc2500b.h     **** 	cc_writereg(0x0D,0x5D);
+ 178:cc2500b.h     **** 	cc_writereg(0x0E,0x93);
+ 179:cc2500b.h     **** 	cc_writereg(0x0F,0xB1);		//93
+ 180:cc2500b.h     ****  
+ 181:cc2500b.h     **** 	cc_writereg(0x10,0x2D);
+ 182:cc2500b.h     **** 	cc_writereg(0x11,0x3B);
+ 183:cc2500b.h     **** 	cc_writereg(0x12,0x73);
+ 184:cc2500b.h     **** 	cc_writereg(0x13,0x22);
+ 185:cc2500b.h     **** 	cc_writereg(0x14,0xF8);
+ 186:cc2500b.h     ****  
+ 187:cc2500b.h     **** 	cc_writereg(0x0A,0x00);
+ 188:cc2500b.h     ****  
+ 189:cc2500b.h     **** 	cc_writereg(0x15,0x00);		//
+ 190:cc2500b.h     ****  
+ 191:cc2500b.h     **** 	cc_writereg(0x21,0xB6);
+ 192:cc2500b.h     **** 	cc_writereg(0x22,0x10);
+ 193:cc2500b.h     ****  
+ 194:cc2500b.h     **** 	cc_writereg(0x18,0x18);
+ 195:cc2500b.h     **** 	cc_writereg(0x19,0x1D);
+ 196:cc2500b.h     ****  
+ 197:cc2500b.h     **** 	cc_writereg(0x1A,0x1C);
+ 198:cc2500b.h     **** 	cc_writereg(0x1B,0xC7);
+ 199:cc2500b.h     **** 	cc_writereg(0x1C,0x00);
+ 200:cc2500b.h     **** 	cc_writereg(0x1D,0xB2);		//f8
+ 201:cc2500b.h     ****  
+ 202:cc2500b.h     **** 	cc_writereg(0x23,0xEA);
+ 203:cc2500b.h     **** 	cc_writereg(0x24,0x0A);
+ 204:cc2500b.h     **** 	cc_writereg(0x25,0x00);
+ 205:cc2500b.h     **** 	cc_writereg(0x26,0x11);
+ 206:cc2500b.h     **** 	cc_writereg(0x29,0x59);
+ 207:cc2500b.h     ****  
+ 208:cc2500b.h     **** 	cc_writereg(0x2C,0x88);
+ 209:cc2500b.h     **** 	cc_writereg(0x2D,0x31);
+ 210:cc2500b.h     **** 	cc_writereg(0x2E,0x0B);
+ 211:cc2500b.h     ****  
+ 212:cc2500b.h     **** 	cc_writereg(0x00,0x06);  	//iocfg2
+ 213:cc2500b.h     ****  
+ 214:cc2500b.h     **** 	cc_writereg(0x02,0x06); 	//iocfg0
+ 215:cc2500b.h     ****  
+ 216:cc2500b.h     **** 	cc_writereg(0x07,0x04);
+ 217:cc2500b.h     **** 	cc_writereg(0x08,0x05);  	//pktctrl 0 
+ 218:cc2500b.h     **** 	cc_writereg(0x09,0x00);		//device address
+ 219:cc2500b.h     **** 	cc_writereg(0x06,0xFF);
+ 220:cc2500b.h     ****  
+ 221:cc2500b.h     **** 	//sync bits
+ 222:cc2500b.h     **** 	cc_writereg(0x04,0x12);
+ 223:cc2500b.h     **** 	cc_writereg(0x05,0x34);
+ 224:cc2500b.h     **** }
+ 225:cc2500b.h     **** 
+ 226:cc2500b.h     **** cc_strobe(char data) //***********************************************************************5
+ 227:cc2500b.h     **** {
+ 102               	ize = 0 */
+ 104               	.LM6:
+ 105               		cbi 56-32,4
+ 106               	.L4:
+ 228:cc2500b.h     **** 	csn0;						//pull the ss line to down to activate slave 
+ 107               	bn	68,0,229,.LM7-.LFBB2
+ 108               	.LM7:
+ 109 000e C498      		sbic 54-32,6
+ 110               		rjmp .L4
+ 229:cc2500b.h     **** 	while(miso);
+ 111               	abn	68,0,230,.LM8-.LFBB2
+ 112               	.LM8:
+ 113 0010 B699      		out 47-32,r24
+ 114 0012 00C0      	.L5:
+ 230:cc2500b.h     **** 	SPDR=data;					//place data on spi resistor
+ 115               	abn	68,0,231,.LM9-.LFBB2
+ 116               	.LM9:
+ 117 0014 8FB9      		sbis 46-32,7
+ 118               		rjmp .L5
+ 231:cc2500b.h     **** 	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 119               	abn	68,0,232,.LM10-.LFBB2
+ 120               	.LM10:
+ 121 0016 779B      		sbi 56-32,4
+ 232:cc2500b.h     **** 	csn1;						//pull the ss line to up to deactivate the slave
+ 123               	1:
+ 124               		in r24,47-32
+ 125 001a C49A      		sts retval,r24
+ 233:cc2500b.h     **** 	retval = SPDR;
+ 126               	epilogue start */
+ 128 001c 8FB1      	.LM12:
+ 129 001e 8093 0000 		ret
+ 234:cc2500b.h     **** }
+ 131               	pe2:
+ 134               	.global	Wait
+ 136               	Wait:
+ 138               	.LM13:
+ 139               	.LFBB3:
+ 140               	/* prologue: function */
+ 235:cc2500b.h     **** 
+ 236:cc2500b.h     **** Wait(char timeout) //*************************************************************************6
+ 237:cc2500b.h     **** {
+ 141               	ize = 0 */
+ 142               	.L10:
+ 144               	.LM14:
+ 145               	/* #APP */
+ 146               	 ;  240 "cc2500b.h" 1
+ 238:cc2500b.h     **** // This sequence uses exactly 8 clock cycle for each round
+ 239:cc2500b.h     ****  do {
+ 240:cc2500b.h     ****         asm("nop");
+ 147               	;  0 "" 2
+ 149               	.LM15:
+ 150               	 ;  241 "cc2500b.h" 1
+ 151 0024 0000      		nop
+ 152               	 ;  0 "" 2
+ 241:cc2500b.h     ****         asm("nop");
+ 153               	n	68,0,242,.LM16-.LFBB3
+ 154               	.LM16:
+ 155               	 ;  242 "cc2500b.h" 1
+ 156 0026 0000      		nop
+ 157               	 ;  0 "" 2
+ 242:cc2500b.h     ****         asm("nop");
+ 158               	bn	68,0,243,.LM17-.LFBB3
+ 159               	.LM17:
+ 160               	 ;  243 "cc2500b.h" 1
+ 161 0028 0000      		nop
+ 162               	 ;  0 "" 2
+ 243:cc2500b.h     ****         asm("nop");
+ 163               	bn	68,0,244,.LM18-.LFBB3
+ 164               	.LM18:
+ 165               	 ;  244 "cc2500b.h" 1
+ 166 002a 0000      		nop
+ 167               	 ;  0 "" 2
+ 244:cc2500b.h     **** 		asm("nop");
+ 168               	bn	68,0,245,.LM19-.LFBB3
+ 169               	.LM19:
+ 170               	 ;  245 "cc2500b.h" 1
+ 171 002c 0000      		nop
+ 172               	 ;  0 "" 2
+ 245:cc2500b.h     ****         asm("nop");
+ 173               	bn	68,0,246,.LM20-.LFBB3
+ 174               	.LM20:
+ 175               	 ;  246 "cc2500b.h" 1
+ 176 002e 0000      		nop
+ 177               	 ;  0 "" 2
+ 246:cc2500b.h     ****         asm("nop");
+ 178               	bn	68,0,247,.LM21-.LFBB3
+ 179               	.LM21:
+ 180               	 ;  247 "cc2500b.h" 1
+ 181 0030 0000      		nop
+ 182               	 ;  0 "" 2
+ 247:cc2500b.h     ****         asm("nop");
+ 183               	bn	68,0,248,.LM22-.LFBB3
+ 184               	.LM22:
+ 185               	 ;  248 "cc2500b.h" 1
+ 186 0032 0000      		nop
+ 187               	 ;  0 "" 2
+ 248:cc2500b.h     **** 		asm("nop");
+ 188               	bn	68,0,249,.LM23-.LFBB3
+ 189               	.LM23:
+ 190               	 ;  249 "cc2500b.h" 1
+ 191 0034 0000      		nop
+ 192               	 ;  0 "" 2
+ 249:cc2500b.h     ****         asm("nop");
+ 193               	bn	68,0,251,.LM24-.LFBB3
+ 194               	.LM24:
+ 195               	/* #NOAPP */
+ 196 0036 0000      		subi r24,lo8(-(-1))
+ 197               		brne .L10
+ 250:cc2500b.h     **** 	} 
+ 251:cc2500b.h     **** 	while (--timeout);
+ 198               	ilogue start */
+ 200               	.LM25:
+ 201 0038 8150      		ret
+ 203               	.Lscope3:
+ 252:cc2500b.h     **** }
+ 204               	s	"cc_reset:F(0,15)",36,0,0,cc_reset
+ 205               	.global	cc_reset
+ 207               	cc_reset:
+ 209               	.LM26:
+ 210               	.LFBB4:
+ 211               	/* prologue: function */
+ 212               	/* frame size = 0 */
+ 214               	.LM27:
+ 215               		sbi 56-32,4
+ 217               	.LM28:
+ 218               		ldi r24,lo8(1)
+ 219               		rcall Wait
+ 221               	.LM29:
+ 222               		cbi 56-32,4
+ 224 0042 00D0      	.LM30:
+ 225               		ldi r24,lo8(1)
+ 226               		rcall Wait
+ 228               	.LM31:
+ 229               		sbi 56-32,4
+ 231 0048 00D0      	.LM32:
+ 232               		ldi r24,lo8(41)
+ 233               		rcall Wait
+ 235               	.LM33:
+ 236               		cbi 56-32,4
+ 237 004c 89E2      	.L14:
+ 239               	.LM34:
+ 240               		sbic 54-32,6
+ 241 0050 C498      		rjmp .L14
+ 243               	.LM35:
+ 244               		ldi r24,lo8(48)
+ 245 0052 B699      		out 47-32,r24
+ 246 0054 00C0      	.L15:
+ 248               	.LM36:
+ 249 0056 80E3      		sbis 46-32,7
+ 250 0058 8FB9      		rjmp .L15
+ 251               	.L18:
+ 253               	.LM37:
+ 254 005a 779B      		sbic 54-32,6
+ 255 005c 00C0      		rjmp .L18
+ 257               	.LM38:
+ 258               		sbi 56-32,4
+ 259 005e B699      	/* epilogue start */
+ 261               	.LM39:
+ 262               		ret
+ 264               	.Lscope4:
+ 268               	.global	cc_writereg
+ 270               	cc_writereg:
+ 272               	.LM40:
+ 273               	.LFBB5:
+ 274               	/* prologue: function */
+ 275               	/* frame size = 0 */
+ 253:cc2500b.h     **** 
+ 254:cc2500b.h     **** /*********************************SINGLE MODE COMMUNICATION***********************************/
+ 255:cc2500b.h     **** /********Check that in ISR rf_recieve(); is uncommented & rf_receive_B(); is commented********/
+ 256:cc2500b.h     **** 
+ 257:cc2500b.h     **** void cc_writereg(char add,char data)//********************************************************7
+ 258:cc2500b.h     **** {
+ 276               	,.LM42-.LFBB5
+ 277               	.LM42:
+ 278               		sbic 54-32,6
+ 279               		rjmp .L23
+ 259:cc2500b.h     **** 	csn0;
+ 281               	:
+ 282               		out 47-32,r24
+ 283 0066 C498      	.L24:
+ 260:cc2500b.h     **** 	while(miso);
+ 285               	4:
+ 286               		sbis 46-32,7
+ 287 0068 B699      		rjmp .L24
+ 261:cc2500b.h     **** 	SPDR=add;
+ 289               	5:
+ 290               		out 47-32,r22
+ 291 006c 8FB9      	.L25:
+ 262:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 293               	6:
+ 294               		sbis 46-32,7
+ 295 006e 779B      		rjmp .L25
+ 263:cc2500b.h     **** 	SPDR=data;					//place data on spi resistor
+ 297               	7:
+ 298               		sbi 56-32,4
+ 300               	.LM48:
+ 264:cc2500b.h     **** 	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 301               	 r24,lo8(1)
+ 302               		rcall Wait
+ 303 0074 779B      	/* epilogue start */
+ 265:cc2500b.h     **** 	csn1;
+ 305               	9:
+ 306               		ret
+ 266:cc2500b.h     **** 	Wait(1);
+ 308               	cope5:
+ 310 007a 81E0      	.global	cc_config
+ 312               	cc_config:
+ 267:cc2500b.h     **** }
+ 313               	bn	68,0,174,.LM50-.LFBB6
+ 314               	.LM50:
+ 315 007e 0895      	.LFBB6:
+ 316               	/* prologue: function */
+ 317               	/* frame size = 0 */
+ 319               	.LM51:
+ 320               		ldi r24,lo8(11)
+ 321               		ldi r22,lo8(7)
+ 322               		rcall cc_writereg
+ 324               	.LM52:
+ 325               		ldi r24,lo8(12)
+ 326               		ldi r22,lo8(0)
+ 327               		rcall cc_writereg
+ 329 0080 8BE0      	.LM53:
+ 330 0082 67E0      		ldi r24,lo8(13)
+ 331 0084 00D0      		ldi r22,lo8(93)
+ 332               		rcall cc_writereg
+ 334 0086 8CE0      	.LM54:
+ 335 0088 60E0      		ldi r24,lo8(14)
+ 336 008a 00D0      		ldi r22,lo8(-109)
+ 337               		rcall cc_writereg
+ 339 008c 8DE0      	.LM55:
+ 340 008e 6DE5      		ldi r24,lo8(15)
+ 341 0090 00D0      		ldi r22,lo8(-79)
+ 342               		rcall cc_writereg
+ 344 0092 8EE0      	.LM56:
+ 345 0094 63E9      		ldi r24,lo8(16)
+ 346 0096 00D0      		ldi r22,lo8(45)
+ 347               		rcall cc_writereg
+ 349 0098 8FE0      	.LM57:
+ 350 009a 61EB      		ldi r24,lo8(17)
+ 351 009c 00D0      		ldi r22,lo8(59)
+ 352               		rcall cc_writereg
+ 354 009e 80E1      	.LM58:
+ 355 00a0 6DE2      		ldi r24,lo8(18)
+ 356 00a2 00D0      		ldi r22,lo8(115)
+ 357               		rcall cc_writereg
+ 359 00a4 81E1      	.LM59:
+ 360 00a6 6BE3      		ldi r24,lo8(19)
+ 361 00a8 00D0      		ldi r22,lo8(34)
+ 362               		rcall cc_writereg
+ 364 00aa 82E1      	.LM60:
+ 365 00ac 63E7      		ldi r24,lo8(20)
+ 366 00ae 00D0      		ldi r22,lo8(-8)
+ 367               		rcall cc_writereg
+ 369 00b0 83E1      	.LM61:
+ 370 00b2 62E2      		ldi r24,lo8(10)
+ 371 00b4 00D0      		ldi r22,lo8(0)
+ 372               		rcall cc_writereg
+ 374 00b6 84E1      	.LM62:
+ 375 00b8 68EF      		ldi r24,lo8(21)
+ 376 00ba 00D0      		ldi r22,lo8(0)
+ 377               		rcall cc_writereg
+ 379 00bc 8AE0      	.LM63:
+ 380 00be 60E0      		ldi r24,lo8(33)
+ 381 00c0 00D0      		ldi r22,lo8(-74)
+ 382               		rcall cc_writereg
+ 384 00c2 85E1      	.LM64:
+ 385 00c4 60E0      		ldi r24,lo8(34)
+ 386 00c6 00D0      		ldi r22,lo8(16)
+ 387               		rcall cc_writereg
+ 389 00c8 81E2      	.LM65:
+ 390 00ca 66EB      		ldi r24,lo8(24)
+ 391 00cc 00D0      		ldi r22,lo8(24)
+ 392               		rcall cc_writereg
+ 394 00ce 82E2      	.LM66:
+ 395 00d0 60E1      		ldi r24,lo8(25)
+ 396 00d2 00D0      		ldi r22,lo8(29)
+ 397               		rcall cc_writereg
+ 399 00d4 88E1      	.LM67:
+ 400 00d6 68E1      		ldi r24,lo8(26)
+ 401 00d8 00D0      		ldi r22,lo8(28)
+ 402               		rcall cc_writereg
+ 404 00da 89E1      	.LM68:
+ 405 00dc 6DE1      		ldi r24,lo8(27)
+ 406 00de 00D0      		ldi r22,lo8(-57)
+ 407               		rcall cc_writereg
+ 409 00e0 8AE1      	.LM69:
+ 410 00e2 6CE1      		ldi r24,lo8(28)
+ 411 00e4 00D0      		ldi r22,lo8(0)
+ 412               		rcall cc_writereg
+ 414 00e6 8BE1      	.LM70:
+ 415 00e8 67EC      		ldi r24,lo8(29)
+ 416 00ea 00D0      		ldi r22,lo8(-78)
+ 417               		rcall cc_writereg
+ 419 00ec 8CE1      	.LM71:
+ 420 00ee 60E0      		ldi r24,lo8(35)
+ 421 00f0 00D0      		ldi r22,lo8(-22)
+ 422               		rcall cc_writereg
+ 424 00f2 8DE1      	.LM72:
+ 425 00f4 62EB      		ldi r24,lo8(36)
+ 426 00f6 00D0      		ldi r22,lo8(10)
+ 427               		rcall cc_writereg
+ 429 00f8 83E2      	.LM73:
+ 430 00fa 6AEE      		ldi r24,lo8(37)
+ 431 00fc 00D0      		ldi r22,lo8(0)
+ 432               		rcall cc_writereg
+ 434 00fe 84E2      	.LM74:
+ 435 0100 6AE0      		ldi r24,lo8(38)
+ 436 0102 00D0      		ldi r22,lo8(17)
+ 437               		rcall cc_writereg
+ 439 0104 85E2      	.LM75:
+ 440 0106 60E0      		ldi r24,lo8(41)
+ 441 0108 00D0      		ldi r22,lo8(89)
+ 442               		rcall cc_writereg
+ 444 010a 86E2      	.LM76:
+ 445 010c 61E1      		ldi r24,lo8(44)
+ 446 010e 00D0      		ldi r22,lo8(-120)
+ 447               		rcall cc_writereg
+ 449 0110 89E2      	.LM77:
+ 450 0112 69E5      		ldi r24,lo8(45)
+ 451 0114 00D0      		ldi r22,lo8(49)
+ 452               		rcall cc_writereg
+ 454 0116 8CE2      	.LM78:
+ 455 0118 68E8      		ldi r24,lo8(46)
+ 456 011a 00D0      		ldi r22,lo8(11)
+ 457               		rcall cc_writereg
+ 459 011c 8DE2      	.LM79:
+ 460 011e 61E3      		ldi r24,lo8(0)
+ 461 0120 00D0      		ldi r22,lo8(6)
+ 462               		rcall cc_writereg
+ 464 0122 8EE2      	.LM80:
+ 465 0124 6BE0      		ldi r24,lo8(2)
+ 466 0126 00D0      		ldi r22,lo8(6)
+ 467               		rcall cc_writereg
+ 469 0128 80E0      	.LM81:
+ 470 012a 66E0      		ldi r24,lo8(7)
+ 471 012c 00D0      		ldi r22,lo8(4)
+ 472               		rcall cc_writereg
+ 474 012e 82E0      	.LM82:
+ 475 0130 66E0      		ldi r24,lo8(8)
+ 476 0132 00D0      		ldi r22,lo8(5)
+ 477               		rcall cc_writereg
+ 479 0134 87E0      	.LM83:
+ 480 0136 64E0      		ldi r24,lo8(9)
+ 481 0138 00D0      		ldi r22,lo8(0)
+ 482               		rcall cc_writereg
+ 484 013a 88E0      	.LM84:
+ 485 013c 65E0      		ldi r24,lo8(6)
+ 486 013e 00D0      		ldi r22,lo8(-1)
+ 487               		rcall cc_writereg
+ 489 0140 89E0      	.LM85:
+ 490 0142 60E0      		ldi r24,lo8(4)
+ 491 0144 00D0      		ldi r22,lo8(18)
+ 492               		rcall cc_writereg
+ 494 0146 86E0      	.LM86:
+ 495 0148 6FEF      		ldi r24,lo8(5)
+ 496 014a 00D0      		ldi r22,lo8(52)
+ 497               		rcall cc_writereg
+ 498               	/* epilogue start */
+ 500 014e 62E1      	.LM87:
+ 501 0150 00D0      		ret
+ 503               	.Lscope6:
+ 505 0154 64E3      	.global	rf_init
+ 507               	rf_init:
+ 509               	.LM88:
+ 510 0158 0895      	.LFBB7:
+ 511               	/* prologue: function */
+ 512               	/* frame size = 0 */
+ 513               	.LBB4:
+ 514               	.LBB5:
+ 516               	.LM89:
+ 517               		sbi 55-32,1
+ 519               	.LM90:
+ 520               		in r24,55-32
+ 521               		ori r24,lo8(-80)
+ 522               		out 55-32,r24
+ 524               	.LM91:
+ 525               		ldi r24,lo8(80)
+ 526 015a B99A      		out 45-32,r24
+ 527               	.LBE5:
+ 528               	.LBE4:
+ 530 015e 806B      	.LM92:
+ 531 0160 87BB      		rcall cc_reset
+ 533               	.LM93:
+ 534 0162 80E5      		rcall cc_config
+ 536               	.LM94:
+ 537               		ldi r24,lo8(100)
+ 538               		rcall Wait
+ 540 0166 00D0      	.LM95:
+ 541               		ldi r24,lo8(52)
+ 542               		rcall cc_strobe
+ 544               	.LM96:
+ 545               		out 84-32,__zero_reg__
+ 547 016c 00D0      	.LM97:
+ 548               		ldi r24,lo8(32)
+ 549               		out 91-32,r24
+ 551 0170 00D0      	.LM98:
+ 552               	/* #APP */
+ 553               	 ;  142 "cc2500b.h" 1
+ 554 0172 14BE      		sei
+ 555               	 ;  0 "" 2
+ 557 0174 80E2      	.LM99:
+ 558 0176 8BBF      	/* #NOAPP */
+ 559               		ldi r24,lo8(100)
+ 560               		rcall Wait
+ 562               	.LM100:
+ 563 0178 7894      		ldi r24,lo8(100)
+ 564               		rcall Wait
+ 566               	.LM101:
+ 567               		ldi r24,lo8(100)
+ 568 017a 84E6      		rcall Wait
+ 570               	.LM102:
+ 571               		ldi r24,lo8(100)
+ 572 017e 84E6      		rcall Wait
+ 574               	.LM103:
+ 575               		sts cc_data3,__zero_reg__
+ 576 0182 84E6      		sts cc_data2,__zero_reg__
+ 577 0184 00D0      		sts cc_data1,__zero_reg__
+ 578               		sts cc_data,__zero_reg__
+ 579               		sts flag,__zero_reg__
+ 580 0186 84E6      		sts retval3,__zero_reg__
+ 581 0188 00D0      		sts retval2,__zero_reg__
+ 582               		sts retval1,__zero_reg__
+ 583               		sts retval,__zero_reg__
+ 584 018a 1092 0000 	/* epilogue start */
+ 586 0192 1092 0000 	.LM104:
+ 587 0196 1092 0000 		ret
+ 589 019e 1092 0000 	.Lscope7:
+ 592 01aa 1092 0000 	.global	rf_transmit
+ 594               	rf_transmit:
+ 596 01ae 0895      	.LM105:
+ 597               	.LFBB8:
+ 598               	/* prologue: function */
+ 599               	/* frame size = 0 */
+ 600               		mov r22,r24
+ 602               	.LM106:
+ 603               	/* #APP */
+ 268:cc2500b.h     **** 
+ 269:cc2500b.h     **** void rf_transmit(unsigned char CCdata)//*******************************************************8
+ 270:cc2500b.h     **** {
+ 604               	-.LFBB8
+ 605               	.LM107:
+ 606               	/* #NOAPP */
+ 607               		ldi r24,lo8(1)
+ 608               		sts flag,r24
+ 271:cc2500b.h     **** 	cli();
+ 610               	:
+ 611               		ldi r24,lo8(63)
+ 612               		rcall cc_writereg
+ 614 01b2 F894      	.LM109:
+ 615               		ldi r24,lo8(53)
+ 272:cc2500b.h     **** 	flag=1;
+ 616               	 cc_strobe
+ 617               	.L35:
+ 619 01b4 81E0      	.LM110:
+ 620 01b6 8093 0000 		sbis 54-32,2
+ 273:cc2500b.h     **** 	cc_writereg(0x3f,CCdata);
+ 621               	 .L35
+ 622               	.L38:
+ 624 01bc 00D0      	.LM111:
+ 274:cc2500b.h     **** 	cc_strobe(0x35);
+ 625               	c 54-32,2
+ 626               		rjmp .L38
+ 628 01c0 00D0      	.LM112:
+ 629               		ldi r24,lo8(58)
+ 275:cc2500b.h     **** 	while(!gd0);
+ 630               	l cc_strobe
+ 632 01c2 B29B      	.LM113:
+ 633 01c4 00C0      		ldi r24,lo8(59)
+ 634               		rcall cc_strobe
+ 276:cc2500b.h     **** 	//lcd_string("2");
+ 277:cc2500b.h     **** 	while(gd0);
+ 635               	bn	68,0,280,.LM114-.LFBB8
+ 636               	.LM114:
+ 637 01c6 B299      		ldi r24,lo8(1)
+ 638 01c8 00C0      		rcall Wait
+ 278:cc2500b.h     **** 	cc_strobe(0x3A);  			//flux rxfifo
+ 639               	abn	68,0,281,.LM115-.LFBB8
+ 640               	.LM115:
+ 641 01ca 8AE3      		ldi r24,lo8(54)
+ 642 01cc 00D0      		rcall cc_strobe
+ 279:cc2500b.h     **** 	cc_strobe(0x3B); 			//flux txfifo
+ 643               	abn	68,0,282,.LM116-.LFBB8
+ 644               	.LM116:
+ 645 01ce 8BE3      		ldi r24,lo8(52)
+ 646 01d0 00D0      		rcall cc_strobe
+ 280:cc2500b.h     **** 	Wait(1);
+ 647               	abn	68,0,283,.LM117-.LFBB8
+ 648               	.LM117:
+ 649 01d2 81E0      		ldi r24,lo8(1)
+ 650 01d4 00D0      		rcall Wait
+ 281:cc2500b.h     **** 	cc_strobe(0x36); 			//ideale mode 
+ 651               	abn	68,0,284,.LM118-.LFBB8
+ 652               	.LM118:
+ 653 01d6 86E3      	/* #APP */
+ 654 01d8 00D0      	 ;  284 "cc2500b.h" 1
+ 282:cc2500b.h     **** 	cc_strobe(0x34); 			//receiver mode
+ 655               	
+ 656               	 ;  0 "" 2
+ 657 01da 84E3      	/* epilogue start */
+ 283:cc2500b.h     **** 	Wait(1); 
+ 659               	119:
+ 660               	/* #NOAPP */
+ 661 01de 81E0      		ret
+ 284:cc2500b.h     **** 	sei();
+ 663               	ope8:
+ 666               	.global	cc_readreg
+ 668               	cc_readreg:
+ 285:cc2500b.h     **** }
+ 670               	
+ 671               	.LFBB9:
+ 672               	/* prologue: function */
+ 673 01e4 0895      	/* frame size = 0 */
+ 675               	.LM121:
+ 676               		cbi 56-32,4
+ 677               	.L42:
+ 679               	.LM122:
+ 680               		sbic 54-32,6
+ 286:cc2500b.h     **** 
+ 287:cc2500b.h     **** void cc_readreg(char add)//*******************************************************************9
+ 288:cc2500b.h     **** {
+ 681               	
+ 683               	.LM123:
+ 684               		ori r24,lo8(-128)
+ 685               		out 47-32,r24
+ 289:cc2500b.h     **** 	csn0;
+ 686               	abn	68,0,292,.LM124-.LFBB9
+ 687               	.LM124:
+ 688 01e6 C498      		ldi r24,lo8(1)
+ 689               		rcall Wait
+ 290:cc2500b.h     **** 	while(miso);
+ 690               	:
+ 692 01e8 B699      	.LM125:
+ 693 01ea 00C0      		sbis 46-32,7
+ 291:cc2500b.h     **** 	SPDR=(add|0x80);
+ 694               	p .L43
+ 696 01ec 8068      	.LM126:
+ 697 01ee 8FB9      		out 47-32,__zero_reg__
+ 292:cc2500b.h     **** 	Wait(1);	
+ 698               	:
+ 700 01f0 81E0      	.LM127:
+ 701 01f2 00D0      		sbis 46-32,7
+ 702               		rjmp .L44
+ 293:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 703               	bn	68,0,296,.LM128-.LFBB9
+ 704               	.LM128:
+ 705 01f4 779B      		sbi 56-32,4
+ 294:cc2500b.h     **** 	SPDR=0;						//place data on spi resistor
+ 707               	29:
+ 708               		in r24,47-32
+ 709 01f8 1FB8      		sts retval,r24
+ 710               	/* epilogue start */
+ 295:cc2500b.h     **** 	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 711               	abn	68,0,298,.LM130-.LFBB9
+ 712               	.LM130:
+ 713 01fa 779B      		ret
+ 296:cc2500b.h     **** 	csn1;						//pull the ss line to up to deactivate the slave
+ 715               	ope9:
+ 717 01fe C49A      	.global	rf_receive
+ 297:cc2500b.h     **** 	retval = SPDR;
+ 718               	ype	rf_receive, @function
+ 719               	rf_receive:
+ 721 0202 8093 0000 	.LM131:
+ 722               	.LFBB10:
+ 298:cc2500b.h     **** }
+ 723               	ologue: function */
+ 724               	/* frame size = 0 */
+ 726               	.LM132:
+ 727               		ldi r24,lo8(63)
+ 728               		rcall cc_readreg
+ 730               	.LM133:
+ 731               		lds r24,retval
+ 299:cc2500b.h     **** 
+ 300:cc2500b.h     **** void rf_receive() //**************************************************************************10
+ 301:cc2500b.h     **** {
+ 732               	ata,r24
+ 734               	.LM134:
+ 735               		ldi r24,lo8(5)
+ 736               		rcall Wait
+ 302:cc2500b.h     **** 	cc_readreg(0x3F);
+ 737               	bn	68,0,305,.LM135-.LFBB10
+ 738               	.LM135:
+ 739 0208 8FE3      		ldi r24,lo8(58)
+ 740 020a 00D0      		rcall cc_strobe
+ 303:cc2500b.h     **** 	cc_data=retval;
+ 741               	abn	68,0,306,.LM136-.LFBB10
+ 742               	.LM136:
+ 743 020c 8091 0000 		ldi r24,lo8(1)
+ 744 0210 8093 0000 		rcall Wait
+ 304:cc2500b.h     **** 	Wait(5);
+ 745               	abn	68,0,307,.LM137-.LFBB10
+ 746               	.LM137:
+ 747 0214 85E0      		ldi r24,lo8(54)
+ 748 0216 00D0      		rcall cc_strobe
+ 305:cc2500b.h     **** 	cc_strobe(0x3A);  			//flux rxfifo
+ 749               	abn	68,0,308,.LM138-.LFBB10
+ 750               	.LM138:
+ 751 0218 8AE3      		ldi r24,lo8(1)
+ 752 021a 00D0      		rcall Wait
+ 306:cc2500b.h     **** 	Wait(1);
+ 753               	abn	68,0,309,.LM139-.LFBB10
+ 754               	.LM139:
+ 755 021c 81E0      		ldi r24,lo8(52)
+ 756 021e 00D0      		rcall cc_strobe
+ 307:cc2500b.h     **** 	cc_strobe(0x36); 			//ideale mode 
+ 757               	abn	68,0,310,.LM140-.LFBB10
+ 758               	.LM140:
+ 759 0220 86E3      		ldi r24,lo8(1)
+ 760 0222 00D0      		rcall Wait
+ 308:cc2500b.h     **** 	Wait(1);
+ 761               	pilogue start */
+ 763 0224 81E0      	.LM141:
+ 764 0226 00D0      		ret
+ 309:cc2500b.h     **** 	cc_strobe(0x34);			//receive mode
+ 765               	ze	rf_receive, .-rf_receive
+ 766               	.Lscope10:
+ 310:cc2500b.h     **** 	Wait(1);	
+ 769               	abs	"data1:P(0,2)",64,0,0,22
+ 772 022e 00D0      	.global	cc_writereg_B
+ 311:cc2500b.h     **** }
+ 774               	itereg_B:
+ 776 0230 0895      	.LM142:
+ 777               	.LFBB11:
+ 778               	/* prologue: function */
+ 779               	/* frame size = 0 */
+ 781               	.LM143:
+ 782               		cbi 56-32,4
+ 783               	.L52:
+ 785               	.LM144:
+ 786               		sbic 54-32,6
+ 312:cc2500b.h     **** 
+ 313:cc2500b.h     **** 
+ 314:cc2500b.h     **** /*******************************BURST (MULTI) MODE COMMUNICATION********************************/
+ 315:cc2500b.h     **** /********Check that in ISR rf_recieve_B(); is uncommented & rf_receive(); is commented**********/
+ 316:cc2500b.h     **** 
+ 317:cc2500b.h     **** void cc_writereg_B(char add,char data1,char data2,char data3)//********************************11
+ 318:cc2500b.h     **** {
+ 787               	stabn	68,0,321,.LM145-.LFBB11
+ 788               	.LM145:
+ 789               		out 47-32,r24
+ 790               	.L53:
+ 319:cc2500b.h     **** 	csn0;
+ 792               	6:
+ 793               		sbis 46-32,7
+ 794 0232 C498      		rjmp .L53
+ 320:cc2500b.h     **** 	while(miso);
+ 796               	47:
+ 797               		out 47-32,r22
+ 798 0234 B699      	.L54:
+ 321:cc2500b.h     **** 	SPDR=add;
+ 800               	48:
+ 801               		sbis 46-32,7
+ 802 0238 8FB9      		rjmp .L54
+ 322:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 804               	49:
+ 805               		out 47-32,r20
+ 806 023a 779B      	.L55:
+ 323:cc2500b.h     **** 	SPDR=data1;					//place data on spi resistor
+ 808               	50:
+ 809               		sbis 46-32,7
+ 810 023e 6FB9      		rjmp .L55
+ 324:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 812               	51:
+ 813               		out 47-32,r18
+ 814 0240 779B      	.L56:
+ 325:cc2500b.h     **** 	SPDR=data2;					//place data on spi resistor
+ 816               	52:
+ 817               		sbis 46-32,7
+ 818 0244 4FB9      		rjmp .L56
+ 326:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 820               	53:
+ 821               		sbi 56-32,4
+ 823 0248 00C0      	.LM154:
+ 327:cc2500b.h     **** 	SPDR=data3;					//place data on spi resistor
+ 824               	 r24,lo8(1)
+ 825               		rcall Wait
+ 826 024a 2FB9      	/* epilogue start */
+ 328:cc2500b.h     **** 	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 828               	55:
+ 829               		ret
+ 831 024e 00C0      	.Lscope11:
+ 329:cc2500b.h     **** 	csn1;
+ 832               	abs	"rf_transmit_B:F(0,15)",36,0,0,rf_transmit_B
+ 330:cc2500b.h     **** 	Wait(1);
+ 835               	tabs	"CCdata3:P(0,11)",64,0,0,18
+ 836               	.global	rf_transmit_B
+ 838 0254 00D0      	rf_transmit_B:
+ 331:cc2500b.h     **** }
+ 840               	6:
+ 841               	.LFBB12:
+ 842 0256 0895      	/* prologue: function */
+ 843               	/* frame size = 0 */
+ 844               		mov r25,r24
+ 845               		mov r19,r22
+ 846               		mov r18,r20
+ 848               	.LM157:
+ 849               	/* #APP */
+ 850               	 ;  335 "cc2500b.h" 1
+ 851               		cli
+ 332:cc2500b.h     **** 
+ 333:cc2500b.h     **** void rf_transmit_B(unsigned char CCdata1, unsigned char CCdata2, unsigned char CCdata3)//*******12
+ 334:cc2500b.h     **** {
+ 853               	.LM158:
+ 854               	/* #NOAPP */
+ 855               		ldi r24,lo8(1)
+ 856               		sts flag,r24
+ 858 025a 362F      	.LM159:
+ 859 025c 242F      		ldi r24,lo8(127)
+ 335:cc2500b.h     **** 	cli();
+ 860               	,r25
+ 861               		mov r20,r19
+ 862               		rcall cc_writereg_B
+ 864 025e F894      	.LM160:
+ 865               		ldi r24,lo8(53)
+ 336:cc2500b.h     **** 	flag=1;
+ 866               	 cc_strobe
+ 867               	.L64:
+ 869 0260 81E0      	.LM161:
+ 870 0262 8093 0000 		sbis 54-32,2
+ 337:cc2500b.h     **** 	cc_writereg_B(0x7f,CCdata1,CCdata2,CCdata3);
+ 871               	 .L64
+ 872               	.L67:
+ 874 0268 692F      	.LM162:
+ 875 026a 432F      		sbic 54-32,2
+ 876 026c 00D0      		rjmp .L67
+ 338:cc2500b.h     **** 	cc_strobe(0x35);			//transmitter mode
+ 877               	n	68,0,341,.LM163-.LFBB12
+ 878               	.LM163:
+ 879 026e 85E3      		ldi r24,lo8(58)
+ 880 0270 00D0      		rcall cc_strobe
+ 339:cc2500b.h     **** 	while(!gd0);
+ 882               	4:
+ 883               		ldi r24,lo8(59)
+ 884 0272 B29B      		rcall cc_strobe
+ 886               	.LM165:
+ 340:cc2500b.h     **** 	while(gd0);
+ 887               	r24,lo8(1)
+ 888               		rcall Wait
+ 890 0278 00C0      	.LM166:
+ 341:cc2500b.h     **** 	cc_strobe(0x3A);    		//flux rxfifo
+ 891               	 r24,lo8(54)
+ 892               		rcall cc_strobe
+ 894 027c 00D0      	.LM167:
+ 342:cc2500b.h     **** 	cc_strobe(0x3B);  			//flux txfifo
+ 895               	 r24,lo8(52)
+ 896               		rcall cc_strobe
+ 898 0280 00D0      	.LM168:
+ 343:cc2500b.h     **** 	Wait(1);
+ 899               	 r24,lo8(1)
+ 900               		rcall Wait
+ 902 0284 00D0      	.LM169:
+ 344:cc2500b.h     **** 	cc_strobe(0x36);   			//ideale mode 
+ 903               	APP */
+ 904               	 ;  347 "cc2500b.h" 1
+ 905 0286 86E3      		sei
+ 906 0288 00D0      	 ;  0 "" 2
+ 345:cc2500b.h     **** 	cc_strobe(0x34);    		//receiver mode
+ 907               	pilogue start */
+ 909 028a 84E3      	.LM170:
+ 910 028c 00D0      	/* #NOAPP */
+ 346:cc2500b.h     **** 	Wait(1); 
+ 911               	
+ 913 028e 81E0      	.Lscope12:
+ 347:cc2500b.h     **** 	sei();
+ 915               	tabs	"add:P(0,2)",64,0,0,24
+ 916               	.global	cc_readreg_B
+ 918               	cc_readreg_B:
+ 920               	.LM171:
+ 921               	.LFBB13:
+ 348:cc2500b.h     **** }
+ 922               	ogue: function */
+ 923               	/* frame size = 0 */
+ 925 0294 0895      	.LM172:
+ 926               		cbi 56-32,4
+ 927               	.L71:
+ 929               	.LM173:
+ 930               		sbic 54-32,6
+ 931               		rjmp .L71
+ 349:cc2500b.h     **** 
+ 350:cc2500b.h     **** void cc_readreg_B(char add)//********************************************************************13
+ 351:cc2500b.h     **** {
+ 933               	i r24,lo8(-128)
+ 934               		out 47-32,r24
+ 936               	.LM175:
+ 937               		ldi r24,lo8(1)
+ 352:cc2500b.h     **** 	csn0;
+ 938               	l Wait
+ 939               	.L72:
+ 941               	.LM176:
+ 353:cc2500b.h     **** 	while(miso);
+ 942               	s 46-32,7
+ 943               		rjmp .L72
+ 945 029a 00C0      	.LM177:
+ 354:cc2500b.h     **** 	SPDR=(add|0x80);
+ 946               	 47-32,__zero_reg__
+ 947               	.L73:
+ 949 029e 8FB9      	.LM178:
+ 355:cc2500b.h     **** 	Wait(1);	
+ 950               	s 46-32,7
+ 951               		rjmp .L73
+ 953 02a2 00D0      	.LM179:
+ 954               		in r24,47-32
+ 356:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 955               	retval1,r24
+ 957 02a4 779B      	.LM180:
+ 958 02a6 00C0      		out 47-32,__zero_reg__
+ 357:cc2500b.h     ****   
+ 358:cc2500b.h     **** 	SPDR=0;						//place data on spi resistor
+ 959               	:
+ 961 02a8 1FB8      	.LM181:
+ 962               		sbis 46-32,7
+ 359:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 963               	p .L74
+ 965 02aa 779B      	.LM182:
+ 966 02ac 00C0      		in r24,47-32
+ 360:cc2500b.h     **** 	retval1 = SPDR;
+ 967               	 retval2,r24
+ 969 02ae 8FB1      	.LM183:
+ 970 02b0 8093 0000 		out 47-32,__zero_reg__
+ 361:cc2500b.h     ****   
+ 362:cc2500b.h     **** 	SPDR=0;						//place data on spi resistor
+ 971               	:
+ 973 02b4 1FB8      	.LM184:
+ 974               		sbis 46-32,7
+ 363:cc2500b.h     **** 	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 975               	p .L75
+ 977 02b6 779B      	.LM185:
+ 978 02b8 00C0      		in r24,47-32
+ 364:cc2500b.h     **** 	retval2 = SPDR;
+ 979               	 retval3,r24
+ 981 02ba 8FB1      	.LM186:
+ 982 02bc 8093 0000 		sbi 56-32,4
+ 365:cc2500b.h     ****   
+ 366:cc2500b.h     **** 	SPDR=0;						//place data on spi resistor
+ 983               	pilogue start */
+ 985 02c0 1FB8      	.LM187:
+ 986               		ret
+ 367:cc2500b.h     **** 	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 987               	ze	cc_readreg_B, .-cc_readreg_B
+ 988               	.Lscope13:
+ 990 02c4 00C0      	.global	rf_receive_B
+ 368:cc2500b.h     **** 	retval3 = SPDR;
+ 991               	pe	rf_receive_B, @function
+ 992               	rf_receive_B:
+ 994 02c8 8093 0000 	.LM188:
+ 369:cc2500b.h     ****   
+ 370:cc2500b.h     **** 	csn1;						//pull the ss line to up to deactivate the slave
+ 995               	B14:
+ 996               	/* prologue: function */
+ 997 02cc C49A      	/* frame size = 0 */
+ 371:cc2500b.h     **** }
+ 999               	89:
+ 1000               		ldi r24,lo8(127)
+ 1001 02ce 0895      		rcall cc_readreg_B
+ 1003               	.LM190:
+ 1004               		lds r24,retval1
+ 1005               		sts cc_data1,r24
+ 1007               	.LM191:
+ 372:cc2500b.h     **** 
+ 373:cc2500b.h     **** void rf_receive_B() //***************************************************************************14
+ 374:cc2500b.h     **** {
+ 1008               	retval2
+ 1009               		sts cc_data2,r24
+ 1011               	.LM192:
+ 1012               		lds r24,retval3
+ 375:cc2500b.h     **** 	cc_readreg_B(0x7F);
+ 1013               	cc_data3,r24
+ 1015 02d0 8FE7      	.LM193:
+ 1016 02d2 00D0      		ldi r24,lo8(5)
+ 376:cc2500b.h     **** 	cc_data1=retval1;
+ 1017               	ll Wait
+ 1019 02d4 8091 0000 	.LM194:
+ 1020 02d8 8093 0000 		ldi r24,lo8(58)
+ 377:cc2500b.h     **** 	cc_data2=retval2;
+ 1021               	ll cc_strobe
+ 1023 02dc 8091 0000 	.LM195:
+ 1024 02e0 8093 0000 		ldi r24,lo8(1)
+ 378:cc2500b.h     **** 	cc_data3=retval3;
+ 1025               	ll Wait
+ 1027 02e4 8091 0000 	.LM196:
+ 1028 02e8 8093 0000 		ldi r24,lo8(54)
+ 379:cc2500b.h     **** 	//LCD_gotoXY(1,4);
+ 380:cc2500b.h     **** 	//LCD_writeString_F ("Rx1 Rx2 Rx3 ");
+ 381:cc2500b.h     **** 	//LCD_gotoXY(1,5);
+ 382:cc2500b.h     **** 	//LCD_showvalue(retval1);
+ 383:cc2500b.h     **** 	//LCD_gotoXY(29,5);
+ 384:cc2500b.h     **** 	//LCD_showvalue(retval2);
+ 385:cc2500b.h     **** 	//LCD_gotoXY(57,5);
+ 386:cc2500b.h     **** 	//LCD_showvalue(retval3);
+ 387:cc2500b.h     **** 	Wait(5);
+ 1029               	ll cc_strobe
+ 1031 02ec 85E0      	.LM197:
+ 1032 02ee 00D0      		ldi r24,lo8(1)
+ 388:cc2500b.h     **** 	cc_strobe(0x3A);  			//flux rxfifo
+ 1033               	ll Wait
+ 1035 02f0 8AE3      	.LM198:
+ 1036 02f2 00D0      		ldi r24,lo8(52)
+ 389:cc2500b.h     **** 	Wait(1);
+ 1037               	ll cc_strobe
+ 1039 02f4 81E0      	.LM199:
+ 1040 02f6 00D0      		ldi r24,lo8(1)
+ 390:cc2500b.h     **** 	cc_strobe(0x36);  			//ideale mode 
+ 1041               	ll Wait
+ 1042               	/* epilogue start */
+ 1044 02fa 00D0      	.LM200:
+ 391:cc2500b.h     **** 	Wait(1);
+ 1045               	
+ 1047 02fc 81E0      	.Lscope14:
+ 392:cc2500b.h     **** 	cc_strobe(0x34);			//receive mode
+ 1049               	obal	__vector_18
+ 1051 0300 84E3      	__vector_18:
+ 393:cc2500b.h     **** 	Wait(1);	
+ 1053               	01:
+ 1054               	.LFBB15:
+ 1055 0304 81E0      		push __zero_reg__
+ 1056 0306 00D0      		push r0
+ 1057               		in r0,__SREG__
+ 394:cc2500b.h     **** }
+ 1058               	 r0
+ 1059               		clr __zero_reg__
+ 1060 0308 0895      		push r18
+ 1061               		push r19
+ 1062               		push r20
+ 1063               		push r21
+ 1064               		push r22
+ 1065               		push r23
+ 1066               		push r24
+ 1067               		push r25
+ 1068               		push r26
+ 1069               		push r27
+ 1070 030a 1F92      		push r30
+ 1071 030c 0F92      		push r31
+ 1072 030e 0FB6      	/* prologue: Signal */
+ 1073 0310 0F92      	/* frame size = 0 */
+ 1075 0314 2F93      	.LM202:
+ 1076 0316 3F93      		lds r24,flag
+ 1077 0318 4F93      		tst r24
+ 1078 031a 5F93      		brne .L85
+ 1080 031e 7F93      	.LM203:
+ 1081 0320 8F93      		rcall rf_receive_B
+ 1082 0322 9F93      		rjmp .L87
+ 1083 0324 AF93      	.L85:
+ 1085 0328 EF93      	.LM204:
+ 1086 032a FF93      		sts flag,__zero_reg__
+ 1087               	.L87:
+ 1088               	/* epilogue start */
+ 1090               	.LM205:
+ 1091 032c 8091 0000 		pop r31
+ 1092 0330 8823      		pop r30
+ 1093 0332 01F4      		pop r27
+ 1094               		pop r26
+ 1095               		pop r25
+ 1096 0334 00D0      		pop r24
+ 1097 0336 00C0      		pop r23
+ 1098               		pop r22
+ 1099               		pop r21
+ 1100               		pop r20
+ 1101 0338 1092 0000 		pop r19
+ 1102               		pop r18
+ 1103               		pop r0
+ 1104               		out __SREG__,r0
+ 1105               		pop r0
+ 1106 033c FF91      		pop __zero_reg__
+ 1107 033e EF91      		reti
+ 1109 0342 AF91      	.Lscope15:
+ 1112 0348 7F91      	.global	delayms
+ 1114 034c 5F91      	delayms:
+ 1116 0350 3F91      	.Ltext2:
+ 1118 0354 0F90      	.LM206:
+ 1119 0356 0FBE      	.LFBB16:
+ 1120 0358 0F90      	/* prologue: function */
+ 1121 035a 1F90      	/* frame size = 0 */
+ 1123               	.LM207:
+ 1124               		lds r18,delaycounter2
+ 1125               		lds r19,(delaycounter2)+1
+ 1126               		ldi r20,lo8(0)
+ 1127               		ldi r21,hi8(0)
+ 1128               		rjmp .L89
+ 1129               	.L90:
+ 1131               	.LM208:
+   1:delay.h       **** /*	LCD.h
+   2:delay.h       **** Technophilia embedded systems
+   3:delay.h       **** 
+   4:delay.h       **** 	this header file provides time delay in the form of mili second and micro second
+   5:delay.h       **** 	without affecting any interrupts.
+   6:delay.h       **** 
+   7:delay.h       **** 	delayms()  this function provides delay in the form of mili second
+   8:delay.h       **** 	delayus()  this function provides delay in the form of micro second
+   9:delay.h       **** 	
+  10:delay.h       **** */
+  11:delay.h       **** #ifndef _DELAY_H_
+  12:delay.h       **** #define _DELAY_H_
+  13:delay.h       **** unsigned int delaycounter1,delaycounter2;
+  14:delay.h       **** void delayms(unsigned int delaytime)
+  15:delay.h       **** {
+ 1132               	0 "" 2
+ 1133               	 ;  21 "delay.h" 1
+ 1134               		nop
+ 1135               	 ;  0 "" 2
+ 1136               	 ;  21 "delay.h" 1
+ 1137               		nop
+ 1138               	 ;  0 "" 2
+ 1139 035e 2091 0000 	 ;  21 "delay.h" 1
+ 1140 0362 3091 0000 		nop
+ 1141 0366 40E0      	 ;  0 "" 2
+ 1142 0368 50E0      	 ;  21 "delay.h" 1
+ 1143 036a 00C0      		nop
+ 1144               	 ;  0 "" 2
+  16:delay.h       **** 
+  17:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  18:delay.h       **** 	 {
+  19:delay.h       **** 		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+  20:delay.h       **** 		  {
+  21:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 1145               	 "" 2
+ 1146               	 ;  21 "delay.h" 1
+ 1147               		nop
+ 1148               	 ;  0 "" 2
+ 1149 036c 0000      	 ;  21 "delay.h" 1
+ 1150               		nop
+ 1151               	 ;  0 "" 2
+ 1152 036e 0000      	 ;  21 "delay.h" 1
+ 1153               		nop
+ 1154               	 ;  0 "" 2
+ 1155 0370 0000      	 ;  21 "delay.h" 1
+ 1156               		nop
+ 1157               	 ;  0 "" 2
+ 1158 0372 0000      	 ;  21 "delay.h" 1
+ 1159               		nop
+ 1160               	 ;  0 "" 2
+ 1162               	.LM209:
+ 1163               	 ;  22 "delay.h" 1
+ 1164 0376 0000      		nop
+ 1165               	 ;  0 "" 2
+  22:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 1166               	 21 "delay.h" 1
+ 1167               		nop
+ 1168               	 ;  0 "" 2
+ 1169 0378 0000      	 ;  21 "delay.h" 1
+ 1170               		nop
+ 1171               	 ;  0 "" 2
+ 1172 037a 0000      	 ;  21 "delay.h" 1
+ 1173               		nop
+ 1174               	 ;  0 "" 2
+ 1176               	.LM209:
+ 1177               	 ;  22 "delay.h" 1
+ 1178 037e 0000      		nop
+ 1179               	 ;  0 "" 2
+ 1180               	 ;  22 "delay.h" 1
+ 1181 0380 0000      		nop
+ 1182               	 ;  0 "" 2
+ 1183               	 ;  22 "delay.h" 1
+ 1184 0382 0000      		nop
+ 1185               	 ;  0 "" 2
+ 1186               	 ;  22 "delay.h" 1
+ 1187               		nop
+ 1188 0384 2F5F      	 ;  0 "" 2
+ 1189 0386 3F4F      	 ;  22 "delay.h" 1
+ 1190               		nop
+ 1191               	 ;  0 "" 2
+ 1192 0388 63E0      	 ;  22 "delay.h" 1
+ 1193 038a 2232      		nop
+ 1194 038c 3607      	 ;  0 "" 2
+ 1195 038e 01F4      	/* #NOAPP */
+ 1196 0390 4F5F      	.L92:
+ 1197 0392 5F4F      		subi r18,lo8(-(1))
+ 1198 0394 21E2      		sbci r19,hi8(-(1))
+ 1200               	.LM210:
+ 1201               		ldi r22,hi8(802)
+ 1202               		cpi r18,lo8(802)
+ 1203 0398 8417      		cpc r19,r22
+ 1204 039a 9507      		brne .L90
+ 1205 039c 00F0      		subi r20,lo8(-(1))
+ 1206 039e 20E0      		sbci r21,hi8(-(1))
+ 1207 03a0 30E0      		ldi r18,lo8(801)
+ 1208 03a2 00C0      		ldi r19,hi8(801)
+ 1209               	.L89:
+ 1211 03a8 2093 0000 	.LM211:
+ 1212 03ac 5093 0000 		cp r24,r20
+ 1213 03b0 4093 0000 		cpc r25,r21
+ 1214               		brlo .L91
+  23:delay.h       **** 		  }
+  24:delay.h       **** 		
+  25:delay.h       **** 	 }
+  26:delay.h       **** }
+ 1215               	1))
+ 1216               		sbci r21,hi8(-(1))
+ 1217 03b4 0895      		ldi r18,lo8(801)
+ 1218               		ldi r19,hi8(801)
+ 1219               	.L89:
+ 1221               	.LM211:
+ 1222               		cp r24,r20
+ 1223               		cpc r25,r21
+ 1224               		brlo .L91
+  27:delay.h       **** 
+  28:delay.h       **** void delayus(unsigned int delaytime)
+  29:delay.h       **** {
+ 1225               	1))
+ 1226               		sbci r21,hi8(-(1))
+ 1227               		ldi r18,lo8(801)
+ 1228               		ldi r19,hi8(801)
+ 1229               	.L89:
+ 1231               	.LM211:
+ 1232 03b6 20E0      		cp r24,r20
+ 1233 03b8 30E0      		cpc r25,r21
+ 1234 03ba 00C0      		brlo .L91
+ 1235               		ldi r18,lo8(0)
+  30:delay.h       **** 
+  31:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  32:delay.h       **** 	 {
+  33:delay.h       **** 		 
+  34:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 1236               	(-(1))
+ 1237               		ldi r18,lo8(801)
+ 1238               		ldi r19,hi8(801)
+ 1239               	.L89:
+ 1241               	.LM211:
+ 1242               		cp r24,r20
+ 1243 03be 0000      		cpc r25,r21
+ 1244               		brlo .L91
+ 1245               		ldi r18,lo8(0)
+ 1246 03c0 0000      		ldi r19,hi8(0)
+ 1247               		rjmp .L92
+ 1248               	.L91:
+ 1249 03c2 0000      		sts (delaycounter2)+1,r19
+ 1250               		sts delaycounter2,r18
+ 1251               		sts (delaycounter1)+1,r21
+ 1252 03c4 0000      		sts delaycounter1,r20
+ 1253               	/* epilogue start */
+ 1255 03c6 0000      	.LM212:
+ 1256               		ret
+  35:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 1257               	ycounter2,r18
+ 1258               		sts (delaycounter1)+1,r21
+ 1259               		sts delaycounter1,r20
+ 1260 03c8 0000      	/* epilogue start */
+ 1262               	.LM212:
+ 1263 03ca 0000      		ret
+ 1265               	.Lscope16:
+ 1268               	.global	delayus
+ 1270               	delayus:
+ 1272 03d0 2F5F      	.LM213:
+ 1273 03d2 3F4F      	.LFBB17:
+ 1274               	/* prologue: function */
+ 1275               	/* frame size = 0 */
+ 1277 03d4 8217      	.LM214:
+ 1278 03d6 9307      		ldi r18,lo8(0)
+ 1279 03d8 00F4      		ldi r19,hi8(0)
+ 1280 03da 3093 0000 		rjmp .L95
+ 1281 03de 2093 0000 	.L96:
+  36:delay.h       **** 	 }
+  37:delay.h       **** }
+ 1283               	8,0,29,.LM214-.LFBB17
+ 1284               	.LM214:
+ 1285 03e2 0895      		ldi r18,lo8(0)
+ 1286               		ldi r19,hi8(0)
+ 1287               		rjmp .L95
+ 1288               	.L96:
+ 1290               	.LM215:
+ 1291               	/* #APP */
+ 1292               	 ;  34 "delay.h" 1
+ 1293               		nop
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE7.5: Program for Rx of PC controlled bot
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include <avr/io.h >
+  18:main.c        **** #include "cc2500b.h"
+  19:main.c        **** #include "delay.h"
+  20:main.c        **** int main()
+  21:main.c        **** {
+ 1294               	ldi r19,hi8(0)
+ 1295               		rjmp .L95
+ 1296               	.L96:
+ 1298               	.LM215:
+  22:main.c        **** rf_init();
+ 1299               	M214-.LFBB17
+ 1300               	.LM214:
+ 1301 03e4 00D0      		ldi r18,lo8(0)
+  23:main.c        **** DDRD=0xF0;
+ 1302               	13:
+ 1303               	.LFBB17:
+ 1304 03e6 80EF      	/* prologue: function */
+ 1305 03e8 81BB      	/* frame size = 0 */
+  24:main.c        **** PORTD=0X00;
+ 1306               	us, @function
+ 1307               	delayus:
+ 1309               	.LM213:
+  25:main.c        **** while(1)
+  26:main.c        ****  {
+  27:main.c        ****  PORTD=cc_data3;
+ 1310               		"delaytime:P(0,4)",64,0,0,24
+ 1311               	.global	delayus
+ 1313 03f0 82BB      	delayus:
+  28:main.c        ****  delayms(10);
+ 1314               		"delayus:F(0,15)",36,0,0,delayus
+ 1316 03f2 8AE0      	.global	delayus
+ 1318 03f6 00D0      	delayus:
+ 1320               	.LM213:
+ 1321               	.LFBB17:
+ 1322               	/* prologue: function */
+ 1323               	/* frame size = 0 */
+ 1325               	.LM214:
+ 1326               		ldi r18,lo8(0)
+ 1327               		ldi r19,hi8(0)
+ 1328               		rjmp .L95
+ 1329               	.L96:
+ 1331               	.LM215:
+ 1332               	/* #APP */
+ 1333               	 ;  34 "delay.h" 1
+ 1334               		nop
+ 1335               	 ;  0 "" 2
+ 1336               	 ;  34 "delay.h" 1
+ 1337               		nop
+ 1338               	 ;  0 "" 2
+ 1339               	 ;  34 "delay.h" 1
+ 1340               		nop
+ 1341               	 ;  0 "" 2
+ 1342               	 ;  34 "delay.h" 1
+ 1343               		nop
+ 1344               	 ;  0 "" 2
+ 1345               	 ;  34 "delay.h" 1
+ 1346               		nop
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:2      *ABS*:0000003f __SREG__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:3      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:4      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:5      *ABS*:00000034 __CCP__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:71     .text:00000000 spi_master_init
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:101    .text:0000000e cc_strobe
+                            *COM*:00000001 retval
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:140    .text:00000024 Wait
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:212    .text:0000003e cc_reset
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:275    .text:00000066 cc_writereg
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:321    .text:00000080 cc_config
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:516    .text:0000015a rf_init
+                            *COM*:00000001 cc_data3
+                            *COM*:00000001 cc_data2
+                            *COM*:00000001 cc_data1
+                            *COM*:00000001 cc_data
+                            *COM*:00000001 flag
+                            *COM*:00000001 retval3
+                            *COM*:00000001 retval2
+                            *COM*:00000001 retval1
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:603    .text:000001b0 rf_transmit
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:680    .text:000001e6 cc_readreg
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:731    .text:00000208 rf_receive
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:786    .text:00000232 cc_writereg_B
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:851    .text:00000258 rf_transmit_B
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:932    .text:00000296 cc_readreg_B
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:1007   .text:000002d0 rf_receive_B
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:1066   .text:0000030a __vector_18
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:1129   .text:0000035e delayms
+                            *COM*:00000002 delaycounter2
+                            *COM*:00000002 delaycounter1
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:1224   .text:000003b6 delayus
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccZR4ThV.s:1291   .text:000003e4 main
+
+UNDEFINED SYMBOLS
+__do_clear_bss

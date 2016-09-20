@@ -1,0 +1,894 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000049a  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          0000000d  00800060  00800060  0000050e  2**0
+                  ALLOC
+  2 .stab         000012a8  00000000  00000000  00000510  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      000008ff  00000000  00000000  000017b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	14 c0       	rjmp	.+40     	; 0x2a <__ctors_end>
+   2:	2e c0       	rjmp	.+92     	; 0x60 <__bad_interrupt>
+   4:	2d c0       	rjmp	.+90     	; 0x60 <__bad_interrupt>
+   6:	2c c0       	rjmp	.+88     	; 0x60 <__bad_interrupt>
+   8:	2b c0       	rjmp	.+86     	; 0x60 <__bad_interrupt>
+   a:	2a c0       	rjmp	.+84     	; 0x60 <__bad_interrupt>
+   c:	29 c0       	rjmp	.+82     	; 0x60 <__bad_interrupt>
+   e:	28 c0       	rjmp	.+80     	; 0x60 <__bad_interrupt>
+  10:	27 c0       	rjmp	.+78     	; 0x60 <__bad_interrupt>
+  12:	26 c0       	rjmp	.+76     	; 0x60 <__bad_interrupt>
+  14:	25 c0       	rjmp	.+74     	; 0x60 <__bad_interrupt>
+  16:	24 c0       	rjmp	.+72     	; 0x60 <__bad_interrupt>
+  18:	23 c0       	rjmp	.+70     	; 0x60 <__bad_interrupt>
+  1a:	22 c0       	rjmp	.+68     	; 0x60 <__bad_interrupt>
+  1c:	21 c0       	rjmp	.+66     	; 0x60 <__bad_interrupt>
+  1e:	20 c0       	rjmp	.+64     	; 0x60 <__bad_interrupt>
+  20:	1f c0       	rjmp	.+62     	; 0x60 <__bad_interrupt>
+  22:	1e c0       	rjmp	.+60     	; 0x60 <__bad_interrupt>
+  24:	de c1       	rjmp	.+956    	; 0x3e2 <__vector_18>
+  26:	1c c0       	rjmp	.+56     	; 0x60 <__bad_interrupt>
+  28:	1b c0       	rjmp	.+54     	; 0x60 <__bad_interrupt>
+
+0000002a <__ctors_end>:
+  2a:	11 24       	eor	r1, r1
+  2c:	1f be       	out	0x3f, r1	; 63
+  2e:	cf e5       	ldi	r28, 0x5F	; 95
+  30:	d2 e0       	ldi	r29, 0x02	; 2
+  32:	de bf       	out	0x3e, r29	; 62
+  34:	cd bf       	out	0x3d, r28	; 61
+
+00000036 <__do_copy_data>:
+  36:	10 e0       	ldi	r17, 0x00	; 0
+  38:	a0 e6       	ldi	r26, 0x60	; 96
+  3a:	b0 e0       	ldi	r27, 0x00	; 0
+  3c:	ea e9       	ldi	r30, 0x9A	; 154
+  3e:	f4 e0       	ldi	r31, 0x04	; 4
+  40:	02 c0       	rjmp	.+4      	; 0x46 <.do_copy_data_start>
+
+00000042 <.do_copy_data_loop>:
+  42:	05 90       	lpm	r0, Z+
+  44:	0d 92       	st	X+, r0
+
+00000046 <.do_copy_data_start>:
+  46:	a0 36       	cpi	r26, 0x60	; 96
+  48:	b1 07       	cpc	r27, r17
+  4a:	d9 f7       	brne	.-10     	; 0x42 <.do_copy_data_loop>
+
+0000004c <__do_clear_bss>:
+  4c:	10 e0       	ldi	r17, 0x00	; 0
+  4e:	a0 e6       	ldi	r26, 0x60	; 96
+  50:	b0 e0       	ldi	r27, 0x00	; 0
+  52:	01 c0       	rjmp	.+2      	; 0x56 <.do_clear_bss_start>
+
+00000054 <.do_clear_bss_loop>:
+  54:	1d 92       	st	X+, r1
+
+00000056 <.do_clear_bss_start>:
+  56:	ad 36       	cpi	r26, 0x6D	; 109
+  58:	b1 07       	cpc	r27, r17
+  5a:	e1 f7       	brne	.-8      	; 0x54 <.do_clear_bss_loop>
+  5c:	ec d1       	rcall	.+984    	; 0x436 <main>
+  5e:	1c c2       	rjmp	.+1080   	; 0x498 <_exit>
+
+00000060 <__bad_interrupt>:
+  60:	cf cf       	rjmp	.-98     	; 0x0 <__heap_end>
+
+00000062 <delayus>:
+unsigned int delaycounter1,delaycounter2;
+
+void delayus(unsigned int delaytime)//microsecond delay ********************/1
+{
+	for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  62:	10 92 6c 00 	sts	0x006C, r1
+  66:	10 92 6b 00 	sts	0x006B, r1
+  6a:	20 e0       	ldi	r18, 0x00	; 0
+  6c:	30 e0       	ldi	r19, 0x00	; 0
+	...
+	{
+		asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		asm("nop");asm("nop");asm("nop");asm("nop");
+  82:	2f 5f       	subi	r18, 0xFF	; 255
+  84:	3f 4f       	sbci	r19, 0xFF	; 255
+  86:	82 17       	cp	r24, r18
+  88:	93 07       	cpc	r25, r19
+  8a:	88 f7       	brcc	.-30     	; 0x6e <delayus+0xc>
+  8c:	30 93 6c 00 	sts	0x006C, r19
+  90:	20 93 6b 00 	sts	0x006B, r18
+  94:	08 95       	ret
+
+00000096 <delayms>:
+	}
+}
+
+void delayms(unsigned int delaytime)//milisecond delay *********************/2
+{
+	for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  96:	10 92 6c 00 	sts	0x006C, r1
+  9a:	10 92 6b 00 	sts	0x006B, r1
+  9e:	20 e0       	ldi	r18, 0x00	; 0
+  a0:	30 e0       	ldi	r19, 0x00	; 0
+  a2:	40 e0       	ldi	r20, 0x00	; 0
+  a4:	50 e0       	ldi	r21, 0x00	; 0
+	...
+	{
+		for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+		{
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  be:	4f 5f       	subi	r20, 0xFF	; 255
+  c0:	5f 4f       	sbci	r21, 0xFF	; 255
+  c2:	63 e0       	ldi	r22, 0x03	; 3
+  c4:	41 32       	cpi	r20, 0x21	; 33
+  c6:	56 07       	cpc	r21, r22
+  c8:	71 f7       	brne	.-36     	; 0xa6 <delayms+0x10>
+  ca:	2f 5f       	subi	r18, 0xFF	; 255
+  cc:	3f 4f       	sbci	r19, 0xFF	; 255
+  ce:	82 17       	cp	r24, r18
+  d0:	93 07       	cpc	r25, r19
+  d2:	38 f7       	brcc	.-50     	; 0xa2 <delayms+0xc>
+  d4:	30 93 6c 00 	sts	0x006C, r19
+  d8:	20 93 6b 00 	sts	0x006B, r18
+  dc:	50 93 65 00 	sts	0x0065, r21
+  e0:	40 93 64 00 	sts	0x0064, r20
+  e4:	08 95       	ret
+
+000000e6 <spi_master_init>:
+}
+
+void spi_master_init(void) //*****************************************************************2
+{
+	DDRB|=0x02;			//spi slave select pin configure as output
+  e6:	b9 9a       	sbi	0x17, 1	; 23
+	DDRB|=0xB0;			//spi pins (mosi, sck, ss) configure as output important ss must shod be configured  even if it is not in use
+  e8:	87 b3       	in	r24, 0x17	; 23
+  ea:	80 6b       	ori	r24, 0xB0	; 176
+  ec:	87 bb       	out	0x17, r24	; 23
+	SPCR =0x50;			//spe=1(spi enable),DDRD=1(MSB first),mstr=1(master)
+  ee:	80 e5       	ldi	r24, 0x50	; 80
+  f0:	8d b9       	out	0x0d, r24	; 13
+  f2:	08 95       	ret
+
+000000f4 <cc_strobe>:
+}
+
+void cc_reset(void) //************************************************************************3
+{
+	csn1; 
+    Wait(1); 
+    csn0; 
+    Wait(1); 
+    csn1; 
+    Wait(41);
+	csn0;
+    while (miso);//((PINB&0x08)); 
+    SPDR = 0x30; 
+    while((SPSR&0x80)==0);			 //SPI_WAIT(); 
+	while (miso);//((PINB&0x08)); 
+    csn1; 
+}
+
+void cc_config(void) //***********************************************************************4
+{
+	cc_writereg(0X0B,0x07);
+	cc_writereg(0x0c,0x00);
+	cc_writereg(0x0D,0x5D);
+	cc_writereg(0x0E,0x93);
+	cc_writereg(0x0F,0xB1);		//93
+ 
+	cc_writereg(0x10,0x2D);
+	cc_writereg(0x11,0x3B);
+	cc_writereg(0x12,0x73);
+	cc_writereg(0x13,0x22);
+	cc_writereg(0x14,0xF8);
+ 
+	cc_writereg(0x0A,0x00);
+ 
+	cc_writereg(0x15,0x00);		//
+ 
+	cc_writereg(0x21,0xB6);
+	cc_writereg(0x22,0x10);
+ 
+	cc_writereg(0x18,0x18);
+	cc_writereg(0x19,0x1D);
+ 
+	cc_writereg(0x1A,0x1C);
+	cc_writereg(0x1B,0xC7);
+	cc_writereg(0x1C,0x00);
+	cc_writereg(0x1D,0xB2);		//f8
+ 
+	cc_writereg(0x23,0xEA);
+	cc_writereg(0x24,0x0A);
+	cc_writereg(0x25,0x00);
+	cc_writereg(0x26,0x11);
+	cc_writereg(0x29,0x59);
+ 
+	cc_writereg(0x2C,0x88);
+	cc_writereg(0x2D,0x31);
+	cc_writereg(0x2E,0x0B);
+ 
+	cc_writereg(0x00,0x06);  	//iocfg2
+ 
+	cc_writereg(0x02,0x06); 	//iocfg0
+ 
+	cc_writereg(0x07,0x04);
+	cc_writereg(0x08,0x05);  	//pktctrl 0 
+	cc_writereg(0x09,0x00);		//device address
+	cc_writereg(0x06,0xFF);
+ 
+	//sync bits
+	cc_writereg(0x04,0x12);
+	cc_writereg(0x05,0x34);
+}
+
+cc_strobe(char data) //***********************************************************************5
+{
+	csn0;						//pull the ss line to down to activate slave 
+  f4:	c4 98       	cbi	0x18, 4	; 24
+	while(miso);
+  f6:	b6 99       	sbic	0x16, 6	; 22
+  f8:	fe cf       	rjmp	.-4      	; 0xf6 <cc_strobe+0x2>
+	SPDR=data;					//place data on spi resistor
+  fa:	8f b9       	out	0x0f, r24	; 15
+	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+  fc:	77 9b       	sbis	0x0e, 7	; 14
+  fe:	fe cf       	rjmp	.-4      	; 0xfc <cc_strobe+0x8>
+	csn1;						//pull the ss line to up to deactivate the slave
+ 100:	c4 9a       	sbi	0x18, 4	; 24
+	retval = SPDR;
+ 102:	8f b1       	in	r24, 0x0f	; 15
+ 104:	80 93 69 00 	sts	0x0069, r24
+ 108:	08 95       	ret
+
+0000010a <Wait>:
+	...
+}
+
+Wait(char timeout) //*************************************************************************6
+{
+// This sequence uses exactly 8 clock cycle for each round
+ do {
+        asm("nop");
+        asm("nop");
+        asm("nop");
+        asm("nop");
+		asm("nop");
+        asm("nop");
+        asm("nop");
+        asm("nop");
+		asm("nop");
+        asm("nop");
+	} 
+	while (--timeout);
+ 11e:	81 50       	subi	r24, 0x01	; 1
+ 120:	a1 f7       	brne	.-24     	; 0x10a <Wait>
+ 122:	08 95       	ret
+
+00000124 <cc_reset>:
+ 124:	c4 9a       	sbi	0x18, 4	; 24
+ 126:	81 e0       	ldi	r24, 0x01	; 1
+ 128:	f0 df       	rcall	.-32     	; 0x10a <Wait>
+ 12a:	c4 98       	cbi	0x18, 4	; 24
+ 12c:	81 e0       	ldi	r24, 0x01	; 1
+ 12e:	ed df       	rcall	.-38     	; 0x10a <Wait>
+ 130:	c4 9a       	sbi	0x18, 4	; 24
+ 132:	89 e2       	ldi	r24, 0x29	; 41
+ 134:	ea df       	rcall	.-44     	; 0x10a <Wait>
+ 136:	c4 98       	cbi	0x18, 4	; 24
+ 138:	b6 99       	sbic	0x16, 6	; 22
+ 13a:	fe cf       	rjmp	.-4      	; 0x138 <cc_reset+0x14>
+ 13c:	80 e3       	ldi	r24, 0x30	; 48
+ 13e:	8f b9       	out	0x0f, r24	; 15
+ 140:	77 9b       	sbis	0x0e, 7	; 14
+ 142:	fe cf       	rjmp	.-4      	; 0x140 <cc_reset+0x1c>
+ 144:	b6 99       	sbic	0x16, 6	; 22
+ 146:	fe cf       	rjmp	.-4      	; 0x144 <cc_reset+0x20>
+ 148:	c4 9a       	sbi	0x18, 4	; 24
+ 14a:	08 95       	ret
+
+0000014c <cc_writereg>:
+}
+
+/*********************************SINGLE MODE COMMUNICATION***********************************/
+/********Check that in ISR rf_recieve(); is uncommented & rf_receive_B(); is commented********/
+
+void cc_writereg(char add,char data)//********************************************************7
+{
+	csn0;
+ 14c:	c4 98       	cbi	0x18, 4	; 24
+	while(miso);
+ 14e:	b6 99       	sbic	0x16, 6	; 22
+ 150:	fe cf       	rjmp	.-4      	; 0x14e <cc_writereg+0x2>
+	SPDR=add;
+ 152:	8f b9       	out	0x0f, r24	; 15
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 154:	77 9b       	sbis	0x0e, 7	; 14
+ 156:	fe cf       	rjmp	.-4      	; 0x154 <cc_writereg+0x8>
+	SPDR=data;					//place data on spi resistor
+ 158:	6f b9       	out	0x0f, r22	; 15
+	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 15a:	77 9b       	sbis	0x0e, 7	; 14
+ 15c:	fe cf       	rjmp	.-4      	; 0x15a <cc_writereg+0xe>
+	csn1;
+ 15e:	c4 9a       	sbi	0x18, 4	; 24
+	Wait(1);
+ 160:	81 e0       	ldi	r24, 0x01	; 1
+ 162:	d3 df       	rcall	.-90     	; 0x10a <Wait>
+ 164:	08 95       	ret
+
+00000166 <cc_config>:
+ 166:	67 e0       	ldi	r22, 0x07	; 7
+ 168:	8b e0       	ldi	r24, 0x0B	; 11
+ 16a:	f0 df       	rcall	.-32     	; 0x14c <cc_writereg>
+ 16c:	60 e0       	ldi	r22, 0x00	; 0
+ 16e:	8c e0       	ldi	r24, 0x0C	; 12
+ 170:	ed df       	rcall	.-38     	; 0x14c <cc_writereg>
+ 172:	6d e5       	ldi	r22, 0x5D	; 93
+ 174:	8d e0       	ldi	r24, 0x0D	; 13
+ 176:	ea df       	rcall	.-44     	; 0x14c <cc_writereg>
+ 178:	63 e9       	ldi	r22, 0x93	; 147
+ 17a:	8e e0       	ldi	r24, 0x0E	; 14
+ 17c:	e7 df       	rcall	.-50     	; 0x14c <cc_writereg>
+ 17e:	61 eb       	ldi	r22, 0xB1	; 177
+ 180:	8f e0       	ldi	r24, 0x0F	; 15
+ 182:	e4 df       	rcall	.-56     	; 0x14c <cc_writereg>
+ 184:	6d e2       	ldi	r22, 0x2D	; 45
+ 186:	80 e1       	ldi	r24, 0x10	; 16
+ 188:	e1 df       	rcall	.-62     	; 0x14c <cc_writereg>
+ 18a:	6b e3       	ldi	r22, 0x3B	; 59
+ 18c:	81 e1       	ldi	r24, 0x11	; 17
+ 18e:	de df       	rcall	.-68     	; 0x14c <cc_writereg>
+ 190:	63 e7       	ldi	r22, 0x73	; 115
+ 192:	82 e1       	ldi	r24, 0x12	; 18
+ 194:	db df       	rcall	.-74     	; 0x14c <cc_writereg>
+ 196:	62 e2       	ldi	r22, 0x22	; 34
+ 198:	83 e1       	ldi	r24, 0x13	; 19
+ 19a:	d8 df       	rcall	.-80     	; 0x14c <cc_writereg>
+ 19c:	68 ef       	ldi	r22, 0xF8	; 248
+ 19e:	84 e1       	ldi	r24, 0x14	; 20
+ 1a0:	d5 df       	rcall	.-86     	; 0x14c <cc_writereg>
+ 1a2:	60 e0       	ldi	r22, 0x00	; 0
+ 1a4:	8a e0       	ldi	r24, 0x0A	; 10
+ 1a6:	d2 df       	rcall	.-92     	; 0x14c <cc_writereg>
+ 1a8:	60 e0       	ldi	r22, 0x00	; 0
+ 1aa:	85 e1       	ldi	r24, 0x15	; 21
+ 1ac:	cf df       	rcall	.-98     	; 0x14c <cc_writereg>
+ 1ae:	66 eb       	ldi	r22, 0xB6	; 182
+ 1b0:	81 e2       	ldi	r24, 0x21	; 33
+ 1b2:	cc df       	rcall	.-104    	; 0x14c <cc_writereg>
+ 1b4:	60 e1       	ldi	r22, 0x10	; 16
+ 1b6:	82 e2       	ldi	r24, 0x22	; 34
+ 1b8:	c9 df       	rcall	.-110    	; 0x14c <cc_writereg>
+ 1ba:	68 e1       	ldi	r22, 0x18	; 24
+ 1bc:	88 e1       	ldi	r24, 0x18	; 24
+ 1be:	c6 df       	rcall	.-116    	; 0x14c <cc_writereg>
+ 1c0:	6d e1       	ldi	r22, 0x1D	; 29
+ 1c2:	89 e1       	ldi	r24, 0x19	; 25
+ 1c4:	c3 df       	rcall	.-122    	; 0x14c <cc_writereg>
+ 1c6:	6c e1       	ldi	r22, 0x1C	; 28
+ 1c8:	8a e1       	ldi	r24, 0x1A	; 26
+ 1ca:	c0 df       	rcall	.-128    	; 0x14c <cc_writereg>
+ 1cc:	67 ec       	ldi	r22, 0xC7	; 199
+ 1ce:	8b e1       	ldi	r24, 0x1B	; 27
+ 1d0:	bd df       	rcall	.-134    	; 0x14c <cc_writereg>
+ 1d2:	60 e0       	ldi	r22, 0x00	; 0
+ 1d4:	8c e1       	ldi	r24, 0x1C	; 28
+ 1d6:	ba df       	rcall	.-140    	; 0x14c <cc_writereg>
+ 1d8:	62 eb       	ldi	r22, 0xB2	; 178
+ 1da:	8d e1       	ldi	r24, 0x1D	; 29
+ 1dc:	b7 df       	rcall	.-146    	; 0x14c <cc_writereg>
+ 1de:	6a ee       	ldi	r22, 0xEA	; 234
+ 1e0:	83 e2       	ldi	r24, 0x23	; 35
+ 1e2:	b4 df       	rcall	.-152    	; 0x14c <cc_writereg>
+ 1e4:	6a e0       	ldi	r22, 0x0A	; 10
+ 1e6:	84 e2       	ldi	r24, 0x24	; 36
+ 1e8:	b1 df       	rcall	.-158    	; 0x14c <cc_writereg>
+ 1ea:	60 e0       	ldi	r22, 0x00	; 0
+ 1ec:	85 e2       	ldi	r24, 0x25	; 37
+ 1ee:	ae df       	rcall	.-164    	; 0x14c <cc_writereg>
+ 1f0:	61 e1       	ldi	r22, 0x11	; 17
+ 1f2:	86 e2       	ldi	r24, 0x26	; 38
+ 1f4:	ab df       	rcall	.-170    	; 0x14c <cc_writereg>
+ 1f6:	69 e5       	ldi	r22, 0x59	; 89
+ 1f8:	89 e2       	ldi	r24, 0x29	; 41
+ 1fa:	a8 df       	rcall	.-176    	; 0x14c <cc_writereg>
+ 1fc:	68 e8       	ldi	r22, 0x88	; 136
+ 1fe:	8c e2       	ldi	r24, 0x2C	; 44
+ 200:	a5 df       	rcall	.-182    	; 0x14c <cc_writereg>
+ 202:	61 e3       	ldi	r22, 0x31	; 49
+ 204:	8d e2       	ldi	r24, 0x2D	; 45
+ 206:	a2 df       	rcall	.-188    	; 0x14c <cc_writereg>
+ 208:	6b e0       	ldi	r22, 0x0B	; 11
+ 20a:	8e e2       	ldi	r24, 0x2E	; 46
+ 20c:	9f df       	rcall	.-194    	; 0x14c <cc_writereg>
+ 20e:	66 e0       	ldi	r22, 0x06	; 6
+ 210:	80 e0       	ldi	r24, 0x00	; 0
+ 212:	9c df       	rcall	.-200    	; 0x14c <cc_writereg>
+ 214:	66 e0       	ldi	r22, 0x06	; 6
+ 216:	82 e0       	ldi	r24, 0x02	; 2
+ 218:	99 df       	rcall	.-206    	; 0x14c <cc_writereg>
+ 21a:	64 e0       	ldi	r22, 0x04	; 4
+ 21c:	87 e0       	ldi	r24, 0x07	; 7
+ 21e:	96 df       	rcall	.-212    	; 0x14c <cc_writereg>
+ 220:	65 e0       	ldi	r22, 0x05	; 5
+ 222:	88 e0       	ldi	r24, 0x08	; 8
+ 224:	93 df       	rcall	.-218    	; 0x14c <cc_writereg>
+ 226:	60 e0       	ldi	r22, 0x00	; 0
+ 228:	89 e0       	ldi	r24, 0x09	; 9
+ 22a:	90 df       	rcall	.-224    	; 0x14c <cc_writereg>
+ 22c:	6f ef       	ldi	r22, 0xFF	; 255
+ 22e:	86 e0       	ldi	r24, 0x06	; 6
+ 230:	8d df       	rcall	.-230    	; 0x14c <cc_writereg>
+ 232:	62 e1       	ldi	r22, 0x12	; 18
+ 234:	84 e0       	ldi	r24, 0x04	; 4
+ 236:	8a df       	rcall	.-236    	; 0x14c <cc_writereg>
+ 238:	64 e3       	ldi	r22, 0x34	; 52
+ 23a:	85 e0       	ldi	r24, 0x05	; 5
+ 23c:	87 df       	rcall	.-242    	; 0x14c <cc_writereg>
+ 23e:	08 95       	ret
+
+00000240 <rf_init>:
+ 240:	52 df       	rcall	.-348    	; 0xe6 <spi_master_init>
+ 242:	70 df       	rcall	.-288    	; 0x124 <cc_reset>
+ 244:	90 df       	rcall	.-224    	; 0x166 <cc_config>
+ 246:	84 e6       	ldi	r24, 0x64	; 100
+ 248:	60 df       	rcall	.-320    	; 0x10a <Wait>
+ 24a:	84 e3       	ldi	r24, 0x34	; 52
+ 24c:	53 df       	rcall	.-346    	; 0xf4 <cc_strobe>
+ 24e:	14 be       	out	0x34, r1	; 52
+ 250:	80 e2       	ldi	r24, 0x20	; 32
+ 252:	8b bf       	out	0x3b, r24	; 59
+ 254:	78 94       	sei
+ 256:	84 e6       	ldi	r24, 0x64	; 100
+ 258:	58 df       	rcall	.-336    	; 0x10a <Wait>
+ 25a:	84 e6       	ldi	r24, 0x64	; 100
+ 25c:	56 df       	rcall	.-340    	; 0x10a <Wait>
+ 25e:	84 e6       	ldi	r24, 0x64	; 100
+ 260:	54 df       	rcall	.-344    	; 0x10a <Wait>
+ 262:	84 e6       	ldi	r24, 0x64	; 100
+ 264:	52 df       	rcall	.-348    	; 0x10a <Wait>
+ 266:	10 92 68 00 	sts	0x0068, r1
+ 26a:	10 92 62 00 	sts	0x0062, r1
+ 26e:	10 92 66 00 	sts	0x0066, r1
+ 272:	10 92 61 00 	sts	0x0061, r1
+ 276:	10 92 63 00 	sts	0x0063, r1
+ 27a:	10 92 60 00 	sts	0x0060, r1
+ 27e:	10 92 67 00 	sts	0x0067, r1
+ 282:	10 92 6a 00 	sts	0x006A, r1
+ 286:	10 92 69 00 	sts	0x0069, r1
+ 28a:	08 95       	ret
+
+0000028c <rf_transmit>:
+}
+
+void rf_transmit(unsigned char CCdata)//*******************************************************8
+{
+	cli();
+ 28c:	f8 94       	cli
+	flag=1;
+ 28e:	91 e0       	ldi	r25, 0x01	; 1
+ 290:	90 93 63 00 	sts	0x0063, r25
+	cc_writereg(0x3f,CCdata);
+ 294:	68 2f       	mov	r22, r24
+ 296:	8f e3       	ldi	r24, 0x3F	; 63
+ 298:	59 df       	rcall	.-334    	; 0x14c <cc_writereg>
+	cc_strobe(0x35);
+ 29a:	85 e3       	ldi	r24, 0x35	; 53
+ 29c:	2b df       	rcall	.-426    	; 0xf4 <cc_strobe>
+	while(!gd0);
+ 29e:	b2 9b       	sbis	0x16, 2	; 22
+ 2a0:	fe cf       	rjmp	.-4      	; 0x29e <rf_transmit+0x12>
+	//lcd_string("2");
+	while(gd0);
+ 2a2:	b2 99       	sbic	0x16, 2	; 22
+ 2a4:	fe cf       	rjmp	.-4      	; 0x2a2 <rf_transmit+0x16>
+	cc_strobe(0x3A);  			//flux rxfifo
+ 2a6:	8a e3       	ldi	r24, 0x3A	; 58
+ 2a8:	25 df       	rcall	.-438    	; 0xf4 <cc_strobe>
+	cc_strobe(0x3B); 			//flux txfifo
+ 2aa:	8b e3       	ldi	r24, 0x3B	; 59
+ 2ac:	23 df       	rcall	.-442    	; 0xf4 <cc_strobe>
+	Wait(1);
+ 2ae:	81 e0       	ldi	r24, 0x01	; 1
+ 2b0:	2c df       	rcall	.-424    	; 0x10a <Wait>
+	cc_strobe(0x36); 			//ideale mode 
+ 2b2:	86 e3       	ldi	r24, 0x36	; 54
+ 2b4:	1f df       	rcall	.-450    	; 0xf4 <cc_strobe>
+	cc_strobe(0x34); 			//receiver mode
+ 2b6:	84 e3       	ldi	r24, 0x34	; 52
+ 2b8:	1d df       	rcall	.-454    	; 0xf4 <cc_strobe>
+	Wait(1); 
+ 2ba:	81 e0       	ldi	r24, 0x01	; 1
+ 2bc:	26 df       	rcall	.-436    	; 0x10a <Wait>
+	sei();
+ 2be:	78 94       	sei
+ 2c0:	08 95       	ret
+
+000002c2 <cc_readreg>:
+}
+
+void cc_readreg(char add)//*******************************************************************9
+{
+	csn0;
+ 2c2:	c4 98       	cbi	0x18, 4	; 24
+	while(miso);
+ 2c4:	b6 99       	sbic	0x16, 6	; 22
+ 2c6:	fe cf       	rjmp	.-4      	; 0x2c4 <cc_readreg+0x2>
+	SPDR=(add|0x80);
+ 2c8:	80 68       	ori	r24, 0x80	; 128
+ 2ca:	8f b9       	out	0x0f, r24	; 15
+	Wait(1);	
+ 2cc:	81 e0       	ldi	r24, 0x01	; 1
+ 2ce:	1d df       	rcall	.-454    	; 0x10a <Wait>
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 2d0:	77 9b       	sbis	0x0e, 7	; 14
+ 2d2:	fe cf       	rjmp	.-4      	; 0x2d0 <cc_readreg+0xe>
+	SPDR=0;						//place data on spi resistor
+ 2d4:	1f b8       	out	0x0f, r1	; 15
+	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 2d6:	77 9b       	sbis	0x0e, 7	; 14
+ 2d8:	fe cf       	rjmp	.-4      	; 0x2d6 <cc_readreg+0x14>
+	csn1;						//pull the ss line to up to deactivate the slave
+ 2da:	c4 9a       	sbi	0x18, 4	; 24
+	retval = SPDR;
+ 2dc:	8f b1       	in	r24, 0x0f	; 15
+ 2de:	80 93 69 00 	sts	0x0069, r24
+ 2e2:	08 95       	ret
+
+000002e4 <rf_receive>:
+}
+
+void rf_receive() //**************************************************************************10
+{
+	cc_readreg(0x3F);
+ 2e4:	8f e3       	ldi	r24, 0x3F	; 63
+ 2e6:	ed df       	rcall	.-38     	; 0x2c2 <cc_readreg>
+	cc_data=retval;
+ 2e8:	80 91 69 00 	lds	r24, 0x0069
+ 2ec:	80 93 61 00 	sts	0x0061, r24
+	Wait(5);
+ 2f0:	85 e0       	ldi	r24, 0x05	; 5
+ 2f2:	0b df       	rcall	.-490    	; 0x10a <Wait>
+	cc_strobe(0x3A);  			//flux rxfifo
+ 2f4:	8a e3       	ldi	r24, 0x3A	; 58
+ 2f6:	fe de       	rcall	.-516    	; 0xf4 <cc_strobe>
+	Wait(1);
+ 2f8:	81 e0       	ldi	r24, 0x01	; 1
+ 2fa:	07 df       	rcall	.-498    	; 0x10a <Wait>
+	cc_strobe(0x36); 			//ideale mode 
+ 2fc:	86 e3       	ldi	r24, 0x36	; 54
+ 2fe:	fa de       	rcall	.-524    	; 0xf4 <cc_strobe>
+	Wait(1);
+ 300:	81 e0       	ldi	r24, 0x01	; 1
+ 302:	03 df       	rcall	.-506    	; 0x10a <Wait>
+	cc_strobe(0x34);			//receive mode
+ 304:	84 e3       	ldi	r24, 0x34	; 52
+ 306:	f6 de       	rcall	.-532    	; 0xf4 <cc_strobe>
+	Wait(1);	
+ 308:	81 e0       	ldi	r24, 0x01	; 1
+ 30a:	ff de       	rcall	.-514    	; 0x10a <Wait>
+ 30c:	08 95       	ret
+
+0000030e <cc_writereg_B>:
+}
+
+
+/*******************************BURST (MULTI) MODE COMMUNICATION********************************/
+/********Check that in ISR rf_recieve_B(); is uncommented & rf_receive(); is commented**********/
+
+void cc_writereg_B(char add,char data1,char data2,char data3)//********************************11
+{
+	csn0;
+ 30e:	c4 98       	cbi	0x18, 4	; 24
+	while(miso);
+ 310:	b6 99       	sbic	0x16, 6	; 22
+ 312:	fe cf       	rjmp	.-4      	; 0x310 <cc_writereg_B+0x2>
+	SPDR=add;
+ 314:	8f b9       	out	0x0f, r24	; 15
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 316:	77 9b       	sbis	0x0e, 7	; 14
+ 318:	fe cf       	rjmp	.-4      	; 0x316 <cc_writereg_B+0x8>
+	SPDR=data1;					//place data on spi resistor
+ 31a:	6f b9       	out	0x0f, r22	; 15
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 31c:	77 9b       	sbis	0x0e, 7	; 14
+ 31e:	fe cf       	rjmp	.-4      	; 0x31c <cc_writereg_B+0xe>
+	SPDR=data2;					//place data on spi resistor
+ 320:	4f b9       	out	0x0f, r20	; 15
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 322:	77 9b       	sbis	0x0e, 7	; 14
+ 324:	fe cf       	rjmp	.-4      	; 0x322 <cc_writereg_B+0x14>
+	SPDR=data3;					//place data on spi resistor
+ 326:	2f b9       	out	0x0f, r18	; 15
+	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 328:	77 9b       	sbis	0x0e, 7	; 14
+ 32a:	fe cf       	rjmp	.-4      	; 0x328 <cc_writereg_B+0x1a>
+	csn1;
+ 32c:	c4 9a       	sbi	0x18, 4	; 24
+	Wait(1);
+ 32e:	81 e0       	ldi	r24, 0x01	; 1
+ 330:	ec de       	rcall	.-552    	; 0x10a <Wait>
+ 332:	08 95       	ret
+
+00000334 <rf_transmit_B>:
+}
+
+void rf_transmit_B(unsigned char CCdata1, unsigned char CCdata2, unsigned char CCdata3)//*******12
+{
+ 334:	24 2f       	mov	r18, r20
+	cli();
+ 336:	f8 94       	cli
+	flag=1;
+ 338:	91 e0       	ldi	r25, 0x01	; 1
+ 33a:	90 93 63 00 	sts	0x0063, r25
+	cc_writereg_B(0x7f,CCdata1,CCdata2,CCdata3);
+ 33e:	46 2f       	mov	r20, r22
+ 340:	68 2f       	mov	r22, r24
+ 342:	8f e7       	ldi	r24, 0x7F	; 127
+ 344:	e4 df       	rcall	.-56     	; 0x30e <cc_writereg_B>
+	cc_strobe(0x35);			//transmitter mode
+ 346:	85 e3       	ldi	r24, 0x35	; 53
+ 348:	d5 de       	rcall	.-598    	; 0xf4 <cc_strobe>
+	while(!gd0);
+ 34a:	b2 9b       	sbis	0x16, 2	; 22
+ 34c:	fe cf       	rjmp	.-4      	; 0x34a <rf_transmit_B+0x16>
+	while(gd0);
+ 34e:	b2 99       	sbic	0x16, 2	; 22
+ 350:	fe cf       	rjmp	.-4      	; 0x34e <rf_transmit_B+0x1a>
+	cc_strobe(0x3A);    		//flux rxfifo
+ 352:	8a e3       	ldi	r24, 0x3A	; 58
+ 354:	cf de       	rcall	.-610    	; 0xf4 <cc_strobe>
+	cc_strobe(0x3B);  			//flux txfifo
+ 356:	8b e3       	ldi	r24, 0x3B	; 59
+ 358:	cd de       	rcall	.-614    	; 0xf4 <cc_strobe>
+	Wait(1);
+ 35a:	81 e0       	ldi	r24, 0x01	; 1
+ 35c:	d6 de       	rcall	.-596    	; 0x10a <Wait>
+	cc_strobe(0x36);   			//ideale mode 
+ 35e:	86 e3       	ldi	r24, 0x36	; 54
+ 360:	c9 de       	rcall	.-622    	; 0xf4 <cc_strobe>
+	cc_strobe(0x34);    		//receiver mode
+ 362:	84 e3       	ldi	r24, 0x34	; 52
+ 364:	c7 de       	rcall	.-626    	; 0xf4 <cc_strobe>
+	Wait(1); 
+ 366:	81 e0       	ldi	r24, 0x01	; 1
+ 368:	d0 de       	rcall	.-608    	; 0x10a <Wait>
+	sei();
+ 36a:	78 94       	sei
+ 36c:	08 95       	ret
+
+0000036e <cc_readreg_B>:
+}
+
+void cc_readreg_B(char add)//********************************************************************13
+{
+	csn0;
+ 36e:	c4 98       	cbi	0x18, 4	; 24
+	while(miso);
+ 370:	b6 99       	sbic	0x16, 6	; 22
+ 372:	fe cf       	rjmp	.-4      	; 0x370 <cc_readreg_B+0x2>
+	SPDR=(add|0x80);
+ 374:	80 68       	ori	r24, 0x80	; 128
+ 376:	8f b9       	out	0x0f, r24	; 15
+	Wait(1);	
+ 378:	81 e0       	ldi	r24, 0x01	; 1
+ 37a:	c7 de       	rcall	.-626    	; 0x10a <Wait>
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 37c:	77 9b       	sbis	0x0e, 7	; 14
+ 37e:	fe cf       	rjmp	.-4      	; 0x37c <cc_readreg_B+0xe>
+  
+	SPDR=0;						//place data on spi resistor
+ 380:	1f b8       	out	0x0f, r1	; 15
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 382:	77 9b       	sbis	0x0e, 7	; 14
+ 384:	fe cf       	rjmp	.-4      	; 0x382 <cc_readreg_B+0x14>
+	retval1 = SPDR;
+ 386:	8f b1       	in	r24, 0x0f	; 15
+ 388:	80 93 6a 00 	sts	0x006A, r24
+  
+	SPDR=0;						//place data on spi resistor
+ 38c:	1f b8       	out	0x0f, r1	; 15
+	while((SPSR&0x80)==0);		//pull the ss line to down to activate slave 
+ 38e:	77 9b       	sbis	0x0e, 7	; 14
+ 390:	fe cf       	rjmp	.-4      	; 0x38e <cc_readreg_B+0x20>
+	retval2 = SPDR;
+ 392:	8f b1       	in	r24, 0x0f	; 15
+ 394:	80 93 67 00 	sts	0x0067, r24
+  
+	SPDR=0;						//place data on spi resistor
+ 398:	1f b8       	out	0x0f, r1	; 15
+	while((SPSR&0x80)==0);		//wait foe the spi transmittion complit
+ 39a:	77 9b       	sbis	0x0e, 7	; 14
+ 39c:	fe cf       	rjmp	.-4      	; 0x39a <cc_readreg_B+0x2c>
+	retval3 = SPDR;
+ 39e:	8f b1       	in	r24, 0x0f	; 15
+ 3a0:	80 93 60 00 	sts	0x0060, r24
+  
+	csn1;						//pull the ss line to up to deactivate the slave
+ 3a4:	c4 9a       	sbi	0x18, 4	; 24
+ 3a6:	08 95       	ret
+
+000003a8 <rf_receive_B>:
+}
+
+void rf_receive_B() //***************************************************************************14
+{
+	cc_readreg_B(0x7F);
+ 3a8:	8f e7       	ldi	r24, 0x7F	; 127
+ 3aa:	e1 df       	rcall	.-62     	; 0x36e <cc_readreg_B>
+	cc_data1=retval1;
+ 3ac:	80 91 6a 00 	lds	r24, 0x006A
+ 3b0:	80 93 66 00 	sts	0x0066, r24
+	cc_data2=retval2;
+ 3b4:	80 91 67 00 	lds	r24, 0x0067
+ 3b8:	80 93 62 00 	sts	0x0062, r24
+	cc_data3=retval3;
+ 3bc:	80 91 60 00 	lds	r24, 0x0060
+ 3c0:	80 93 68 00 	sts	0x0068, r24
+	//LCD_gotoXY(1,4);
+	//LCD_writeString_F ("Rx1 Rx2 Rx3 ");
+	//LCD_gotoXY(1,5);
+	//LCD_showvalue(retval1);
+	//LCD_gotoXY(29,5);
+	//LCD_showvalue(retval2);
+	//LCD_gotoXY(57,5);
+	//LCD_showvalue(retval3);
+	Wait(5);
+ 3c4:	85 e0       	ldi	r24, 0x05	; 5
+ 3c6:	a1 de       	rcall	.-702    	; 0x10a <Wait>
+	cc_strobe(0x3A);  			//flux rxfifo
+ 3c8:	8a e3       	ldi	r24, 0x3A	; 58
+ 3ca:	94 de       	rcall	.-728    	; 0xf4 <cc_strobe>
+	Wait(1);
+ 3cc:	81 e0       	ldi	r24, 0x01	; 1
+ 3ce:	9d de       	rcall	.-710    	; 0x10a <Wait>
+	cc_strobe(0x36);  			//ideale mode 
+ 3d0:	86 e3       	ldi	r24, 0x36	; 54
+ 3d2:	90 de       	rcall	.-736    	; 0xf4 <cc_strobe>
+	Wait(1);
+ 3d4:	81 e0       	ldi	r24, 0x01	; 1
+ 3d6:	99 de       	rcall	.-718    	; 0x10a <Wait>
+	cc_strobe(0x34);			//receive mode
+ 3d8:	84 e3       	ldi	r24, 0x34	; 52
+ 3da:	8c de       	rcall	.-744    	; 0xf4 <cc_strobe>
+	Wait(1);	
+ 3dc:	81 e0       	ldi	r24, 0x01	; 1
+ 3de:	95 de       	rcall	.-726    	; 0x10a <Wait>
+ 3e0:	08 95       	ret
+
+000003e2 <__vector_18>:
+ 3e2:	1f 92       	push	r1
+ 3e4:	0f 92       	push	r0
+ 3e6:	0f b6       	in	r0, 0x3f	; 63
+ 3e8:	0f 92       	push	r0
+ 3ea:	11 24       	eor	r1, r1
+ 3ec:	2f 93       	push	r18
+ 3ee:	3f 93       	push	r19
+ 3f0:	4f 93       	push	r20
+ 3f2:	5f 93       	push	r21
+ 3f4:	6f 93       	push	r22
+ 3f6:	7f 93       	push	r23
+ 3f8:	8f 93       	push	r24
+ 3fa:	9f 93       	push	r25
+ 3fc:	af 93       	push	r26
+ 3fe:	bf 93       	push	r27
+ 400:	ef 93       	push	r30
+ 402:	ff 93       	push	r31
+ 404:	80 91 63 00 	lds	r24, 0x0063
+ 408:	88 23       	and	r24, r24
+ 40a:	11 f4       	brne	.+4      	; 0x410 <__vector_18+0x2e>
+ 40c:	cd df       	rcall	.-102    	; 0x3a8 <rf_receive_B>
+ 40e:	02 c0       	rjmp	.+4      	; 0x414 <__vector_18+0x32>
+ 410:	10 92 63 00 	sts	0x0063, r1
+ 414:	ff 91       	pop	r31
+ 416:	ef 91       	pop	r30
+ 418:	bf 91       	pop	r27
+ 41a:	af 91       	pop	r26
+ 41c:	9f 91       	pop	r25
+ 41e:	8f 91       	pop	r24
+ 420:	7f 91       	pop	r23
+ 422:	6f 91       	pop	r22
+ 424:	5f 91       	pop	r21
+ 426:	4f 91       	pop	r20
+ 428:	3f 91       	pop	r19
+ 42a:	2f 91       	pop	r18
+ 42c:	0f 90       	pop	r0
+ 42e:	0f be       	out	0x3f, r0	; 63
+ 430:	0f 90       	pop	r0
+ 432:	1f 90       	pop	r1
+ 434:	18 95       	reti
+
+00000436 <main>:
+
+int main(void)
+{
+ int i=5;
+ delayms(500);
+ 436:	84 ef       	ldi	r24, 0xF4	; 244
+ 438:	91 e0       	ldi	r25, 0x01	; 1
+ 43a:	2d de       	rcall	.-934    	; 0x96 <delayms>
+ rf_init();
+ 43c:	01 df       	rcall	.-510    	; 0x240 <rf_init>
+ PORTA=0xF0;
+ 43e:	80 ef       	ldi	r24, 0xF0	; 240
+ 440:	8b bb       	out	0x1b, r24	; 27
+ DDRA=0x00;							//initialidation for Switch
+ 442:	1a ba       	out	0x1a, r1	; 26
+ PORTD=0x00;
+ 444:	12 ba       	out	0x12, r1	; 18
+ DDRD=0xF0;							//data direction for motor
+ 446:	81 bb       	out	0x11, r24	; 17
+ PORTC=0x00;
+ 448:	15 ba       	out	0x15, r1	; 21
+ DDRC=0xF0;							//data direction for LED
+ 44a:	84 bb       	out	0x14, r24	; 20
+ delayms(1000);
+ 44c:	88 ee       	ldi	r24, 0xE8	; 232
+ 44e:	93 e0       	ldi	r25, 0x03	; 3
+ 450:	22 de       	rcall	.-956    	; 0x96 <delayms>
+ 
+ while(1)
+ {
+   
+   rf_transmit_B(5,2,(PINA & 0xf0));
+ 452:	49 b3       	in	r20, 0x19	; 25
+ 454:	40 7f       	andi	r20, 0xF0	; 240
+ 456:	62 e0       	ldi	r22, 0x02	; 2
+ 458:	85 e0       	ldi	r24, 0x05	; 5
+ 45a:	6c df       	rcall	.-296    	; 0x334 <rf_transmit_B>
+   delayms(100);
+ 45c:	84 e6       	ldi	r24, 0x64	; 100
+ 45e:	90 e0       	ldi	r25, 0x00	; 0
+ 460:	1a de       	rcall	.-972    	; 0x96 <delayms>
+   PORTC=cc_data3;
+ 462:	80 91 68 00 	lds	r24, 0x0068
+ 466:	85 bb       	out	0x15, r24	; 21
+   switch(cc_data3)
+ 468:	80 3c       	cpi	r24, 0xC0	; 192
+ 46a:	79 f0       	breq	.+30     	; 0x48a <main+0x54>
+ 46c:	81 3c       	cpi	r24, 0xC1	; 193
+ 46e:	28 f4       	brcc	.+10     	; 0x47a <main+0x44>
+ 470:	80 36       	cpi	r24, 0x60	; 96
+ 472:	79 f0       	breq	.+30     	; 0x492 <main+0x5c>
+ 474:	80 3a       	cpi	r24, 0xA0	; 160
+ 476:	69 f7       	brne	.-38     	; 0x452 <main+0x1c>
+ 478:	0a c0       	rjmp	.+20     	; 0x48e <main+0x58>
+ 47a:	80 3e       	cpi	r24, 0xE0	; 224
+ 47c:	21 f0       	breq	.+8      	; 0x486 <main+0x50>
+ 47e:	80 3f       	cpi	r24, 0xF0	; 240
+ 480:	41 f7       	brne	.-48     	; 0x452 <main+0x1c>
+   {
+    case 0xF0:
+	 PORTD=0x00;			//stop
+ 482:	12 ba       	out	0x12, r1	; 18
+ 484:	e6 cf       	rjmp	.-52     	; 0x452 <main+0x1c>
+	 break;
+	case 0xE0: 
+	 PORTD=0x50;			//Forward
+ 486:	80 e5       	ldi	r24, 0x50	; 80
+ 488:	05 c0       	rjmp	.+10     	; 0x494 <main+0x5e>
+	 break;
+	case 0xC0: 
+	 PORTD=0x10;			//Left turn
+ 48a:	80 e1       	ldi	r24, 0x10	; 16
+ 48c:	03 c0       	rjmp	.+6      	; 0x494 <main+0x5e>
+	 break;
+	case 0xA0: 
+	 PORTD=0x40;			//right turn
+ 48e:	80 e4       	ldi	r24, 0x40	; 64
+ 490:	01 c0       	rjmp	.+2      	; 0x494 <main+0x5e>
+	 break; 
+	case 0x60: 
+	 PORTD=0xA0;			//backward
+ 492:	80 ea       	ldi	r24, 0xA0	; 160
+ 494:	82 bb       	out	0x12, r24	; 18
+ 496:	dd cf       	rjmp	.-70     	; 0x452 <main+0x1c>
+
+00000498 <_exit>:
+ 498:	ff cf       	rjmp	.-2      	; 0x498 <_exit>

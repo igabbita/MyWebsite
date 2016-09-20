@@ -1,0 +1,91 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  68               	.global	main
+  70               	main:
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE9: Program to turn ON Buzzer when Switch is pressed
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............31st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>		//This is the header for AVR Microcontroller.
+  18:main.c        **** 
+  19:main.c        **** int main(void)
+  20:main.c        ****  {	
+  71               	.global	main
+  73               	main:
+  21:main.c        **** 	PORTC=0X00;			//PortC initiallization as all bits low.
+  75               	function
+  76               	main:
+  22:main.c        **** 	DDRC=0X08;			//PortC data direction declaration as output.
+  78               	function
+  79               	main:
+  81 0004 84BB      	.LM0:
+  23:main.c        **** 	
+  24:main.c        **** 	PORTA=0XFF;			//PortA initiallization as all bits high (Pull-up Mode).
+  82               	n
+  83               	main:
+  85 0008 8BBB      	.LM0:
+  25:main.c        **** 	DDRA=0X00;			//PortA data direction declaration as input.
+  86               	n
+  87               	main:
+  89 000c 88E0      	.LM0:
+  90               	/* prologue: frame size=0 */
+  26:main.c        **** 	
+  27:main.c        **** 	while(1)			//This is for the the infinity loop.
+  28:main.c        **** 	{	
+  29:main.c        **** 		if((PINA & 0x10)==0x00)			//checking for switch press at s1. 
+  91               	ain
+  92               	.LM0:
+  93 000e CC99      	/* prologue: frame size=0 */
+  94 0010 00C0      	/* prologue end (size=0) */
+  30:main.c        **** 		{
+  31:main.c        **** 			PORTC=0x08; 					//BZ ON
+  95               	size=0 */
+  96               	/* prologue end (size=0) */
+  98 0014 00C0      	.LM1:
+  99               		out 53-0x20,__zero_reg__
+  32:main.c        **** 		}
+  33:main.c        **** 		else
+  34:main.c        **** 			PORTC=0x00;						//BZ OFF
+ 100               	in
+ 101               	.LM1:
+ 102 0016 15BA      		out 53-0x20,__zero_reg__
+ 104               	.LM2:
+ 105               		ldi r24,lo8(8)
+ 106               		out 52-0x20,r24
+ 108               	.LM3:
+ 109               		ldi r24,lo8(-1)
+ 110               		out 59-0x20,r24
+ 112               	.LM4:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/cc9pJPhV.s:3      *ABS*:0000003f __SREG__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/cc9pJPhV.s:4      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/cc9pJPhV.s:5      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/cc9pJPhV.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/cc9pJPhV.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/cc9pJPhV.s:70     .text:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

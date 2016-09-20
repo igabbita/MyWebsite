@@ -1,0 +1,315 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001b0  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000004  00800060  00800060  00000224  2**0
+                  ALLOC
+  2 .stab         0000093c  00000000  00000000  00000224  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      0000070a  00000000  00000000  00000b60  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	14 c0       	rjmp	.+40     	; 0x2a <__ctors_end>
+   2:	2e c0       	rjmp	.+92     	; 0x60 <__bad_interrupt>
+   4:	2d c0       	rjmp	.+90     	; 0x60 <__bad_interrupt>
+   6:	2c c0       	rjmp	.+88     	; 0x60 <__bad_interrupt>
+   8:	2b c0       	rjmp	.+86     	; 0x60 <__bad_interrupt>
+   a:	2a c0       	rjmp	.+84     	; 0x60 <__bad_interrupt>
+   c:	29 c0       	rjmp	.+82     	; 0x60 <__bad_interrupt>
+   e:	28 c0       	rjmp	.+80     	; 0x60 <__bad_interrupt>
+  10:	27 c0       	rjmp	.+78     	; 0x60 <__bad_interrupt>
+  12:	83 c0       	rjmp	.+262    	; 0x11a <__vector_9>
+  14:	25 c0       	rjmp	.+74     	; 0x60 <__bad_interrupt>
+  16:	24 c0       	rjmp	.+72     	; 0x60 <__bad_interrupt>
+  18:	23 c0       	rjmp	.+70     	; 0x60 <__bad_interrupt>
+  1a:	22 c0       	rjmp	.+68     	; 0x60 <__bad_interrupt>
+  1c:	21 c0       	rjmp	.+66     	; 0x60 <__bad_interrupt>
+  1e:	20 c0       	rjmp	.+64     	; 0x60 <__bad_interrupt>
+  20:	1f c0       	rjmp	.+62     	; 0x60 <__bad_interrupt>
+  22:	1e c0       	rjmp	.+60     	; 0x60 <__bad_interrupt>
+  24:	1d c0       	rjmp	.+58     	; 0x60 <__bad_interrupt>
+  26:	1c c0       	rjmp	.+56     	; 0x60 <__bad_interrupt>
+  28:	1b c0       	rjmp	.+54     	; 0x60 <__bad_interrupt>
+
+0000002a <__ctors_end>:
+  2a:	11 24       	eor	r1, r1
+  2c:	1f be       	out	0x3f, r1	; 63
+  2e:	cf e5       	ldi	r28, 0x5F	; 95
+  30:	d2 e0       	ldi	r29, 0x02	; 2
+  32:	de bf       	out	0x3e, r29	; 62
+  34:	cd bf       	out	0x3d, r28	; 61
+
+00000036 <__do_copy_data>:
+  36:	10 e0       	ldi	r17, 0x00	; 0
+  38:	a0 e6       	ldi	r26, 0x60	; 96
+  3a:	b0 e0       	ldi	r27, 0x00	; 0
+  3c:	e0 eb       	ldi	r30, 0xB0	; 176
+  3e:	f1 e0       	ldi	r31, 0x01	; 1
+  40:	02 c0       	rjmp	.+4      	; 0x46 <.do_copy_data_start>
+
+00000042 <.do_copy_data_loop>:
+  42:	05 90       	lpm	r0, Z+
+  44:	0d 92       	st	X+, r0
+
+00000046 <.do_copy_data_start>:
+  46:	a0 36       	cpi	r26, 0x60	; 96
+  48:	b1 07       	cpc	r27, r17
+  4a:	d9 f7       	brne	.-10     	; 0x42 <.do_copy_data_loop>
+
+0000004c <__do_clear_bss>:
+  4c:	10 e0       	ldi	r17, 0x00	; 0
+  4e:	a0 e6       	ldi	r26, 0x60	; 96
+  50:	b0 e0       	ldi	r27, 0x00	; 0
+  52:	01 c0       	rjmp	.+2      	; 0x56 <.do_clear_bss_start>
+
+00000054 <.do_clear_bss_loop>:
+  54:	1d 92       	st	X+, r1
+
+00000056 <.do_clear_bss_start>:
+  56:	a4 36       	cpi	r26, 0x64	; 100
+  58:	b1 07       	cpc	r27, r17
+  5a:	e1 f7       	brne	.-8      	; 0x54 <.do_clear_bss_loop>
+  5c:	92 d0       	rcall	.+292    	; 0x182 <main>
+  5e:	a7 c0       	rjmp	.+334    	; 0x1ae <_exit>
+
+00000060 <__bad_interrupt>:
+  60:	cf cf       	rjmp	.-98     	; 0x0 <__heap_end>
+
+00000062 <delayms>:
+unsigned int delaycounter1,delaycounter2;
+void delayms(unsigned int delaytime)
+{
+
+	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  62:	10 92 63 00 	sts	0x0063, r1
+  66:	10 92 62 00 	sts	0x0062, r1
+  6a:	20 e0       	ldi	r18, 0x00	; 0
+  6c:	30 e0       	ldi	r19, 0x00	; 0
+  6e:	40 e0       	ldi	r20, 0x00	; 0
+  70:	50 e0       	ldi	r21, 0x00	; 0
+	...
+	 {
+		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+		  {
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  8a:	4f 5f       	subi	r20, 0xFF	; 255
+  8c:	5f 4f       	sbci	r21, 0xFF	; 255
+  8e:	63 e0       	ldi	r22, 0x03	; 3
+  90:	41 32       	cpi	r20, 0x21	; 33
+  92:	56 07       	cpc	r21, r22
+  94:	71 f7       	brne	.-36     	; 0x72 <delayms+0x10>
+  96:	2f 5f       	subi	r18, 0xFF	; 255
+  98:	3f 4f       	sbci	r19, 0xFF	; 255
+  9a:	82 17       	cp	r24, r18
+  9c:	93 07       	cpc	r25, r19
+  9e:	38 f7       	brcc	.-50     	; 0x6e <delayms+0xc>
+  a0:	30 93 63 00 	sts	0x0063, r19
+  a4:	20 93 62 00 	sts	0x0062, r18
+  a8:	50 93 61 00 	sts	0x0061, r21
+  ac:	40 93 60 00 	sts	0x0060, r20
+  b0:	08 95       	ret
+
+000000b2 <delayus>:
+		  }
+		
+	 }
+}
+
+void delayus(unsigned int delaytime)
+{
+
+	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  b2:	10 92 63 00 	sts	0x0063, r1
+  b6:	10 92 62 00 	sts	0x0062, r1
+  ba:	20 e0       	ldi	r18, 0x00	; 0
+  bc:	30 e0       	ldi	r19, 0x00	; 0
+	...
+	 {
+		 
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		  asm("nop");asm("nop");asm("nop");asm("nop");
+  d2:	2f 5f       	subi	r18, 0xFF	; 255
+  d4:	3f 4f       	sbci	r19, 0xFF	; 255
+  d6:	82 17       	cp	r24, r18
+  d8:	93 07       	cpc	r25, r19
+  da:	88 f7       	brcc	.-30     	; 0xbe <delayus+0xc>
+  dc:	30 93 63 00 	sts	0x0063, r19
+  e0:	20 93 62 00 	sts	0x0062, r18
+  e4:	08 95       	ret
+
+000000e6 <delay_us>:
+
+void delay_us(unsigned int delaytime)	//funtion for generating time delay in micro seconds
+{
+
+	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  e6:	10 92 63 00 	sts	0x0063, r1
+  ea:	10 92 62 00 	sts	0x0062, r1
+  ee:	20 e0       	ldi	r18, 0x00	; 0
+  f0:	30 e0       	ldi	r19, 0x00	; 0
+	...
+	 {
+		 
+		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 106:	2f 5f       	subi	r18, 0xFF	; 255
+ 108:	3f 4f       	sbci	r19, 0xFF	; 255
+ 10a:	82 17       	cp	r24, r18
+ 10c:	93 07       	cpc	r25, r19
+ 10e:	88 f7       	brcc	.-30     	; 0xf2 <delay_us+0xc>
+ 110:	30 93 63 00 	sts	0x0063, r19
+ 114:	20 93 62 00 	sts	0x0062, r18
+ 118:	08 95       	ret
+
+0000011a <__vector_9>:
+	 }
+}
+
+
+ISR (TIMER0_OVF_vect) 				//interrupt subroutine for timer 0 overflow vector
+ {
+ 11a:	1f 92       	push	r1
+ 11c:	0f 92       	push	r0
+ 11e:	0f b6       	in	r0, 0x3f	; 63
+ 120:	0f 92       	push	r0
+ 122:	11 24       	eor	r1, r1
+ 124:	8f 93       	push	r24
+ 126:	9f 93       	push	r25
+  TCNT0=46;							//initializing the timer registor for generating frequency of 38Khz
+ 128:	8e e2       	ldi	r24, 0x2E	; 46
+ 12a:	82 bf       	out	0x32, r24	; 50
+  PORTB^=0x01;						//Toggle the port pin for generating frequency
+ 12c:	88 b3       	in	r24, 0x18	; 24
+ 12e:	91 e0       	ldi	r25, 0x01	; 1
+ 130:	89 27       	eor	r24, r25
+ 132:	88 bb       	out	0x18, r24	; 24
+ 134:	9f 91       	pop	r25
+ 136:	8f 91       	pop	r24
+ 138:	0f 90       	pop	r0
+ 13a:	0f be       	out	0x3f, r0	; 63
+ 13c:	0f 90       	pop	r0
+ 13e:	1f 90       	pop	r1
+ 140:	18 95       	reti
+
+00000142 <tx>:
+ }
+ 
+ 
+ void tx(unsigned char data)			//function for transmitting a data byte
+ {
+ 142:	0f 93       	push	r16
+ 144:	1f 93       	push	r17
+ 146:	18 2f       	mov	r17, r24
+ unsigned char i;
+  TCCR0=0x01;						//start bit 
+ 148:	81 e0       	ldi	r24, 0x01	; 1
+ 14a:	83 bf       	out	0x33, r24	; 51
+  delay_us(800);
+ 14c:	80 e2       	ldi	r24, 0x20	; 32
+ 14e:	93 e0       	ldi	r25, 0x03	; 3
+ 150:	ca df       	rcall	.-108    	; 0xe6 <delay_us>
+  TCCR0=0x00;
+ 152:	13 be       	out	0x33, r1	; 51
+ 154:	00 e0       	ldi	r16, 0x00	; 0
+  for(i=0;i<=7;i++)				//bit 0 to 7
+   {
+    
+	if((data&0x01)==0x01)
+ 156:	10 ff       	sbrs	r17, 0
+ 158:	05 c0       	rjmp	.+10     	; 0x164 <tx+0x22>
+	  {
+	  TCCR0=0x01;
+ 15a:	81 e0       	ldi	r24, 0x01	; 1
+ 15c:	83 bf       	out	0x33, r24	; 51
+	  delay_us(1600);
+ 15e:	80 e4       	ldi	r24, 0x40	; 64
+ 160:	96 e0       	ldi	r25, 0x06	; 6
+ 162:	03 c0       	rjmp	.+6      	; 0x16a <tx+0x28>
+	  }
+	  
+	else
+	  {
+	  TCCR0=0x00;
+ 164:	13 be       	out	0x33, r1	; 51
+	  delay_us(2000);
+ 166:	80 ed       	ldi	r24, 0xD0	; 208
+ 168:	97 e0       	ldi	r25, 0x07	; 7
+ 16a:	bd df       	rcall	.-134    	; 0xe6 <delay_us>
+ 16c:	0f 5f       	subi	r16, 0xFF	; 255
+ 16e:	08 30       	cpi	r16, 0x08	; 8
+ 170:	11 f0       	breq	.+4      	; 0x176 <tx+0x34>
+	  }
+	  
+    
+    data>>=1;	
+ 172:	16 95       	lsr	r17
+ 174:	f0 cf       	rjmp	.-32     	; 0x156 <tx+0x14>
+   }
+   TCCR0=0x00;
+ 176:	13 be       	out	0x33, r1	; 51
+   PORTA=0xf0;
+ 178:	80 ef       	ldi	r24, 0xF0	; 240
+ 17a:	8b bb       	out	0x1b, r24	; 27
+ 17c:	1f 91       	pop	r17
+ 17e:	0f 91       	pop	r16
+ 180:	08 95       	ret
+
+00000182 <main>:
+ }	
+ 
+
+int main()
+ {
+ 182:	1f 93       	push	r17
+ unsigned char tx1;
+ TCNT0=46;      //timer counter register
+ 184:	8e e2       	ldi	r24, 0x2E	; 46
+ 186:	82 bf       	out	0x32, r24	; 50
+ TCCR0=0X00;	//timer counter control register
+ 188:	13 be       	out	0x33, r1	; 51
+ 
+ TIMSK=0X01;	//timer interrupt mask register
+ 18a:	81 e0       	ldi	r24, 0x01	; 1
+ 18c:	89 bf       	out	0x39, r24	; 57
+ 
+ DDRB=0x01;		//data direction register
+ 18e:	87 bb       	out	0x17, r24	; 23
+ PORTB=0x00;	//port B  initialization
+ 190:	18 ba       	out	0x18, r1	; 24
+ DDRA=0x00;
+ 192:	1a ba       	out	0x1a, r1	; 26
+ PORTA=0xf0;
+ 194:	80 ef       	ldi	r24, 0xF0	; 240
+ 196:	8b bb       	out	0x1b, r24	; 27
+ 
+ 
+ sei();			//set global interrupt enable
+ 198:	78 94       	sei
+ 
+ while(1)
+	{
+	if((PINA&0x10)==0x00)			//if S1(switch 1 is pressed)
+ 19a:	cc 99       	sbic	0x19, 4	; 25
+ 19c:	fe cf       	rjmp	.-4      	; 0x19a <main+0x18>
+	 {
+	  while((PINA&0x10)==0x00);
+ 19e:	cc 9b       	sbis	0x19, 4	; 25
+ 1a0:	fe cf       	rjmp	.-4      	; 0x19e <main+0x1c>
+      tx(tx1);
+ 1a2:	81 2f       	mov	r24, r17
+ 1a4:	ce df       	rcall	.-100    	; 0x142 <tx>
+	  PORTA=0xf0;
+ 1a6:	80 ef       	ldi	r24, 0xF0	; 240
+ 1a8:	8b bb       	out	0x1b, r24	; 27
+	  tx1++;
+ 1aa:	1f 5f       	subi	r17, 0xFF	; 255
+ 1ac:	f6 cf       	rjmp	.-20     	; 0x19a <main+0x18>
+
+000001ae <_exit>:
+ 1ae:	ff cf       	rjmp	.-2      	; 0x1ae <_exit>

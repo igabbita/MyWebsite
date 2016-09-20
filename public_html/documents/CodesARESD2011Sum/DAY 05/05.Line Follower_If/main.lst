@@ -1,0 +1,106 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  68               	.global	main
+  70               	main:
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE5.5: Program for Line Follower using IF Statement
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............31st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>
+  18:main.c        **** 
+  19:main.c        **** int main(void)
+  20:main.c        **** {
+  71               	6,0,0,main
+  72               	.global	main
+  74               	main:
+  21:main.c        ****   DDRA=0X00;					// Initialization of PORTA as input
+  75               	6,0,0,main
+  76               	.global	main
+  22:main.c        ****   PORTA=0XFF;
+  78               	0,1)",36,0,0,main
+  79               	.global	main
+  81 0004 8BBB      	main:
+  23:main.c        ****   
+  24:main.c        ****   DDRD=0XF0;					// Initailization of PORTD as output
+  82               	6,0,0,main
+  83               	.global	main
+  85 0008 81BB      	main:
+  25:main.c        ****   PORTD=0X00;
+  86               	6,0,0,main
+  87               	.global	main
+  89 000c 20E4      	main:
+  91 0010 80E5      	.LM0:
+  92               	/* prologue: frame size=0 */
+  26:main.c        ****   
+  27:main.c        ****   while(1)
+  28:main.c        ****   {
+  29:main.c        **** 	if((PINA&0X01)==0X01)		// Right Sensor(at PA0) is detecting Black Line
+  93               	0,20,.LM0-main
+  94               	.LM0:
+  95 0012 C89B      	/* prologue: frame size=0 */
+  96 0014 00C0      	/* prologue end (size=0) */
+  30:main.c        **** 	 {
+  31:main.c        **** 	 PORTD=0X40;				// Turn Right
+  97               	gue: frame size=0 */
+  98               	/* prologue end (size=0) */
+ 100 0018 00C0      	.LM1:
+ 101               		out 58-0x20,__zero_reg__
+  32:main.c        **** 	 }
+  33:main.c        **** 	else if((PINA&0X02)==0X02)	// Left Sensor(at PA1) is detecting Black line
+ 102               	,21,.LM1-main
+ 103               	.LM1:
+ 104 001a C99B      		out 58-0x20,__zero_reg__
+  34:main.c        **** 	 {
+  35:main.c        **** 	 PORTD=0x10;				// Turn Left
+ 106               	-0x20,__zero_reg__
+ 108 001e 92BB      	.LM2:
+ 109 0020 00C0      		ldi r24,lo8(-1)
+ 110               		out 59-0x20,r24
+  36:main.c        **** 	 }
+  37:main.c        **** 	else
+  38:main.c        **** 	 {
+  39:main.c        **** 	 PORTD=0X50;				// Move Forward
+ 111               	n
+ 112               	.LM2:
+ 113 0022 82BB      		ldi r24,lo8(-1)
+ 114 0024 00C0      		out 59-0x20,r24
+ 116               	.LM3:
+ 117               		ldi r24,lo8(-16)
+ 118               		out 49-0x20,r24
+ 120               	.LM4:
+ 121               		out 50-0x20,__zero_reg__
+ 122               		ldi r18,lo8(64)
+ 123               		ldi r25,lo8(16)
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/ccumz6rr.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/ccumz6rr.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/ccumz6rr.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/ccumz6rr.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/ccumz6rr.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/ccumz6rr.s:70     .text:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss

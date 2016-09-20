@@ -1,0 +1,226 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  69               	.global	delay
+  71               	delay:
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE4: Program to blink all LEDs connected in PORTC (Without Header)
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............31st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>		//This is the header for AVR Microcontroller.
+  18:main.c        **** 
+  19:main.c        **** void delay(double x)
+  20:main.c        **** {
+  72               	
+  73               		push r11
+  74               		push r12
+  75 0000 AF92      		push r13
+  76 0002 BF92      		push r14
+  77 0004 CF92      		push r15
+  78 0006 DF92      		push r16
+  79 0008 EF92      		push r17
+  80 000a FF92      	/* prologue end (size=8) */
+  82 000e 1F93      	.LM1:
+  83               		ldi r18,lo8(0x42c80000)
+  21:main.c        **** double i;
+  22:main.c        **** for(i=0;i<=x*100;i++);
+  84               	sh r10
+  85               		push r11
+  86 0010 20E0      		push r12
+  87 0012 30E0      		push r13
+  88 0014 48EC      		push r14
+  89 0016 52E4      		push r15
+  90 0018 00D0      		push r16
+  91 001a 5B01      		push r17
+  92 001c 6C01      	/* prologue end (size=8) */
+  94 0020 F0E0      	.LM1:
+  95 0022 EF2E      		ldi r18,lo8(0x42c80000)
+  96 0024 F0E0      		ldi r19,hi8(0x42c80000)
+  97 0026 FF2E      		ldi r20,hlo8(0x42c80000)
+  98 0028 F0E0      		ldi r21,hhi8(0x42c80000)
+  99 002a 0F2F      		rcall __mulsf3
+ 100 002c F0E0      		movw r10,r22
+ 101 002e 1F2F      		movw r12,r24
+ 102 0030 F02D      		mov __tmp_reg__,r31
+ 103 0032 00C0      		ldi r31,lo8(0x0)
+ 104               		mov r14,r31
+ 105               		ldi r31,hi8(0x0)
+ 106               		mov r15,r31
+ 107 0034 20E0      		ldi r31,hlo8(0x0)
+ 108 0036 30E0      		mov r16,r31
+ 109 0038 40E8      		ldi r31,hhi8(0x0)
+ 110 003a 5FE3      		mov r17,r31
+ 111 003c C801      		mov r31,__tmp_reg__
+ 112 003e B701      		rjmp .L2
+ 113 0040 00D0      	.L3:
+ 115 0044 8C01      	.LM2:
+ 116               		ldi r18,lo8(0x3f800000)
+ 117 0046 A601      		ldi r19,hi8(0x3f800000)
+ 118 0048 9501      		ldi r20,hlo8(0x3f800000)
+ 119 004a C801      		ldi r21,hhi8(0x3f800000)
+ 120 004c B701      		movw r24,r16
+ 121 004e 00D0      		movw r22,r14
+ 122 0050 1816      		rcall __addsf3
+ 123 0052 04F4      		movw r14,r22
+ 124               		movw r16,r24
+ 125 0054 1F91      	.L2:
+ 126 0056 0F91      		movw r20,r12
+ 127 0058 FF90      		movw r18,r10
+ 128 005a EF90      		movw r24,r16
+ 129 005c DF90      		movw r22,r14
+ 130 005e CF90      		rcall __lesf2
+ 131 0060 BF90      		cp __zero_reg__,r24
+ 132 0062 AF90      		brge .L3
+ 133 0064 0895      	/* epilogue: frame size=0 */
+ 134               		pop r17
+ 135               		pop r16
+ 136               		pop r15
+ 137               		pop r14
+ 138               		pop r13
+ 139               		pop r12
+ 140               		pop r11
+ 141               		pop r10
+ 142               		ret
+ 143               	/* epilogue end (size=9) */
+ 144               	/* function delay size 51 (34) */
+  23:main.c        **** }
+  24:main.c        **** 
+  25:main.c        **** int main(void)
+  26:main.c        **** {
+ 145               	5
+ 146               		pop r14
+ 147               		pop r13
+ 148 0066 EF92      		pop r12
+ 149 0068 FF92      		pop r11
+ 150 006a 0F93      		pop r10
+ 151 006c 1F93      		ret
+ 152               	/* epilogue end (size=9) */
+  27:main.c        **** 	PORTC=0X00;			//PortC initiallization as all bits low.
+ 153               	size=0 */
+ 154               		pop r17
+ 155 006e 15BA      		pop r16
+  28:main.c        **** 	DDRC=0XF0;			//PortC data direction declaration as out put.
+ 156               	0
+ 157               		movw r24,r16
+ 158 0070 80EF      		movw r22,r14
+ 159 0072 84BB      		rcall __lesf2
+ 160               		cp __zero_reg__,r24
+  29:main.c        **** 	
+  30:main.c        **** 	while(1)			//This is for the the infinity loop.
+  31:main.c        **** 	{	
+  32:main.c        **** 		PORTC=0xF0;		//Turning ON all LED
+ 161               	3
+ 162               		movw r14,r22
+ 163 0074 80EF      		movw r16,r24
+ 164 0076 85BB      	.L2:
+ 165 0078 0F2E      		movw r20,r12
+ 166 007a F0E0      		movw r18,r10
+ 167 007c EF2E      		movw r24,r16
+ 168 007e F0E0      		movw r22,r14
+ 169 0080 FF2E      		rcall __lesf2
+ 170 0082 F0E0      		cp __zero_reg__,r24
+ 171 0084 0F2F      		brge .L3
+ 172 0086 F0E0      	/* epilogue: frame size=0 */
+ 173 0088 1F2F      		pop r17
+ 174 008a F02D      		pop r16
+ 175               		pop r15
+ 176               		pop r14
+ 177               		pop r13
+ 178               		pop r12
+ 179               		pop r11
+ 180 008c 20E0      		pop r10
+ 181 008e 30E0      		ret
+ 182 0090 40E8      	/* epilogue end (size=9) */
+ 183 0092 5FE3      	/* function delay size 51 (34) */
+ 188 009c 8C01      	.Lscope0:
+ 190 00a0 30E4      	.global	main
+ 192 00a4 56E4      	main:
+ 194 00a8 1816      	.LM3:
+ 195 00aa 04F4      	/* prologue: frame size=0 */
+ 196               		push r14
+ 197               		push r15
+  33:main.c        **** 		delay(100);
+  34:main.c        **** 		PORTC=0x00;		//Turning OFF all LED
+ 198               	n, @function
+ 199               	main:
+ 201 00ae 0F2E      	.LM3:
+ 202 00b0 F0E0      	/* prologue: frame size=0 */
+ 203 00b2 EF2E      		push r14
+ 204 00b4 F0E0      		push r15
+ 205 00b6 FF2E      		push r16
+ 206 00b8 F0E0      		push r17
+ 207 00ba 0F2F      	/* prologue end (size=4) */
+ 209 00be 1F2F      	.LM4:
+ 210 00c0 F02D      		out 53-0x20,__zero_reg__
+ 212               	.LM5:
+ 213               		ldi r24,lo8(-16)
+ 214               		out 52-0x20,r24
+ 215               	.L7:
+ 217 00c4 30E0      	.LM6:
+ 218 00c6 40E8      		ldi r24,lo8(-16)
+ 219 00c8 5FE3      		out 53-0x20,r24
+ 220 00ca C801      		mov __tmp_reg__,r31
+ 221 00cc B701      		ldi r31,lo8(0x0)
+ 222 00ce 00D0      		mov r14,r31
+ 223 00d0 7B01      		ldi r31,hi8(0x0)
+ 224 00d2 8C01      		mov r15,r31
+ 225 00d4 20E0      		ldi r31,hlo8(0x0)
+ 226 00d6 30E4      		mov r16,r31
+ 227 00d8 4CE1      		ldi r31,hhi8(0x0)
+ 228 00da 56E4      		mov r17,r31
+ 229 00dc 00D0      		mov r31,__tmp_reg__
+ 230 00de 1816      	.L8:
+ 231 00e0 04F4      	.LBB6:
+ 232 00e2 00C0      	.LBB7:
+ 234               	.LM7:
+ 235               		ldi r18,lo8(0x3f800000)
+ 236               		ldi r19,hi8(0x3f800000)
+ 237               		ldi r20,hlo8(0x3f800000)
+ 238               		ldi r21,hhi8(0x3f800000)
+ 239               		movw r24,r16
+ 240               		movw r22,r14
+ 241               		rcall __addsf3
+ 242               		movw r14,r22
+ 243               		movw r16,r24
+ 244               		ldi r18,lo8(0x461c4000)
+ 245               		ldi r19,hi8(0x461c4000)
+ 246               		ldi r20,hlo8(0x461c4000)
+ 247               		ldi r21,hhi8(0x461c4000)
+ 248               		rcall __lesf2
+ 249               		cp __zero_reg__,r24
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccjgOCIz.s:3      *ABS*:0000003f __SREG__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccjgOCIz.s:4      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccjgOCIz.s:5      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccjgOCIz.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccjgOCIz.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccjgOCIz.s:71     .text:00000000 delay
+C:\DOCUME~1\TECHNO~1\LOCALS~1\Temp/ccjgOCIz.s:144    .text:00000066 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__mulsf3
+__addsf3
+__lesf2

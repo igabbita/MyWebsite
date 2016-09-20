@@ -1,0 +1,636 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   9               		.text
+  10               	.Ltext0:
+  70               	.global	delayms
+  72               	delayms:
+  74               	.Ltext1:
+   1:delay.h       **** /*	LCD.h
+   2:delay.h       **** Technophilia embedded systems
+   3:delay.h       **** 
+   4:delay.h       **** 	this header file provides time delay in the form of mili second and micro second
+   5:delay.h       **** 	without affecting any interrupts.
+   6:delay.h       **** 
+   7:delay.h       **** 	delayms()  this function provides delay in the form of mili second
+   8:delay.h       **** 	delayus()  this function provides delay in the form of micro second
+   9:delay.h       **** 	
+  10:delay.h       **** */
+  11:delay.h       **** #ifndef _DELAY_H_
+  12:delay.h       **** #define _DELAY_H_
+  13:delay.h       **** unsigned int delaycounter1,delaycounter2;
+  14:delay.h       **** void delayms(unsigned int delaytime)
+  15:delay.h       **** {
+  75               	e size = 0 */
+  77               	.LM1:
+  78               		lds r18,delaycounter2
+  79               		lds r19,(delaycounter2)+1
+  80               		ldi r20,lo8(0)
+  81               		ldi r21,hi8(0)
+  82 0000 2091 0000 		rjmp .L2
+  83 0004 3091 0000 	.L3:
+  85 000a 50E0      	.LM2:
+  86 000c 00C0      	/* #APP */
+  87               	 ;  21 "delay.h" 1
+  16:delay.h       **** 
+  17:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  18:delay.h       **** 	 {
+  19:delay.h       **** 		 for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+  20:delay.h       **** 		  {
+  21:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  88               	 2
+  89               	 ;  21 "delay.h" 1
+  90               		nop
+  91               	 ;  0 "" 2
+  92 000e 0000      	 ;  21 "delay.h" 1
+  93               		nop
+  94               	 ;  0 "" 2
+  95 0010 0000      	 ;  21 "delay.h" 1
+  96               		nop
+  97               	 ;  0 "" 2
+  98 0012 0000      	 ;  21 "delay.h" 1
+  99               		nop
+ 100               	 ;  0 "" 2
+ 101 0014 0000      	 ;  21 "delay.h" 1
+ 102               		nop
+ 103               	 ;  0 "" 2
+ 105               	.LM3:
+ 106               	 ;  22 "delay.h" 1
+ 107 0018 0000      		nop
+ 108               	 ;  0 "" 2
+  22:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 109               	op
+ 110               	 ;  0 "" 2
+ 111               	 ;  22 "delay.h" 1
+ 112 001a 0000      		nop
+ 113               	 ;  0 "" 2
+ 114               	 ;  22 "delay.h" 1
+ 115 001c 0000      		nop
+ 116               	 ;  0 "" 2
+ 117               	 ;  22 "delay.h" 1
+ 118 001e 0000      		nop
+ 119               	 ;  0 "" 2
+ 120               	 ;  22 "delay.h" 1
+ 121 0020 0000      		nop
+ 122               	 ;  0 "" 2
+ 123               	/* #NOAPP */
+ 124 0022 0000      	.L5:
+ 125               		subi r18,lo8(-(1))
+ 126               		sbci r19,hi8(-(1))
+ 128               	.LM4:
+ 129               		ldi r22,hi8(802)
+ 130               		cpi r18,lo8(802)
+ 131 0026 2F5F      		cpc r19,r22
+ 132 0028 3F4F      		brne .L3
+ 133               		subi r20,lo8(-(1))
+ 134               		sbci r21,hi8(-(1))
+ 135 002a 63E0      		ldi r18,lo8(801)
+ 136 002c 2232      		ldi r19,hi8(801)
+ 137 002e 3607      	.L2:
+ 139 0032 4F5F      	.LM5:
+ 140 0034 5F4F      		cp r24,r20
+ 141 0036 21E2      		cpc r25,r21
+ 142 0038 33E0      		brlo .L4
+ 143               		ldi r18,lo8(0)
+ 144               		ldi r19,hi8(0)
+ 145               		rjmp .L5
+ 146 003a 8417      	.L4:
+ 147 003c 9507      		sts (delaycounter2)+1,r19
+ 148 003e 00F0      		sts delaycounter2,r18
+ 149 0040 20E0      		sts (delaycounter1)+1,r21
+ 150 0042 30E0      		sts delaycounter1,r20
+ 151 0044 00C0      	/* epilogue start */
+ 153 0046 3093 0000 	.LM6:
+ 154 004a 2093 0000 		ret
+ 156 0052 4093 0000 	.Lscope1:
+  23:delay.h       **** 		  }
+  24:delay.h       **** 		
+  25:delay.h       **** 	 }
+  26:delay.h       **** }
+ 158               	yus
+ 160 0056 0895      	delayus:
+ 162               	.LM7:
+ 163               	.LFBB2:
+ 164               	/* prologue: function */
+ 165               	/* frame size = 0 */
+ 167               	.LM8:
+  27:delay.h       **** 
+  28:delay.h       **** void delayus(unsigned int delaytime)
+  29:delay.h       **** {
+ 168               	o8(0)
+ 169               		ldi r19,hi8(0)
+ 170               		rjmp .L8
+ 171               	.L9:
+ 173               	.LM9:
+ 174               	/* #APP */
+ 175 0058 20E0      	 ;  34 "delay.h" 1
+ 176 005a 30E0      		nop
+ 177 005c 00C0      	 ;  0 "" 2
+ 178               	 ;  34 "delay.h" 1
+  30:delay.h       **** 
+  31:delay.h       **** 	 for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  32:delay.h       **** 	 {
+  33:delay.h       **** 		 
+  34:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 179               	"" 2
+ 180               	 ;  34 "delay.h" 1
+ 181               		nop
+ 182               	 ;  0 "" 2
+ 183 005e 0000      	 ;  34 "delay.h" 1
+ 184               		nop
+ 185               	 ;  0 "" 2
+ 186 0060 0000      	 ;  34 "delay.h" 1
+ 187               		nop
+ 188               	 ;  0 "" 2
+ 189 0062 0000      	 ;  34 "delay.h" 1
+ 190               		nop
+ 191               	 ;  0 "" 2
+ 193               	.LM10:
+ 194               	 ;  35 "delay.h" 1
+ 195 0066 0000      		nop
+ 196               	 ;  0 "" 2
+ 197               	 ;  35 "delay.h" 1
+ 198 0068 0000      		nop
+ 199               	 ;  0 "" 2
+  35:delay.h       **** 		  asm("nop");asm("nop");asm("nop");asm("nop");
+ 200               	op
+ 201               	 ;  0 "" 2
+ 202               	 ;  35 "delay.h" 1
+ 203 006a 0000      		nop
+ 204               	 ;  0 "" 2
+ 205               	/* #NOAPP */
+ 206 006c 0000      		subi r18,lo8(-(1))
+ 207               		sbci r19,hi8(-(1))
+ 208               	.L8:
+ 210               	.LM11:
+ 211               		cp r24,r18
+ 212 0070 0000      		cpc r25,r19
+ 213               		brsh .L9
+ 214               		sts (delaycounter1)+1,r19
+ 215 0072 2F5F      		sts delaycounter1,r18
+ 216 0074 3F4F      	/* epilogue start */
+ 218               	.LM12:
+ 219               		ret
+ 221 0078 9307      	.Lscope2:
+ 223 007c 3093 0000 	.global	uart_init
+ 225               	uart_init:
+  36:delay.h       **** 	 }
+  37:delay.h       **** }
+ 226               	Ltext2
+ 227               	.Ltext2:
+ 229               	.LM13:
+ 230               	.LFBB3:
+ 231               	/* prologue: function */
+ 232               	/* frame size = 0 */
+ 234               	.LM14:
+ 235               		out 43-32,__zero_reg__
+   1:uart.h        **** /*uart.h
+   2:uart.h        **** *******************************************************************************************
+   3:uart.h        **** COPYRIGHT(C)Technophilia Systems
+   4:uart.h        **** Date:...............31st May 2011
+   5:uart.h        **** Author:.............Prasanta Kumar Nayak
+   6:uart.h        **** Organization:.......Technophilia Syestems
+   7:uart.h        **** compiler:...........WinAVR
+   8:uart.h        **** 
+   9:uart.h        **** Description:
+  10:uart.h        **** 
+  11:uart.h        **** 	This header file enables uart communication feature between two devices.
+  12:uart.h        **** 	Include this header file in your C code. 
+  13:uart.h        **** 	Call the uart_init() function before calling any other functions to initialize the uart.
+  14:uart.h        **** 	
+  15:uart.h        **** Functions:
+  16:uart.h        **** 
+  17:uart.h        **** 	uart_init();	Call this function before calling any other functions to initialize 
+  18:uart.h        **** 					the uart communication.
+  19:uart.h        **** 	uart_char();  	This function will transmit a single character on the UART.
+  20:uart.h        **** 					For e.g. uart_char(0x61); will display A. 
+  21:uart.h        **** 					Again uart_char('b'); will display b.
+  22:uart.h        **** 	uart_string();	This function will display a string. 
+  23:uart.h        **** 					An e.g. of this would be like uart_string("This is AVR");
+  24:uart.h        **** 	uart_num();		This will show a 3-digit decimal value on the display
+  25:uart.h        **** 					For e.g. uart_num(35); will displkay 035
+  26:uart.h        **** 	uart_read();	This will show a 3-digit decimal value on the Display. 
+  27:uart.h        **** 					For e.g. if we give uart_read(x); then x value will be displayed.
+  28:uart.h        **** 
+  29:uart.h        **** *******************************************************************************************/
+  30:uart.h        **** 
+  31:uart.h        **** #ifndef _UART_H_
+  32:uart.h        **** #define _UART_H_
+  33:uart.h        **** 
+  34:uart.h        **** void uart_init()
+  35:uart.h        **** {
+ 237               	 r24,lo8(24)
+ 238               		out 42-32,r24
+ 240               	.LM16:
+ 241               		ldi r24,lo8(-122)
+  36:uart.h        **** 	UCSRA=0x00;
+ 242               	64-32,r24
+ 244 0086 1BB8      	.LM17:
+  37:uart.h        **** 	UCSRB=0x18;
+ 245               	t 64-32,__zero_reg__
+ 247 0088 88E1      	.LM18:
+ 248 008a 8AB9      		ldi r24,lo8(103)
+  38:uart.h        **** 	UCSRC=0x86;
+ 249               	 41-32,r24
+ 250               	/* epilogue start */
+ 252 008e 80BD      	.LM19:
+  39:uart.h        **** 	UBRRH=0x00;
+ 253               	
+ 255 0090 10BC      	.Lscope3:
+  40:uart.h        **** 	UBRRL=0x67;
+ 256               	stabs	"uart_read:F(0,11)",36,0,0,uart_read
+ 257               	.global	uart_read
+ 259 0094 89B9      	uart_read:
+  41:uart.h        **** }
+ 261               	:
+ 262               	.LFBB4:
+ 263 0096 0895      	/* prologue: function */
+ 264               	/* frame size = 0 */
+ 265               	.L14:
+ 267               	.LM21:
+ 268               		sbis 43-32,7
+ 269               		rjmp .L14
+  42:uart.h        **** 
+  43:uart.h        **** void uart_char(unsigned char uchar)
+  44:uart.h        **** {
+  45:uart.h        **** 	UDR=uchar;
+  46:uart.h        **** 	while((UCSRA&0x40)==0x00);
+  47:uart.h        **** 	delayuart(1000);
+  48:uart.h        **** }
+  49:uart.h        ****  
+  50:uart.h        **** void uart_string(const unsigned char *ustring)
+  51:uart.h        **** {
+  52:uart.h        **** 	while ( *ustring )
+  53:uart.h        **** 	{
+  54:uart.h        **** 		UDR=*ustring++;
+  55:uart.h        **** 		while((UCSRA&0x40)==0x00);
+  56:uart.h        **** 		delayuart(1000);
+  57:uart.h        **** 	}
+  58:uart.h        **** }
+  59:uart.h        ****  
+  60:uart.h        **** void uart_num(unsigned char num)
+  61:uart.h        **** {
+  62:uart.h        ****     unsigned char H=0,T=0,O=0;
+  63:uart.h        **** 	H=num/100;
+  64:uart.h        **** 	T=(num - (H*100))/10;
+  65:uart.h        **** 	O=(num - (H*100) - (T*10));
+  66:uart.h        **** 	
+  67:uart.h        **** 	uart_char(H+48);
+  68:uart.h        **** 	uart_char(T+48);
+  69:uart.h        **** 	uart_char(O+48);	
+  70:uart.h        **** }
+  71:uart.h        ****  
+  72:uart.h        **** unsigned char uart_read()
+  73:uart.h        **** {
+ 270               	8,0,75,.LM22-.LFBB4
+ 271               	.LM22:
+ 272               		in r24,44-32
+ 273               	/* epilogue start */
+ 275               	.LM23:
+  74:uart.h        **** 	while((UCSRA&0x80)==0x00);
+ 277               	.Lscope4:
+  75:uart.h        **** 	return UDR;
+ 280               	bal	delayuart
+ 282 009c 8CB1      	delayuart:
+  76:uart.h        **** }
+ 284               	4:
+ 285               	.LFBB5:
+ 286 009e 0895      	/* prologue: function */
+ 287               	/* frame size = 0 */
+ 289               	.LM25:
+ 290               		ldi r18,lo8(0)
+ 291               		ldi r19,hi8(0)
+ 292               	.L18:
+  77:uart.h        ****  
+  78:uart.h        **** void delayuart(unsigned int delaytime)
+  79:uart.h        **** {
+ 294               	#APP */
+ 295               	 ;  83 "uart.h" 1
+ 296               		nop
+ 297               	 ;  0 "" 2
+ 298               	 ;  83 "uart.h" 1
+ 299               		nop
+ 300               	 ;  0 "" 2
+ 301 00a0 20E0      	 ;  83 "uart.h" 1
+ 302 00a2 30E0      		nop
+ 303               	 ;  0 "" 2
+  80:uart.h        **** 	unsigned int dc;
+  81:uart.h        **** 	for(dc=0;dc<=delaytime;dc++)
+  82:uart.h        **** 	{
+  83:uart.h        **** 		asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+ 304               	rt.h" 1
+ 305               		nop
+ 306               	 ;  0 "" 2
+ 307               	 ;  83 "uart.h" 1
+ 308 00a4 0000      		nop
+ 309               	 ;  0 "" 2
+ 310               	 ;  83 "uart.h" 1
+ 311 00a6 0000      		nop
+ 312               	 ;  0 "" 2
+ 314 00a8 0000      	.LM27:
+ 315               	 ;  84 "uart.h" 1
+ 316               		nop
+ 317 00aa 0000      	 ;  0 "" 2
+ 318               	 ;  84 "uart.h" 1
+ 319               		nop
+ 320 00ac 0000      	 ;  0 "" 2
+ 321               	 ;  84 "uart.h" 1
+ 322               		nop
+ 323 00ae 0000      	 ;  0 "" 2
+ 324               	 ;  84 "uart.h" 1
+  84:uart.h        **** 		asm("nop");asm("nop");asm("nop");asm("nop");
+ 325               	bn	68,0,81,.LM28-.LFBB5
+ 326               	.LM28:
+ 327               	/* #NOAPP */
+ 328 00b0 0000      		subi r18,lo8(-(1))
+ 329               		sbci r19,hi8(-(1))
+ 330               		cp r24,r18
+ 331 00b2 0000      		cpc r25,r19
+ 332               		brsh .L18
+ 333               	/* epilogue start */
+ 335               	.LM29:
+ 336               		ret
+ 341               	.Lscope5:
+ 344 00bc 8217      	.global	uart_string
+ 346 00c0 00F4      	uart_string:
+  85:uart.h        **** 	}
+  86:uart.h        **** }
+ 348               	8
+ 349               		push r29
+ 350 00c2 0895      	/* prologue: function */
+ 351               	/* frame size = 0 */
+ 352               		movw r28,r24
+ 353               		rjmp .L22
+ 354               	.L24:
+ 356               	.LM31:
+ 357               		out 44-32,r24
+ 358               	.L23:
+ 360               	.LM32:
+ 361               		sbis 43-32,6
+ 362               		rjmp .L23
+ 364 00c4 CF93      	.LM33:
+ 365 00c6 DF93      		adiw r28,1
+ 367               	.LM34:
+ 368 00c8 EC01      		ldi r24,lo8(1000)
+ 369 00ca 00C0      		ldi r25,hi8(1000)
+ 370               		rcall delayuart
+ 371               	.L22:
+ 373 00cc 8CB9      	.LM35:
+ 374               		ld r24,Y
+ 375               		tst r24
+ 376               		brne .L24
+ 377 00ce 5E9B      	/* epilogue start */
+ 379               	.LM36:
+ 380               		pop r29
+ 381 00d2 2196      		pop r28
+ 382               		ret
+ 384 00d4 88EE      	.Lscope6:
+ 387               	.global	uart_char
+ 389               	uart_char:
+ 391 00dc 8823      	.LM37:
+ 392 00de 01F4      	.LFBB7:
+ 393               	/* prologue: function */
+ 394               	/* frame size = 0 */
+ 396 00e0 DF91      	.LM38:
+ 397 00e2 CF91      		out 44-32,r24
+ 398 00e4 0895      	.L28:
+ 400               	.LM39:
+ 401               		sbis 43-32,6
+ 402               		rjmp .L28
+ 404               	.LM40:
+ 405               		ldi r24,lo8(1000)
+ 406               		ldi r25,hi8(1000)
+ 407               		rcall delayuart
+ 408               	/* epilogue start */
+ 410               	.LM41:
+ 411               		ret
+ 413 00e6 8CB9      	.Lscope7:
+ 416               	.global	uart_num
+ 418 00ea 00C0      	uart_num:
+ 420               	.LM42:
+ 421 00ec 88EE      	.LFBB8:
+ 422 00ee 93E0      		push r14
+ 423 00f0 00D0      		push r15
+ 424               		push r16
+ 425               		push r17
+ 426               	/* prologue: function */
+ 427 00f2 0895      	/* frame size = 0 */
+ 428               		mov r17,r24
+ 430               	.LM43:
+ 431               		ldi r22,lo8(100)
+ 432               		rcall __udivmodqi4
+ 433               		mov r20,r24
+ 435               	.LM44:
+ 436               		mov r18,r24
+ 437               		ldi r19,lo8(0)
+ 438 00f4 EF92      		ldi r24,lo8(-100)
+ 439 00f6 FF92      		ldi r25,hi8(-100)
+ 440 00f8 0F93      		mul r18,r24
+ 441 00fa 1F93      		movw r14,r0
+ 442               		mul r18,r25
+ 443               		add r15,r0
+ 444 00fc 182F      		mul r19,r24
+ 445               		add r15,r0
+ 446               		clr r1
+ 447 00fe 64E6      		movw r24,r14
+ 448 0100 00D0      		add r24,r17
+ 449 0102 482F      		adc r25,__zero_reg__
+ 450               		ldi r22,lo8(10)
+ 451               		ldi r23,hi8(10)
+ 452 0104 282F      		rcall __divmodhi4
+ 453 0106 30E0      		mov r16,r22
+ 455 010a 9FEF      	.LM45:
+ 456 010c 289F      		mov r24,r20
+ 457 010e 7001      		subi r24,lo8(-(48))
+ 458 0110 299F      		rcall uart_char
+ 460 0114 389F      	.LM46:
+ 461 0116 F00C      		mov r24,r16
+ 462 0118 1124      		subi r24,lo8(-(48))
+ 463 011a C701      		rcall uart_char
+ 465 011e 911D      	.LM47:
+ 466 0120 6AE0      		subi r17,lo8(-(48))
+ 467 0122 70E0      		add r17,r14
+ 468 0124 00D0      		ldi r24,lo8(-10)
+ 469 0126 062F      		ldi r25,hi8(-10)
+ 470               		mul r16,r24
+ 471               		mov r16,r0
+ 472 0128 842F      		clr r1
+ 473 012a 805D      		mov r24,r16
+ 474 012c 00D0      		add r24,r17
+ 475               		rcall uart_char
+ 476               	/* epilogue start */
+ 478 0130 805D      	.LM48:
+ 479 0132 00D0      		pop r17
+ 480               		pop r16
+ 481               		pop r15
+ 482 0134 105D      		pop r14
+ 483 0136 1E0D      		ret
+ 485 013a 9FEF      	.Lscope8:
+ 487 013e 002D      	.global	main
+ 489 0142 802F      	main:
+ 491 0146 00D0      	.Ltext3:
+ 493               	.LM49:
+ 494               	.LFBB9:
+ 495 0148 1F91      	/* prologue: function */
+ 496 014a 0F91      	/* frame size = 0 */
+ 498 014e EF90      	.LM50:
+ 499 0150 0895      		out 43-32,__zero_reg__
+ 501               	.LM51:
+ 502               		ldi r24,lo8(16)
+ 503               		out 42-32,r24
+ 505               	.LM52:
+ 506               		ldi r24,lo8(-122)
+ 507               		out 64-32,r24
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE6.3: Program for Controlling Bot by PC
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include <avr/io.h >
+  18:main.c        **** #include "delay.h"
+  19:main.c        **** #include "uart.h"
+  20:main.c        **** int main()
+  21:main.c        **** {
+ 508               	(16)
+ 509               		out 42-32,r24
+ 511               	.LM52:
+ 512               		ldi r24,lo8(-122)
+  22:main.c        **** UCSRA=0x00;
+ 513               	51:
+ 514               		ldi r24,lo8(16)
+ 515 0152 1BB8      		out 42-32,r24
+  23:main.c        **** UCSRB=0x10;
+ 516               	:
+ 517               		out 43-32,__zero_reg__
+ 519 0156 8AB9      	.LM51:
+  24:main.c        **** UCSRC=0x86;
+ 521               	.LM50:
+ 522 0158 86E8      		out 43-32,__zero_reg__
+  25:main.c        **** UBRRH=0x00;
+ 524               	 = 0 */
+ 526 015c 10BC      	.LM50:
+  26:main.c        **** UBRRL=0x67;
+ 527               	9
+ 528               	.LM49:
+ 529 015e 87E6      	.LFBB9:
+ 530 0160 89B9      	/* prologue: function */
+  27:main.c        **** DDRD=0xF0;		
+ 531               	main.c",132,0,0,.Ltext3
+ 532               	.Ltext3:
+ 534 0164 81BB      	.LM49:
+  28:main.c        **** while(1)
+  29:main.c        ****  {
+  30:main.c        ****  switch(uart_read())
+  31:main.c        ****   {
+  32:main.c        ****    case 'F':
+  33:main.c        ****     PORTD=0x50;
+  34:main.c        **** 	break;
+  35:main.c        ****    case 'B':
+  36:main.c        ****     PORTD=0xA0;
+  37:main.c        **** 	break;
+  38:main.c        ****    case 'L':
+  39:main.c        ****     PORTD=0x10;
+ 535               	ype	main, @function
+ 536               	main:
+  40:main.c        **** 	break;	
+  41:main.c        ****    case 'R':
+  42:main.c        ****     PORTD=0x40;
+ 538               	stabs	"main:F(0,1)",36,0,0,main
+ 539               	.global	main
+ 541               	main:
+ 543 016a 20EA      	.Ltext3:
+ 545               	.LM49:
+ 546 016c 90E5      	.LFBB9:
+ 547               	/* prologue: function */
+ 548               	/* frame size = 0 */
+ 550               	.LM50:
+ 551               		out 43-32,__zero_reg__
+ 553               	.LM51:
+ 554 016e 5F9B      		ldi r24,lo8(16)
+ 555 0170 00C0      		out 42-32,r24
+ 557               	.LM52:
+ 558 0172 8CB1      		ldi r24,lo8(-122)
+ 559               		out 64-32,r24
+ 561               	.LM53:
+ 562               		out 64-32,__zero_reg__
+ 564               	.LM54:
+ 565 0174 8C34      		ldi r24,lo8(103)
+ 566 0176 01F0      		out 41-32,r24
+ 568 017a 00F4      	.LM55:
+ 569 017c 8234      		ldi r24,lo8(-16)
+ 570 017e 01F0      		out 49-32,r24
+ 572 0182 01F4      	.LM56:
+ 573 0184 00C0      		ldi r20,lo8(16)
+ 575 0186 8235      	.LM57:
+ 576 0188 01F0      		ldi r19,lo8(64)
+ 578 018c 01F4      	.LM58:
+ 579 018e 00C0      		ldi r18,lo8(-96)
+ 581               	.LM59:
+ 582               		ldi r25,lo8(80)
+ 583 0190 92BB      	.L44:
+ 584 0192 00C0      	.LBB4:
+ 585               	.LBB5:
+ 587               	.Ltext4:
+ 589 0196 00C0      	.LM60:
+ 590               		sbis 43-32,7
+ 591               		rjmp .L44
+ 593 0198 42BB      	.LM61:
+ 594 019a 00C0      		in r24,44-32
+ 595               	.LBE5:
+ 596               	.LBE4:
+ 598 019c 32BB      	.Ltext5:
+ 600               	.LM62:
+  43:main.c        **** 	break;
+  44:main.c        ****    case 'S':
+  45:main.c        ****     PORTD=0x00;
+ 601               	xt5
+ 602               	.Ltext5:
+ 604 01a2 00C0      	.LM62:
+ 605               		cpi r24,lo8(76)
+ 606               		breq .L37
+ 607               		cpi r24,lo8(77)
+ 608               		brsh .L40
+ 609               		cpi r24,lo8(66)
+ 610               		breq .L35
+ 611               		cpi r24,lo8(70)
+ 612               		brne .L44
+ 613               		rjmp .L45
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:2      *ABS*:0000003f __SREG__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:3      *ABS*:0000003e __SP_H__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:4      *ABS*:0000003d __SP_L__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:5      *ABS*:00000034 __CCP__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:6      *ABS*:00000000 __tmp_reg__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:7      *ABS*:00000001 __zero_reg__
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:72     .text:00000000 delayms
+                            *COM*:00000002 delaycounter2
+                            *COM*:00000002 delaycounter1
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:167    .text:00000058 delayus
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:234    .text:00000086 uart_init
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:269    .text:00000098 uart_read
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:293    .text:000000a0 delayuart
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:360    .text:000000c4 uart_string
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:405    .text:000000e6 uart_char
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:434    .text:000000f4 uart_num
+C:\DOCUME~1\Prasanta\LOCALS~1\Temp/ccgjzzbb.s:505    .text:00000152 main
+
+UNDEFINED SYMBOLS
+__udivmodqi4
+__divmodhi4
+__do_clear_bss

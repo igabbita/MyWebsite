@@ -1,0 +1,192 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000010e  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000004  00800060  00800060  00000182  2**0
+                  ALLOC
+  2 .stab         000007b0  00000000  00000000  00000184  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      000006b9  00000000  00000000  00000934  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	14 c0       	rjmp	.+40     	; 0x2a <__ctors_end>
+   2:	2e c0       	rjmp	.+92     	; 0x60 <__bad_interrupt>
+   4:	2d c0       	rjmp	.+90     	; 0x60 <__bad_interrupt>
+   6:	2c c0       	rjmp	.+88     	; 0x60 <__bad_interrupt>
+   8:	2b c0       	rjmp	.+86     	; 0x60 <__bad_interrupt>
+   a:	2a c0       	rjmp	.+84     	; 0x60 <__bad_interrupt>
+   c:	29 c0       	rjmp	.+82     	; 0x60 <__bad_interrupt>
+   e:	28 c0       	rjmp	.+80     	; 0x60 <__bad_interrupt>
+  10:	27 c0       	rjmp	.+78     	; 0x60 <__bad_interrupt>
+  12:	26 c0       	rjmp	.+76     	; 0x60 <__bad_interrupt>
+  14:	25 c0       	rjmp	.+74     	; 0x60 <__bad_interrupt>
+  16:	24 c0       	rjmp	.+72     	; 0x60 <__bad_interrupt>
+  18:	23 c0       	rjmp	.+70     	; 0x60 <__bad_interrupt>
+  1a:	22 c0       	rjmp	.+68     	; 0x60 <__bad_interrupt>
+  1c:	21 c0       	rjmp	.+66     	; 0x60 <__bad_interrupt>
+  1e:	20 c0       	rjmp	.+64     	; 0x60 <__bad_interrupt>
+  20:	1f c0       	rjmp	.+62     	; 0x60 <__bad_interrupt>
+  22:	1e c0       	rjmp	.+60     	; 0x60 <__bad_interrupt>
+  24:	1d c0       	rjmp	.+58     	; 0x60 <__bad_interrupt>
+  26:	1c c0       	rjmp	.+56     	; 0x60 <__bad_interrupt>
+  28:	1b c0       	rjmp	.+54     	; 0x60 <__bad_interrupt>
+
+0000002a <__ctors_end>:
+  2a:	11 24       	eor	r1, r1
+  2c:	1f be       	out	0x3f, r1	; 63
+  2e:	cf e5       	ldi	r28, 0x5F	; 95
+  30:	d2 e0       	ldi	r29, 0x02	; 2
+  32:	de bf       	out	0x3e, r29	; 62
+  34:	cd bf       	out	0x3d, r28	; 61
+
+00000036 <__do_copy_data>:
+  36:	10 e0       	ldi	r17, 0x00	; 0
+  38:	a0 e6       	ldi	r26, 0x60	; 96
+  3a:	b0 e0       	ldi	r27, 0x00	; 0
+  3c:	ee e0       	ldi	r30, 0x0E	; 14
+  3e:	f1 e0       	ldi	r31, 0x01	; 1
+  40:	02 c0       	rjmp	.+4      	; 0x46 <.do_copy_data_start>
+
+00000042 <.do_copy_data_loop>:
+  42:	05 90       	lpm	r0, Z+
+  44:	0d 92       	st	X+, r0
+
+00000046 <.do_copy_data_start>:
+  46:	a0 36       	cpi	r26, 0x60	; 96
+  48:	b1 07       	cpc	r27, r17
+  4a:	d9 f7       	brne	.-10     	; 0x42 <.do_copy_data_loop>
+
+0000004c <__do_clear_bss>:
+  4c:	10 e0       	ldi	r17, 0x00	; 0
+  4e:	a0 e6       	ldi	r26, 0x60	; 96
+  50:	b0 e0       	ldi	r27, 0x00	; 0
+  52:	01 c0       	rjmp	.+2      	; 0x56 <.do_clear_bss_start>
+
+00000054 <.do_clear_bss_loop>:
+  54:	1d 92       	st	X+, r1
+
+00000056 <.do_clear_bss_start>:
+  56:	a4 36       	cpi	r26, 0x64	; 100
+  58:	b1 07       	cpc	r27, r17
+  5a:	e1 f7       	brne	.-8      	; 0x54 <.do_clear_bss_loop>
+  5c:	44 d0       	rcall	.+136    	; 0xe6 <main>
+  5e:	56 c0       	rjmp	.+172    	; 0x10c <_exit>
+
+00000060 <__bad_interrupt>:
+  60:	cf cf       	rjmp	.-98     	; 0x0 <__heap_end>
+
+00000062 <delayms>:
+unsigned int delaycounter1,delaycounter2;
+
+void delayms(unsigned int delaytime)
+{
+	for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  62:	10 92 63 00 	sts	0x0063, r1
+  66:	10 92 62 00 	sts	0x0062, r1
+  6a:	20 e0       	ldi	r18, 0x00	; 0
+  6c:	30 e0       	ldi	r19, 0x00	; 0
+  6e:	40 e0       	ldi	r20, 0x00	; 0
+  70:	50 e0       	ldi	r21, 0x00	; 0
+	...
+	{
+		for(delaycounter2=0;delaycounter2<=800;delaycounter2++)
+		{
+			asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+			asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+  8a:	4f 5f       	subi	r20, 0xFF	; 255
+  8c:	5f 4f       	sbci	r21, 0xFF	; 255
+  8e:	63 e0       	ldi	r22, 0x03	; 3
+  90:	41 32       	cpi	r20, 0x21	; 33
+  92:	56 07       	cpc	r21, r22
+  94:	71 f7       	brne	.-36     	; 0x72 <delayms+0x10>
+  96:	2f 5f       	subi	r18, 0xFF	; 255
+  98:	3f 4f       	sbci	r19, 0xFF	; 255
+  9a:	82 17       	cp	r24, r18
+  9c:	93 07       	cpc	r25, r19
+  9e:	38 f7       	brcc	.-50     	; 0x6e <delayms+0xc>
+  a0:	30 93 63 00 	sts	0x0063, r19
+  a4:	20 93 62 00 	sts	0x0062, r18
+  a8:	50 93 61 00 	sts	0x0061, r21
+  ac:	40 93 60 00 	sts	0x0060, r20
+  b0:	08 95       	ret
+
+000000b2 <delayus>:
+		}
+	}
+}
+
+void delayus(unsigned int delaytime)
+{
+	for(delaycounter1=0;delaycounter1<=delaytime;delaycounter1++)
+  b2:	10 92 63 00 	sts	0x0063, r1
+  b6:	10 92 62 00 	sts	0x0062, r1
+  ba:	20 e0       	ldi	r18, 0x00	; 0
+  bc:	30 e0       	ldi	r19, 0x00	; 0
+	...
+	{
+		asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");asm("nop");
+		asm("nop");asm("nop");asm("nop");asm("nop");
+  d2:	2f 5f       	subi	r18, 0xFF	; 255
+  d4:	3f 4f       	sbci	r19, 0xFF	; 255
+  d6:	82 17       	cp	r24, r18
+  d8:	93 07       	cpc	r25, r19
+  da:	88 f7       	brcc	.-30     	; 0xbe <delayus+0xc>
+  dc:	30 93 63 00 	sts	0x0063, r19
+  e0:	20 93 62 00 	sts	0x0062, r18
+  e4:	08 95       	ret
+
+000000e6 <main>:
+#include"delay.h"       //This is the working header file for delay.
+
+void main()
+{
+	PORTD=0X00;			// PortD initiallization as all bits low.
+  e6:	12 ba       	out	0x12, r1	; 18
+	DDRD=0XF0;			// PortD data direction declaration as out put.
+  e8:	80 ef       	ldi	r24, 0xF0	; 240
+  ea:	81 bb       	out	0x11, r24	; 17
+	
+	PORTA=0XF0;			// PortA initiallization, upper nibble high
+  ec:	8b bb       	out	0x1b, r24	; 27
+	DDRA=0X00;			// PortA data direction declaration as input.
+  ee:	1a ba       	out	0x1a, r1	; 26
+  f0:	30 e5       	ldi	r19, 0x50	; 80
+  f2:	20 ea       	ldi	r18, 0xA0	; 160
+  f4:	90 e4       	ldi	r25, 0x40	; 64
+  f6:	80 e1       	ldi	r24, 0x10	; 16
+	
+	while(1)			//This is for the the infinity loop.
+	{	
+		if((PINA&0x10)==0x00)
+  f8:	cc 9b       	sbis	0x19, 4	; 25
+		 {
+ 		  PORTD=0x50;		// Move forward
+  fa:	32 bb       	out	0x12, r19	; 18
+		 }
+		if((PINA&0x20)==0x00)
+  fc:	cd 9b       	sbis	0x19, 5	; 25
+		 {
+ 		  PORTD=0xA0;		// Move backward
+  fe:	22 bb       	out	0x12, r18	; 18
+		 }		 
+		if((PINA&0x40)==0x00)
+ 100:	ce 9b       	sbis	0x19, 6	; 25
+		 {
+ 		  PORTD=0x40;		// Turn right
+ 102:	92 bb       	out	0x12, r25	; 18
+		 }
+		if((PINA&0x80)==0x00)
+ 104:	cf 99       	sbic	0x19, 7	; 25
+ 106:	f8 cf       	rjmp	.-16     	; 0xf8 <main+0x12>
+		 {
+ 		  PORTD=0x10;		// Turn left
+ 108:	82 bb       	out	0x12, r24	; 18
+ 10a:	f6 cf       	rjmp	.-20     	; 0xf8 <main+0x12>
+
+0000010c <_exit>:
+ 10c:	ff cf       	rjmp	.-2      	; 0x10c <_exit>

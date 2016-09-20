@@ -1,0 +1,158 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000000b8  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .stab         000006a8  00000000  00000000  0000010c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  2 .stabstr      00000655  00000000  00000000  000007b4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	14 c0       	rjmp	.+40     	; 0x2a <__ctors_end>
+   2:	2e c0       	rjmp	.+92     	; 0x60 <__bad_interrupt>
+   4:	2d c0       	rjmp	.+90     	; 0x60 <__bad_interrupt>
+   6:	2c c0       	rjmp	.+88     	; 0x60 <__bad_interrupt>
+   8:	2b c0       	rjmp	.+86     	; 0x60 <__bad_interrupt>
+   a:	2a c0       	rjmp	.+84     	; 0x60 <__bad_interrupt>
+   c:	29 c0       	rjmp	.+82     	; 0x60 <__bad_interrupt>
+   e:	28 c0       	rjmp	.+80     	; 0x60 <__bad_interrupt>
+  10:	27 c0       	rjmp	.+78     	; 0x60 <__bad_interrupt>
+  12:	26 c0       	rjmp	.+76     	; 0x60 <__bad_interrupt>
+  14:	25 c0       	rjmp	.+74     	; 0x60 <__bad_interrupt>
+  16:	24 c0       	rjmp	.+72     	; 0x60 <__bad_interrupt>
+  18:	23 c0       	rjmp	.+70     	; 0x60 <__bad_interrupt>
+  1a:	22 c0       	rjmp	.+68     	; 0x60 <__bad_interrupt>
+  1c:	21 c0       	rjmp	.+66     	; 0x60 <__bad_interrupt>
+  1e:	20 c0       	rjmp	.+64     	; 0x60 <__bad_interrupt>
+  20:	1f c0       	rjmp	.+62     	; 0x60 <__bad_interrupt>
+  22:	1e c0       	rjmp	.+60     	; 0x60 <__bad_interrupt>
+  24:	1d c0       	rjmp	.+58     	; 0x60 <__bad_interrupt>
+  26:	1c c0       	rjmp	.+56     	; 0x60 <__bad_interrupt>
+  28:	1b c0       	rjmp	.+54     	; 0x60 <__bad_interrupt>
+
+0000002a <__ctors_end>:
+  2a:	11 24       	eor	r1, r1
+  2c:	1f be       	out	0x3f, r1	; 63
+  2e:	cf e5       	ldi	r28, 0x5F	; 95
+  30:	d2 e0       	ldi	r29, 0x02	; 2
+  32:	de bf       	out	0x3e, r29	; 62
+  34:	cd bf       	out	0x3d, r28	; 61
+
+00000036 <__do_copy_data>:
+  36:	10 e0       	ldi	r17, 0x00	; 0
+  38:	a0 e6       	ldi	r26, 0x60	; 96
+  3a:	b0 e0       	ldi	r27, 0x00	; 0
+  3c:	e8 eb       	ldi	r30, 0xB8	; 184
+  3e:	f0 e0       	ldi	r31, 0x00	; 0
+  40:	02 c0       	rjmp	.+4      	; 0x46 <.do_copy_data_start>
+
+00000042 <.do_copy_data_loop>:
+  42:	05 90       	lpm	r0, Z+
+  44:	0d 92       	st	X+, r0
+
+00000046 <.do_copy_data_start>:
+  46:	a0 36       	cpi	r26, 0x60	; 96
+  48:	b1 07       	cpc	r27, r17
+  4a:	d9 f7       	brne	.-10     	; 0x42 <.do_copy_data_loop>
+
+0000004c <__do_clear_bss>:
+  4c:	10 e0       	ldi	r17, 0x00	; 0
+  4e:	a0 e6       	ldi	r26, 0x60	; 96
+  50:	b0 e0       	ldi	r27, 0x00	; 0
+  52:	01 c0       	rjmp	.+2      	; 0x56 <.do_clear_bss_start>
+
+00000054 <.do_clear_bss_loop>:
+  54:	1d 92       	st	X+, r1
+
+00000056 <.do_clear_bss_start>:
+  56:	a0 36       	cpi	r26, 0x60	; 96
+  58:	b1 07       	cpc	r27, r17
+  5a:	e1 f7       	brne	.-8      	; 0x54 <.do_clear_bss_loop>
+  5c:	02 d0       	rcall	.+4      	; 0x62 <main>
+  5e:	2b c0       	rjmp	.+86     	; 0xb6 <_exit>
+
+00000060 <__bad_interrupt>:
+  60:	cf cf       	rjmp	.-98     	; 0x0 <__heap_end>
+
+00000062 <main>:
+#include<avr/io.h>
+
+int main(void)
+{
+  DDRA=0X00;					// Initialization of PORTA as input
+  62:	1a ba       	out	0x1a, r1	; 26
+  PORTA=0XFF;
+  64:	8f ef       	ldi	r24, 0xFF	; 255
+  66:	8b bb       	out	0x1b, r24	; 27
+  
+  DDRD=0XF0;					// Initailization of PORTD as output
+  68:	80 ef       	ldi	r24, 0xF0	; 240
+  6a:	81 bb       	out	0x11, r24	; 17
+  PORTD=0X00;
+  6c:	12 ba       	out	0x12, r1	; 18
+  6e:	50 e5       	ldi	r21, 0x50	; 80
+  70:	40 e1       	ldi	r20, 0x10	; 16
+  72:	30 e4       	ldi	r19, 0x40	; 64
+  74:	20 ea       	ldi	r18, 0xA0	; 160
+  
+  while(1)
+  {
+	switch(PINA&0x0F)			// Checking the status of PA0- PA3 
+  76:	89 b3       	in	r24, 0x19	; 25
+  78:	99 27       	eor	r25, r25
+  7a:	8f 70       	andi	r24, 0x0F	; 15
+  7c:	90 70       	andi	r25, 0x00	; 0
+  7e:	85 30       	cpi	r24, 0x05	; 5
+  80:	91 05       	cpc	r25, r1
+  82:	a9 f0       	breq	.+42     	; 0xae <main+0x4c>
+  84:	86 30       	cpi	r24, 0x06	; 6
+  86:	91 05       	cpc	r25, r1
+  88:	34 f4       	brge	.+12     	; 0x96 <main+0x34>
+  8a:	82 30       	cpi	r24, 0x02	; 2
+  8c:	91 05       	cpc	r25, r1
+  8e:	49 f0       	breq	.+18     	; 0xa2 <main+0x40>
+  90:	04 97       	sbiw	r24, 0x04	; 4
+  92:	89 f7       	brne	.-30     	; 0x76 <main+0x14>
+  94:	08 c0       	rjmp	.+16     	; 0xa6 <main+0x44>
+  96:	86 30       	cpi	r24, 0x06	; 6
+  98:	91 05       	cpc	r25, r1
+  9a:	39 f0       	breq	.+14     	; 0xaa <main+0x48>
+  9c:	08 97       	sbiw	r24, 0x08	; 8
+  9e:	59 f7       	brne	.-42     	; 0x76 <main+0x14>
+  a0:	08 c0       	rjmp	.+16     	; 0xb2 <main+0x50>
+	{
+	 case 0x02:					// For Key 2
+	 PORTD=0X50;				// Move forward
+  a2:	52 bb       	out	0x12, r21	; 18
+  a4:	e8 cf       	rjmp	.-48     	; 0x76 <main+0x14>
+	 break;
+	 
+	 case 0x04:					// For key 4
+	 PORTD=0X10;				// Turn left
+  a6:	42 bb       	out	0x12, r20	; 18
+  a8:	e6 cf       	rjmp	.-52     	; 0x76 <main+0x14>
+	 break;
+	 
+	 case 0x06:					// For key 6
+	 PORTD=0X40;				// Turn Right
+  aa:	32 bb       	out	0x12, r19	; 18
+  ac:	e4 cf       	rjmp	.-56     	; 0x76 <main+0x14>
+	 break;
+	 
+	 case 0x05:					// For key 5
+	 PORTD=0X00;				// Stop
+  ae:	12 ba       	out	0x12, r1	; 18
+  b0:	e2 cf       	rjmp	.-60     	; 0x76 <main+0x14>
+	 break;
+	 
+	 case 0x08:					// For key 8
+	 PORTD=0XA0;				// Turn Right
+  b2:	22 bb       	out	0x12, r18	; 18
+  b4:	e0 cf       	rjmp	.-64     	; 0x76 <main+0x14>
+
+000000b6 <_exit>:
+  b6:	ff cf       	rjmp	.-2      	; 0xb6 <_exit>

@@ -1,0 +1,145 @@
+   1               		.file	"main.c"
+   2               		.arch atmega8535
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  68               	.global	main
+  70               	main:
+   1:main.c        **** /***********************************************************************
+   2:main.c        **** 
+   3:main.c        **** CODE6.1: Program for Controlling Bot by DTMF module
+   4:main.c        **** 
+   5:main.c        **** ***********************************************************************
+   6:main.c        **** COPYRIGHT(C)Technophilia Systems
+   7:main.c        **** Date:...............1st May 2011
+   8:main.c        **** Author:.............Prasanta Kumar Nayak
+   9:main.c        **** Organization:.......Technophilia Syestems
+  10:main.c        **** Target system:......AVR devlopment board s/n-107010
+  11:main.c        **** Manufacturer:.......Technophilia Syestems
+  12:main.c        **** Microcontroller:....ATmega-8535
+  13:main.c        **** Clock:..............16mhz
+  14:main.c        **** 
+  15:main.c        **** ***********************************************************************/
+  16:main.c        **** 
+  17:main.c        **** #include<avr/io.h>
+  18:main.c        **** 
+  19:main.c        **** int main(void)
+  20:main.c        **** {
+  71               	ue end (size=0) */
+  73               	.LM1:
+  74               		out 58-0x20,__zero_reg__
+  21:main.c        ****   DDRA=0X00;					// Initialization of PORTA as input
+  75               	 end (size=0) */
+  77 0000 1ABA      	.LM1:
+  22:main.c        ****   PORTA=0XFF;
+  78               	frame size=0 */
+  79               	/* prologue end (size=0) */
+  81 0004 8BBB      	.LM1:
+  23:main.c        ****   
+  24:main.c        ****   DDRD=0XF0;					// Initailization of PORTD as output
+  82               	frame size=0 */
+  83               	/* prologue end (size=0) */
+  85 0008 81BB      	.LM1:
+  25:main.c        ****   PORTD=0X00;
+  86               	frame size=0 */
+  87               	/* prologue end (size=0) */
+  89 000c 50E5      	.LM1:
+  90 000e 40E1      		out 58-0x20,__zero_reg__
+  92 0012 20EA      	.LM2:
+  93               		ldi r24,lo8(-1)
+  26:main.c        ****   
+  27:main.c        ****   while(1)
+  28:main.c        ****   {
+  29:main.c        **** 	switch(PINA&0x0F)			// Checking the status of PA0- PA3 
+  94               	t 58-0x20,__zero_reg__
+  96 0014 89B3      	.LM2:
+  97 0016 9927      		ldi r24,lo8(-1)
+  98 0018 8F70      		out 59-0x20,r24
+ 100 001c 8530      	.LM3:
+ 101 001e 9105      		ldi r24,lo8(-16)
+ 102 0020 01F0      		out 49-0x20,r24
+ 104 0024 9105      	.LM4:
+ 105 0026 04F4      		out 50-0x20,__zero_reg__
+ 106 0028 8230      		ldi r21,lo8(80)
+ 107 002a 9105      		ldi r20,lo8(16)
+ 108 002c 01F0      		ldi r19,lo8(64)
+ 109 002e 0497      		ldi r18,lo8(-96)
+ 110 0030 01F4      	.L15:
+ 112               	.LM5:
+ 113 0034 8630      		in r24,57-0x20
+ 114 0036 9105      		clr r25
+ 115 0038 01F0      		andi r24,lo8(15)
+ 116 003a 0897      		andi r25,hi8(15)
+ 117 003c 01F4      		cpi r24,5
+ 118 003e 00C0      		cpc r25,__zero_reg__
+ 119               		breq .L5
+  30:main.c        **** 	{
+  31:main.c        **** 	 case 0x02:					// For Key 2
+  32:main.c        **** 	 PORTD=0X50;				// Move forward
+ 120               	i8(15)
+ 121               		cpi r24,5
+ 122 0040 52BB      		cpc r25,__zero_reg__
+ 123 0042 00C0      		breq .L5
+ 124               		cpi r24,6
+  33:main.c        **** 	 break;
+  34:main.c        **** 	 
+  35:main.c        **** 	 case 0x04:					// For key 4
+  36:main.c        **** 	 PORTD=0X10;				// Turn left
+ 125               	r24,5
+ 126               		cpc r25,__zero_reg__
+ 127 0044 42BB      		breq .L5
+ 128 0046 00C0      		cpi r24,6
+ 129               		cpc r25,__zero_reg__
+  37:main.c        **** 	 break;
+  38:main.c        **** 	 
+  39:main.c        **** 	 case 0x06:					// For key 6
+  40:main.c        **** 	 PORTD=0X40;				// Turn Right
+ 130               	eg__
+ 131               		breq .L5
+ 132 0048 32BB      		cpi r24,6
+ 133 004a 00C0      		cpc r25,__zero_reg__
+ 134               		brge .L8
+  41:main.c        **** 	 break;
+  42:main.c        **** 	 
+  43:main.c        **** 	 case 0x05:					// For key 5
+  44:main.c        **** 	 PORTD=0X00;				// Stop
+ 135               	.L5
+ 136               		cpi r24,6
+ 137 004c 12BA      		cpc r25,__zero_reg__
+ 138 004e 00C0      		brge .L8
+ 139               		cpi r24,2
+  45:main.c        **** 	 break;
+  46:main.c        **** 	 
+  47:main.c        **** 	 case 0x08:					// For key 8
+  48:main.c        **** 	 PORTD=0XA0;				// Turn Right
+ 140               	,6
+ 141               		cpc r25,__zero_reg__
+ 142 0050 22BB      		brge .L8
+ 143 0052 00C0      		cpi r24,2
+ 144               		cpc r25,__zero_reg__
+ 145               		breq .L3
+ 146               		sbiw r24,4
+ 147               		brne .L15
+ 148               		rjmp .L4
+ 149               	.L8:
+ 150               		cpi r24,6
+ 151               		cpc r25,__zero_reg__
+ 152               		breq .L6
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\User\AppData\Local\Temp/ccMF4pXa.s:3      *ABS*:0000003f __SREG__
+C:\Users\User\AppData\Local\Temp/ccMF4pXa.s:4      *ABS*:0000003e __SP_H__
+C:\Users\User\AppData\Local\Temp/ccMF4pXa.s:5      *ABS*:0000003d __SP_L__
+C:\Users\User\AppData\Local\Temp/ccMF4pXa.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\User\AppData\Local\Temp/ccMF4pXa.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\User\AppData\Local\Temp/ccMF4pXa.s:70     .text:00000000 main
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
